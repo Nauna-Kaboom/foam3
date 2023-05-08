@@ -13,7 +13,6 @@ foam.CLASS({
     'foam.core.X',
     'foam.dao.AbstractSink',
     'foam.dao.DAO',
-    'foam.dao.HTTPSink',
     'foam.dao.Sink',
     'foam.nanos.logger.Loggers'
   ],

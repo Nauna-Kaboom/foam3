@@ -1123,7 +1123,6 @@ foam.POM({
     { name: "foam/nanos/ruler/RulerData",                             flags: "js|java" },
     { name: "foam/nanos/actioncommand/ActionCommandDAO",              flags: "js|java" },
     { name: "foam/nanos/audit/AuditDAO",                              flags: "js|java" },
-    { name: "foam/nanos/auth/email/EmailVerificationDAO",             flags: "js|java" },
     { name: "foam/dao/FreezingDAO",                                   flags: "js|java" },
     { name: "foam/nanos/geocode/GoogleMapsGeocodingDAO",              flags: "js|java" },
     { name: "foam/dao/history/HistoryDAO",                            flags: "js|java" },

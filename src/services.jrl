@@ -456,7 +456,15 @@ p({
   """
 })
 
-p({"class":"foam.nanos.boot.NSpec", "name":"resetPasswordToken",                 "serve":true,  "authenticate": false, "serviceClass":"foam.nanos.auth.resetPassword.ResetPasswordTokenService","boxClass":"foam.nanos.auth.token.TokenServiceSkeleton","client":"{\"class\":\"foam.nanos.auth.token.ClientTokenService\"}"})
+p({
+  "class":"foam.nanos.boot.NSpec",
+  "name":"resetPasswordToken",
+  "serve":true,
+  "authenticate": false,
+  "serviceClass":"foam.nanos.auth.resetPassword.ResetPasswordTokenService",
+  "boxClass":"foam.nanos.auth.token.TokenServiceSkeleton",
+  "client":"{\"class\":\"foam.nanos.auth.token.ClientTokenService\"}"
+})
 
 p({"class":"foam.nanos.boot.NSpec", "name":"demoObjectDAO",                      "serve":true,  "serviceScript":"return new foam.dao.EasyDAO.Builder(x).setJournalType(foam.dao.JournalType.SINGLE_JOURNAL).setJournalName(\"demoObjects\").setGuid(true).setOf(foam.nanos.demo.DemoObject.getOwnClassInfo()).build();", "client":"{\"of\":\"foam.nanos.demo.DemoObject\", \"remoteListenerSupport\": false}"})
 
@@ -891,4 +899,37 @@ p({
       retryDelay: 10000
     }
   }
+})
+
+p({
+  name: "tokenDAO",
+  serve: true,
+  authenticate: true,
+  serviceScript: """
+    return new foam.dao.EasyDAO.Builder(x)
+      .setPm(true)
+      .setAuthorize(false)
+      .setInnerDAO(x.get("localTokenDAO"))
+      .build();
+  """,
+    "client": """
+    {
+      "of": "foam.nanos.auth.token.Token"
+    }
+  """
+})
+
+p({
+  name: "localTokenDAO",
+  serviceScript: """
+    return new foam.dao.EasyDAO.Builder(x)
+      .setGuid(true)
+      .setCapable(true)
+      .setPm(true)
+      .setAuthorize(false)
+      .setJournalType(foam.dao.JournalType.SINGLE_JOURNAL)
+      .setJournalName("tokens")
+      .setOf(foam.nanos.auth.token.Token.getOwnClassInfo())
+      .build();
+  """
 })
