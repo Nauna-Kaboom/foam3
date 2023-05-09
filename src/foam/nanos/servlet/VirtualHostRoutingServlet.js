@@ -45,7 +45,8 @@ foam.CLASS({
     },
     {
       class: 'String',
-      name: 'defaultHost'
+      name: 'defaultHost',
+      documentation: 'default themeDomain id used. Can be set on nSpec "http"'
     },
     {
       class: 'Object',

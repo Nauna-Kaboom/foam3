@@ -909,6 +909,7 @@ p({
     return new foam.dao.EasyDAO.Builder(x)
       .setPm(true)
       .setAuthorize(false)
+      .setOf(foam.nanos.auth.token.Token.getOwnClassInfo())
       .setInnerDAO(x.get("localTokenDAO"))
       .build();
   """,
