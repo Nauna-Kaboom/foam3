@@ -34,7 +34,6 @@ public class TestUser {
     u1.setFirstName("Foam");
     u1.setLastName("Test");
     u1.setOrganization("Foam");
-    u1.setBusinessName("programmer");
     u1.setLanguage(new LanguageId.Builder(null).setCode("en").build());
     Date date = new GregorianCalendar(2010, 8, 10).getTime();//September
     u1.setBirthday(date);
@@ -100,8 +99,6 @@ public class TestUser {
         {"(firstName=adam)"," ( ( firstname =  ?  ) ) "},
         {"(id=20)"," ( ( id =  ?  ) ) "},
         {"firstName=adam11 and id=20 or firstName=john id=5"," ( ( firstname =  ?  )  AND  ( id =  ?  ) )  OR  ( ( firstname =  ?  )  AND  ( id =  ?  ) ) "},
-
-        {"has:businessName"," ( ( (businessname <> '') is not true ) ) "},
         {"is:emailVerified"," ( ( emailverified =  ?  ) ) "},
 //        {"id=me"," ( ( id =  ?  ) ) "},
 

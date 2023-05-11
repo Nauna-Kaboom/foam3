@@ -61,6 +61,7 @@ foam.CLASS({
   methods: [
     async function render() {
       var self = this;
+      if ( ! this.languageDAO ) return;
       this.__subContext__.register(foam.u2.ActionView, 'foam.u2.ActionView');
       this.supportedLanguages = (await this.languageDAO
         .where(foam.mlang.predicate.Eq.create({

@@ -40,7 +40,8 @@ foam.CLASS({
     },
     {
       class: 'String',
-      name: 'subdomain'
+      name: 'subdomain',
+      documentation: 'todo'
     }
   ]
 });

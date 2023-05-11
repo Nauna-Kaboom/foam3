@@ -481,18 +481,6 @@ foam.CLASS({
     },
     {
       class: 'String',
-      name: 'businessName',
-      includeInDigest: false,
-      documentation: 'The name of the business associated with the User.',
-      width: 50,
-      section: 'businessInformation',
-      order: 15,
-      gridColumns: 6,
-      tableWidth: 170,
-      columnPermissionRequired: true
-    },
-    {
-      class: 'String',
       name: 'department',
       includeInDigest: false,
       containsPII: false,

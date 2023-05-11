@@ -34,6 +34,7 @@ foam.CLASS({
   package: 'com.firebase',
   name: 'FirebaseDAO',
   extends: 'foam.dao.AbstractDAO',
+  documentation: 'This is a google thing - Database REST API : https://firebase.google.com/docs/reference/rest/database',
 
   requires: [
     'foam.dao.ArraySink',

@@ -145,6 +145,10 @@ foam.CLASS({
       }
     },
     function checkAvailability() {
+      if ( ! this.theme?.passwordPolicy ) {
+        console.log(`${this.theme.id} exists but the default passwordPolicy is missing??`);
+        this.isAvailable = true;
+      }
       this.theme?.passwordPolicy.validate(this.data)
         .then((pw) => {
           this.isAvailable = !pw;

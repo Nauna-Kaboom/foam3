@@ -12,10 +12,12 @@ foam.ENUM({
     {
       name: 'PENDING',
       label: 'Pending'
+      // User not verified - can't log in (loginEnabled and emailVerified...)
     },
     {
       name: 'ACTIVE',
       label: 'Active'
+      // User fully active in app
     },
     {
       name: 'REJECTED',

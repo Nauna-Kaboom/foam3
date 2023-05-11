@@ -461,7 +461,7 @@ foam.CLASS({
   methods: [
     function init() {
       this.SUPER();
-      debugger;
+      debugger; // note defaultUpdates branch does NOT have this commented out... :()
       // done to start using SectionedDetailViews instead of DetailViews
       this.__subContext__.register(foam.u2.detail.SectionedDetailView, 'foam.u2.DetailView');
 
@@ -495,8 +495,9 @@ foam.CLASS({
 
         await self.fetchGroup();
 
-        await self.maybeReinstallLanguage(self.client);
-        self.languageInstalled.resolve();
+        // await self.maybeReinstallLanguage(self.client); (new)
+        // self.languageInstalled.resolve();
+
         // add user and agent for backward compatibility
         Object.defineProperty(self, 'user', {
           get: function() {

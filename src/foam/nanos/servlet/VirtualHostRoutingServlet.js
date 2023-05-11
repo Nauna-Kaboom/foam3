@@ -123,7 +123,7 @@ foam.CLASS({
         out.println("<link rel=\\"apple-touch-icon\\" sizes=\\"180x180\\" href=\\"/favicon/apple-touch-icon.png\\">");
         out.println("<link rel=\\"icon\\" type=\\"image/png\\" sizes=\\"32x32\\" href=\\"/favicon/favicon-32x32.png\\">");
         out.println("<link rel=\\"icon\\" type=\\"image/png\\" sizes=\\"16x16\\" href=\\"/favicon/favicon-16x16.png\\">");
-        out.println("<link rel=\\"manifest\\" href=\\"/favicon/manifest.json\\">");
+        out.println("<link rel=\\"manifest\\" href=\\"/../../manifest.json\\">");
         out.println("<link rel=\\"mask-icon\\" href=\\"/favicon/safari-pinned-tab.svg\\" color=\\"#406dea\\">");
         out.println("<link rel=\\"shortcut icon\\" href=\\"/favicon/favicon.ico\\">");
         out.println("<meta name=\\"msapplication-config\\" content=\\"/favicon/browserconfig.xml\\">");
@@ -215,7 +215,7 @@ foam.CLASS({
 
         Theme theme = (Theme) themeDAO.find(themeDomain.getTheme());
         if ( theme == null ) {
-          logger.error("No theme found for domain " + themeDomain);
+          logger.error("*********************No theme found for domain " + themeDomain);
           theme = new Theme(x);
         }
 
@@ -235,7 +235,17 @@ foam.CLASS({
 
         out.println("<!-- Instantiate FOAM Application Controller -->");
         out.println("<!-- App Color Scheme, Logo, & Web App Name -->");
-        out.print("<foam\\nclass=\\""+ getController() +"\\"\\nid=\\"ctrl\\"\\nwebApp=\\"");
+        // contoller
+        String c = getController();
+        HashMap    headConfig          = (HashMap)   theme.getHeadConfig();
+        if ( headConfig != null && headConfig.containsKey("controller") ) {
+          try {
+            c = (String) headConfig.get("controller");
+          } catch ( Exception e ) {
+            logger.error(e);
+          }
+        }
+        out.print("<foam\\nclass=\\""+ c +"\\"\\nid=\\"ctrl\\"\\nwebApp=\\"");
         out.print(theme.getAppName());
         out.println("\\">\\n</foam>");
 
