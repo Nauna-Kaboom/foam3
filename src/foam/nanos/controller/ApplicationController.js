@@ -363,7 +363,7 @@ foam.CLASS({
       of: 'foam.nanos.theme.Theme',
       name: 'theme',
       postSet: function(o, n) {
-        if ( o && n && o.equals(n)) return;
+        if ( o && n && o.id == n.id ) return;
         this.__subContext__.cssTokenOverrideService.maybeReload();
         this.pub('themeChange');
       }
@@ -478,8 +478,8 @@ foam.CLASS({
         await self.fetchTheme();
         foam.locale = localStorage.getItem('localeLanguage') || self.theme.defaultLocaleLanguage || 'en';
 
-        //await client.translationService.initLatch;
-        //self.installLanguage();
+        await client.translationService.initLatch;
+        self.installLanguage();
 
         self.onDetach(self.__subContext__.cssTokenOverrideService?.cacheUpdated.sub(self.reloadStyles));
 
@@ -495,8 +495,8 @@ foam.CLASS({
 
         await self.fetchGroup();
 
-        // await self.maybeReinstallLanguage(self.client); (new)
-        // self.languageInstalled.resolve();
+        await self.maybeReinstallLanguage(self.client);
+        self.languageInstalled.resolve();
 
         // add user and agent for backward compatibility
         Object.defineProperty(self, 'user', {
@@ -613,29 +613,29 @@ foam.CLASS({
       this.subject = await this.client.auth.getCurrentSubject(null);
     },
 
-    // function installLanguage() {
-    //   for ( var i = 0 ; i < this.languageDefaults_.length ; i++ ) {
-    //     var ld = this.languageDefaults_[i];
-    //     ld[0][ld[1]] = ld[2];
-    //   }
-    //   this.languageDefaults_ = undefined;
+    function installLanguage() {
+      for ( var i = 0 ; i < this.languageDefaults_.length ; i++ ) {
+        var ld = this.languageDefaults_[i];
+        ld[0][ld[1]] = ld[2];
+      }
+      this.languageDefaults_ = undefined;
 
-    //   var map = this.__subContext__.translationService.localeEntries;
-    //   for ( var key in map ) {
-    //     try {
-    //       var node = globalThis;
-    //       var path = key.split('.');
+      var map = this.__subContext__.translationService.localeEntries;
+      for ( var key in map ) {
+        try {
+          var node = globalThis;
+          var path = key.split('.');
 
-    //       for ( var i = 0 ; node && i < path.length-1 ; i++ ) node = node[path[i]];
-    //       if ( node ) {
-    //         this.languageDefaults_.push([node, path[path.length-1], node[path[path.length-1]]]);
-    //         node[path[path.length-1]] = map[key];
-    //       }
-    //     } catch (x) {
-    //       console.error('Error installing locale message.', key, x);
-    //     }
-    //   }
-    // },
+          for ( var i = 0 ; node && i < path.length-1 ; i++ ) node = node[path[i]];
+          if ( node ) {
+            this.languageDefaults_.push([node, path[path.length-1], node[path[path.length-1]]]);
+            node[path[path.length-1]] = map[key];
+          }
+        } catch (x) {
+          console.error('Error installing locale message.', key, x);
+        }
+      }
+    },
 
     async function maybeReinstallLanguage(client) {
       if (
@@ -658,9 +658,9 @@ foam.CLASS({
         } else if ( foam.locale != userPreferLanguage.toString() ) {
           foam.locale = userPreferLanguage.toString()
         }
-        // client.translationService.maybeReload()
-        // await client.translationService.initLatch
-        // this.installLanguage()
+        client.translationService.maybeReload()
+        await client.translationService.initLatch
+        this.installLanguage()
       }
     },
 
@@ -681,13 +681,14 @@ foam.CLASS({
         this.initSubject = true;
         var result = await this.client.auth.getCurrentSubject(null);
         if ( result && result.user ) await this.reloadClient();
-
+        this.group = await this.client.auth.getCurrentGroup();
         promptLogin = promptLogin && await this.client.auth.check(this, 'auth.promptlogin');
         var authResult =  await this.client.auth.check(this, '*');
-        if ( ! result || ! result.user ) throw new Error();
+        if ( ! result || ! result.user || promptLogin && ! authResult ) throw new Error();
       } catch (err) {
-        if ( ! promptLogin || authResult ) return;
+        if ( ! promptLogin ) return;
         this.languageInstalled.resolve();
+       // this.initLayout.resolve();
         await this.requestLogin();
         return await this.fetchSubject();
       }
@@ -823,9 +824,10 @@ foam.CLASS({
         .catch(e => console.error(e.message || e));
     },
 
-    function requestLogin() {
+    async function requestLogin() {
       var self = this;
       var view = { view: { ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn' }, parent: self };
+      await this.themeInstalled;
       // don't go to log in screen if going to reset password screen
       if ( location.hash && location.hash === '#reset' ) {
         view = {
@@ -1011,7 +1013,7 @@ foam.CLASS({
         return;
       }
 
-      if ( ! lastTheme || ! lastTheme.equals(this.theme) ) this.useCustomElements();
+      if ( ! lastTheme || ! lastTheme.id == this.theme.id ) this.useCustomElements();
     },
 
     function useCustomElements() {
