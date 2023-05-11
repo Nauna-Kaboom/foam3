@@ -191,7 +191,7 @@ p({
   """
 })
 
-r({
+p({
   "class": "foam.nanos.boot.NSpec",
   "name": "daggerService",
   "serve": false,
