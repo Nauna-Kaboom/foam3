@@ -272,7 +272,6 @@ foam.POM({
     { name: "u2/navigation/SideNavigation",                                               flags: "web" },
     { name: "u2/navigation/SideNavigationItemView",                                       flags: "web" },
     { name: "u2/navigation/NavigationView",                                               flags: "web" },
-    { name: "u2/navigation/BusinessLogoView",                                             flags: "web" },
     { name: "u2/navigation/UserView",                                                     flags: "web" },
     { name: "u2/navigation/SubMenuBar",                                                   flags: "web" },
     { name: "u2/navigation/ApplicationLogoView",                                          flags: "web" },

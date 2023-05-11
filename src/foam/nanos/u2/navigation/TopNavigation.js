@@ -24,7 +24,6 @@ foam.CLASS({
 
   requires: [
     'foam.nanos.menu.MenuBar',
-    'foam.nanos.u2.navigation.BusinessLogoView',
     'foam.nanos.u2.navigation.UserView'
   ],
 

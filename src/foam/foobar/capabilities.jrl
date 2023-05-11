@@ -1,76 +1,85 @@
 p({
-    id: 'foam.foobar.tasks.Build'
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.Build"
 })
 p({
-    id: 'foam.foobar.tasks.CleanBuild'
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.CleanBuild"
 })
 
 p({
-    id: 'foam.foobar.tasks.DeleteBuildFolder',
-    of: 'foam.foobar.Delete',
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.DeleteBuildFolder",
+    of: "foam.foobar.Delete",
     args: {
-        path: '{build.objectDir}',
-        recursive: true,
-        force: true
+        "path": "{build.objectDir}",
+        "recursive": true,
+        "force": true
     }
 })
 
 p({
-    id: 'foam.foobar.tasks.GenJS',
-    of: 'foam.foobar.Exec',
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.GenJS",
+    of: "foam.foobar.Exec",
     args: {
-        path: '{foobar.toolsDir}/genjs.js',
-        passParentArgs: true
+        "path": "{foobar.toolsDir}/genjs.js",
+        "passParentArgs": true
     }
 })
 
 p({
-    id: 'foam.foobar.tasks.GenJava',
-    of: 'foam.foobar.Exec',
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.GenJava",
+    of: "foam.foobar.Exec",
     args: {
-        passParentArgs: true,
-        path: '{foobar.toolsDir}/genjava.js',
+        "passParentArgs": true,
+        "path": "{foobar.toolsDir}/genjava.js",
         args: [
-            '-outdir={build.javaOutDir}'
+            "-outdir={build.javaOutDir}"
         ]
     }
 })
 
 p({
-    id: 'foam.foobar.tasks.BuildJava',
-    of: 'foam.foobar.ExecGradle',
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.BuildJava",
+    of: "foam.foobar.ExecGradle",
     args: {
-        args: ['build']
+        args: ["build"]
     }
 })
 
 p({
-    id: 'foam.foobar.tasks.CleanJournals',
-    of: 'foam.foobar.Delete',
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.CleanJournals",
+    of: "foam.foobar.Delete",
     args: {
-        path: '{target.jrlDir}',
-        recursive: true,
-        force: true
+        "path": "{target.jrlDir}",
+        "recursive": true,
+        "force": true
     }
 })
 
 p({
-    id: 'foam.foobar.tasks.DeployJournals',
-    of: 'foam.foobar.Exec',
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.DeployJournals",
+    of: "foam.foobar.Exec",
     args: {
-        path: '{foobar.toolsDir}/deployJournals.js',
-        passParentArgs: true,
+        "path": "{foobar.toolsDir}/deployJournals.js",
+        "passParentArgs": true,
         args: [
-            '-outdir={target.jrlDir}',
-            '-srcdirs={project.srcDirs}'
+            "-outdir={target.jrlDir}",
+            "-srcdirs={project.srcDirs}"
         ]
     },
 })
 
 p({
-    id: 'foam.foobar.tasks.CreateLogsFolder',
-    of: 'foam.foobar.CreateDir',
+    class: "foam.nanos.crunch.Capability",
+    id: "foam.foobar.tasks.CreateLogsFolder",
+    of: "foam.foobar.CreateDir",
     args: {
-        path: '{target.runDir}/logs'
+        "path": "{target.runDir}/logs"
     }
 })

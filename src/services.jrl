@@ -70,29 +70,15 @@ p({
   "boxClass": "foam.nanos.auth.AuthServiceSkeleton",
   "serviceScript": """
     auth = new foam.nanos.auth.UserAndGroupAuthService(x);
-    auth = new foam.nanos.auth.EnabledCheckAuthService.Builder(x)
-      .setDelegate(auth)
-      .build();
-    auth = new foam.nanos.auth.PasswordExpiryAuthService.Builder(x)
-      .setDelegate(auth)
-      .build();
-    auth = new foam.nanos.auth.twofactor.TwoFactorAuthService.Builder(x)
-      .setDelegate(auth)
-      .build();
-    auth = new foam.nanos.auth.ResetSpidBeforeLoginAuthService.Builder(x)
-      .setDelegate(auth)
-      .build();
+    auth = new foam.nanos.auth.CapabilityAuthService.Builder(x).setDelegate(auth).build();
+    auth = new foam.nanos.auth.EnabledCheckAuthService.Builder(x).setDelegate(auth).build();
+    auth = new foam.nanos.auth.PasswordExpiryAuthService.Builder(x).setDelegate(auth).build();
+    auth = new foam.nanos.auth.twofactor.TwoFactorAuthService.Builder(x).setDelegate(auth).build();
+    auth = new foam.nanos.auth.ResetSpidBeforeLoginAuthService.Builder(x).setDelegate(auth).build();
     auth = new foam.nanos.auth.CachingAuthService(auth);
-    auth = new foam.nanos.auth.SubjectAuthService.Builder(x)
-      .setDelegate(auth)
-      .build();
-    auth = new foam.nanos.auth.PMAuthService.Builder(x)
-      .setLabel("uncached")
-      .setDelegate(auth)
-      .build();
-    auth = new foam.nanos.auth.SystemAuthService.Builder(x)
-      .setDelegate(auth)
-      .build();
+    auth = new foam.nanos.auth.SubjectAuthService.Builder(x).setDelegate(auth).build();
+    auth = new foam.nanos.auth.PMAuthService.Builder(x).setDelegate(auth).build();
+    auth = new foam.nanos.auth.SystemAuthService.Builder(x).setDelegate(auth).build();
     return auth;
   """,
   "client":"""

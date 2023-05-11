@@ -4,6 +4,10 @@ p({
   "spid":"foam",
   "name":"foam",
   "appName":"FOAM",
+  "appConfig": {
+    "class": "foam.nanos.app.AppConfig",
+    "url": "http://localhost:8080"
+  },
   "description":"The default FOAM theme.",
   "topNavigation":"foam.nanos.u2.navigation.ResponsiveTopNav",
   "defaultMenu": ["admin.data"],

@@ -60,10 +60,14 @@ foam.CLASS({
     'foam.u2.dialog.NotificationMessage',
     'foam.nanos.session.SessionTimer',
     'foam.u2.dialog.Popup',
-    'foam.core.Latch'
+    'foam.core.Latch',
+    'registerUser.BannerData',
+    'registerUser.BannerView'
   ],
 
   imports: [
+    'auth',
+    'crunchService',
     'capabilityDAO',
     'installCSS',
     'notificationDAO',
@@ -75,12 +79,14 @@ foam.CLASS({
     'agent',
     'appConfig',
     'as ctrl',
+    'bannerData',
     'buildingStack',
     'crunchController',
     'currentMenu',
     'displayWidth',
     'group',
     'initLayout',
+    'isIframe',
     'isMenuOpen',
     'lastMenuLaunched',
     'lastMenuLaunchedListener',
@@ -112,7 +118,9 @@ foam.CLASS({
     'themeChange',
     // Published by reloadClient(), can be subbed to by client side services
     // that need to refresh or cleanup on client reload
-    'clientReloading'
+    'clientReloading',
+    'sessionSignoutActionsFinished',
+    'sessionSignoutTriggered',
   ],
 
   constants: [
@@ -188,6 +196,15 @@ foam.CLASS({
   `,
 
   properties: [
+    {
+      class: 'foam.core.FObjectProperty',
+      of: 'foam.core.Latch',
+      name: 'themeInstalled',
+      documentation: 'A latch used to wait on theme installation.',
+      factory: function() {
+        return this.Latch.create();
+      }
+    },
     {
       class: 'String',
       name: 'sessionName',
@@ -427,13 +444,24 @@ foam.CLASS({
     {
       name: 'groupLoadingHandled',
       class: 'Boolean'
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'registerUser.BannerData',
+      name: 'bannerData',
+      view: { class: 'registerUser.BannerView' },
+      factory: function() {
+        return this.BannerData.create({
+          isDismissed: true
+        });
+      }
     }
   ],
 
   methods: [
     function init() {
       this.SUPER();
-
+      debugger;
       // done to start using SectionedDetailViews instead of DetailViews
       this.__subContext__.register(foam.u2.detail.SectionedDetailView, 'foam.u2.DetailView');
 
@@ -450,13 +478,13 @@ foam.CLASS({
         await self.fetchTheme();
         foam.locale = localStorage.getItem('localeLanguage') || self.theme.defaultLocaleLanguage || 'en';
 
-        await client.translationService.initLatch;
-        self.installLanguage();
+        //await client.translationService.initLatch;
+        //self.installLanguage();
 
         self.onDetach(self.__subContext__.cssTokenOverrideService?.cacheUpdated.sub(self.reloadStyles));
 
         let ret = await self.initMenu();
-        if ( ret ) return;
+        if ( ret ) return; // if menu returned, can ignore below... and just role with the flow
 
         await self.fetchSubject();
 
@@ -492,11 +520,26 @@ foam.CLASS({
         await self.fetchTheme();
         if ( ! self.groupLoadingHandled ) await self.onUserAgentAndGroupLoaded();
       });
+            // Enable session timer.
+      this.sessionTimer.enable = true;
+      this.sessionTimer.onSessionTimeout = this.onSessionTimeout.bind(this);
 
       // Reload styling on theme change
       this.onDetach(this.sub('themeChange', this.reloadStyles));
     },
-
+    function onSessionTimeout() {
+      if ( (this.subject && this.subject.user && this.subject.user.emailVerified) ||
+           (this.subject && this.subject.realUser && this.subject.realUser.emailVerified) ) {
+        this.add(this.Popup.create({ closeable: false }).tag(this.SessionTimeoutModal));
+      }
+    },
+    function isIframe() {
+      try {
+        return globalThis.self !== globalThis.top;
+      } catch (e) {
+        return true;
+      }
+    },
     async function initMenu() {
       var menu;
 
@@ -526,40 +569,38 @@ foam.CLASS({
       }
    },
 
-    function render() {
-      var self = this;
-      this.initLayout.then(() => {
-        this.layoutInitialized = true;
-      });
-      window.addEventListener('resize', this.updateDisplayWidth);
-      this.updateDisplayWidth();
+  async function render() {
+    // adding a listener to track the display width here as well since we don't call super
+    window.addEventListener('resize', this.updateDisplayWidth);
+    this.updateDisplayWidth();
 
+    this.initLayout.then(() => {
+      this.layoutInitialized = true;
+    });
 
+    // If we don't wait for the Theme object to load then we'll get
+    // errors when trying to expand the CSS macros in these models.
+    await this.clientPromise;
+    await this.fetchTheme();
 
-//      this.__subSubContext__.notificationDAO.where(
-//        this.EQ(this.Notification.USER_ID, userNotificationQueryId)
-//      ).on.put.sub((sub, on, put, obj) => {
-//        if ( obj.toastState == this.ToastState.REQUESTED ) {
-//          this.add(this.NotificationMessage.create({
-//            message: obj.toastMessage,
-//            type: obj.severity,
-//            description: obj.toastSubMessage
-//          }));
-//          var clonedNotification = obj.clone();
-//          clonedNotification.toastState = this.ToastState.DISPLAYED;
-//          this.__subSubContext__.notificationDAO.put(clonedNotification);
-//        }
-//      });
+    this.AppStyles.create();
+    this.themeInstalled.resolve();
 
-      this.clientPromise.then(() => {
-        this.fetchTheme().then(() => {
-          // Work around to ensure wrapCSS is exported into context before
-          // calling AppStyles which needs theme replacement
-          self.AppStyles.create();
-          self.addMacroLayout();
-        });
-      });
-    },
+    await this.themeInstalled;
+    await this.languageInstalled;
+
+    if ( ! this.isIframe() ) {
+      this.addMacroLayout();
+    } else {
+      this
+        .addClass(this.myClass())
+        .start()
+          .addClass('stack-wrapper')
+          .add(this.BANNER_DATA_.__)
+          .tag(this.DesktopStackView, { data: this.stack, showActions: false, nodeName: 'main' })
+        .end();
+    }
+  },
 
     async function reloadClient() {
       this.clientReloading.pub();
@@ -571,29 +612,29 @@ foam.CLASS({
       this.subject = await this.client.auth.getCurrentSubject(null);
     },
 
-    function installLanguage() {
-      for ( var i = 0 ; i < this.languageDefaults_.length ; i++ ) {
-        var ld = this.languageDefaults_[i];
-        ld[0][ld[1]] = ld[2];
-      }
-      this.languageDefaults_ = undefined;
+    // function installLanguage() {
+    //   for ( var i = 0 ; i < this.languageDefaults_.length ; i++ ) {
+    //     var ld = this.languageDefaults_[i];
+    //     ld[0][ld[1]] = ld[2];
+    //   }
+    //   this.languageDefaults_ = undefined;
 
-      var map = this.__subContext__.translationService.localeEntries;
-      for ( var key in map ) {
-        try {
-          var node = globalThis;
-          var path = key.split('.');
+    //   var map = this.__subContext__.translationService.localeEntries;
+    //   for ( var key in map ) {
+    //     try {
+    //       var node = globalThis;
+    //       var path = key.split('.');
 
-          for ( var i = 0 ; node && i < path.length-1 ; i++ ) node = node[path[i]];
-          if ( node ) {
-            this.languageDefaults_.push([node, path[path.length-1], node[path[path.length-1]]]);
-            node[path[path.length-1]] = map[key];
-          }
-        } catch (x) {
-          console.error('Error installing locale message.', key, x);
-        }
-      }
-    },
+    //       for ( var i = 0 ; node && i < path.length-1 ; i++ ) node = node[path[i]];
+    //       if ( node ) {
+    //         this.languageDefaults_.push([node, path[path.length-1], node[path[path.length-1]]]);
+    //         node[path[path.length-1]] = map[key];
+    //       }
+    //     } catch (x) {
+    //       console.error('Error installing locale message.', key, x);
+    //     }
+    //   }
+    // },
 
     async function maybeReinstallLanguage(client) {
       if (
@@ -616,9 +657,9 @@ foam.CLASS({
         } else if ( foam.locale != userPreferLanguage.toString() ) {
           foam.locale = userPreferLanguage.toString()
         }
-        client.translationService.maybeReload()
-        await client.translationService.initLatch
-        this.installLanguage()
+        // client.translationService.maybeReload()
+        // await client.translationService.initLatch
+        // this.installLanguage()
       }
     },
 
@@ -783,20 +824,30 @@ foam.CLASS({
 
     function requestLogin() {
       var self = this;
-
+      var view = { view: { ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn' }, parent: self };
       // don't go to log in screen if going to reset password screen
       if ( location.hash && location.hash === '#reset' ) {
-        return new Promise(function(resolve, reject) {
-          self.stack.push(self.StackBlock.create({ view: {
-            class: 'foam.nanos.auth.ChangePasswordView',
-            modelOf: 'foam.nanos.auth.resetPassword.ResetPasswordByToken'
-           }}));
-          self.loginSuccess$.sub(resolve);
-        });
+        view = {
+          class: 'foam.nanos.auth.ChangePasswordView',
+          modelOf: 'foam.nanos.auth.resetPassword.ResetPasswordByToken'
+        };
+      } else if ( location.hash && location.hash === '#sign-up' ) {
+        location.hash = '';
+        view = {
+          ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }),
+          mode_: 'SignUp',
+          param: {
+            token_: tokenParam,
+            email:  searchParams.get('email'),
+            firstName: searchParams.has('firstName') ? searchParams.get('firstName') : '',
+            lastName:  searchParams.has('lastName')  ? searchParams.get('lastName') : '',
+            phone:     searchParams.has('phone')     ? searchParams.get('phone') : ''
+          }
+        };
       }
 
       return new Promise(function(resolve, reject) {
-        self.stack.push(self.StackBlock.create({ view: { ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn' }, parent: self }));
+        self.stack.push(self.StackBlock.create(view));
         self.loginSuccess$.sub(resolve);
       });
     },
@@ -924,7 +975,7 @@ foam.CLASS({
     },
 
     function subToNotifications() {
-      this.__subContext__.myNotificationDAO?.on.put.sub(this.displayToastMessage.bind(this));
+      this.onDetach(this.__subContext__.myNotificationDAO?.on.put.sub(this.displayToastMessage.bind(this)));
     },
 
     function menuListener(m) {

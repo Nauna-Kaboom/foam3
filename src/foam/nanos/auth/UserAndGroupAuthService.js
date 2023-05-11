@@ -34,23 +34,22 @@ foam.CLASS({
   javaImports: [
     'foam.core.X',
     'foam.dao.DAO',
-    'foam.nanos.auth.LifecycleState',
-    'foam.nanos.auth.ServiceProvider',
-    'foam.nanos.auth.Subject',
-    'foam.nanos.auth.User',
+    'foam.nanos.alarming.Alarm',
+    'foam.nanos.alarming.AlarmReason',
     'foam.nanos.logger.Logger',
+    'foam.nanos.notification.email.EmailMessage',
     'foam.nanos.notification.Notification',
     'foam.nanos.session.Session',
     'foam.nanos.theme.Theme',
     'foam.nanos.theme.Themes',
+    'java.security.Permission',
     'foam.util.Email',
+    'foam.util.Emails.EmailsUtility',
     'foam.util.Password',
     'foam.util.SafetyUtil',
-
-    'java.security.Permission',
     'java.util.Calendar',
     'javax.security.auth.AuthPermission',
-
+    'java.util.HashMap',
     'static foam.mlang.MLang.AND',
     'static foam.mlang.MLang.CLASS_OF',
     'static foam.mlang.MLang.EQ',
@@ -211,10 +210,25 @@ foam.CLASS({
       documentation: `Login a user by their identifier (email or username) provided, validate the password and
         return the user in the context`,
       javaCode: `
-        User user = ((UniqueUserService) x.get("uniqueUserService")).getUser(x, identifier, password);
-        if ( user == null ) {
-          throw new UserNotFoundException();
-        }
+      User user = ((UniqueUserService) x.get("uniqueUserService")).getUser(x, identifier, password);
+      if ( user == null ) {
+        throw new UserNotFoundException();
+      }
+      X userX = x.put("subject", new Subject.Builder(x).setUser(user).build());
+      Group group = user.findGroup(userX);
+      if ( group == null ) {
+        Alarm alarm = new Alarm("User Configuration", AlarmReason.CONFIGURATION);
+        alarm.setNote("User " + user.getId() + " does not have a group assigned");
+        ((DAO) x.get("alarmDAO")).put(alarm);
+        throw new AuthenticationException("There was an issue logging in");
+      }
+
+      if (
+        ! user.getLoginEnabled() ||
+        ! user.getEnabled()
+      ) {
+        throw new AccountDisabledException();
+      }
         return loginHelper(x, user, password);
       `
     },
@@ -315,53 +329,63 @@ foam.CLASS({
       documentation: `Given a context with a user, validate the password to be
         updated and return a context with the updated user information.`,
       javaCode: `
-        if ( x == null || SafetyUtil.isEmpty(oldPassword) || SafetyUtil.isEmpty(newPassword) ) {
-          throw new RuntimeException("Password fields cannot be blank");
-        }
-        Session session = x.get(Session.class);
-        if ( session == null || session.getUserId() == 0 ) {
-          throw new UserNotFoundException();
-        }
-        User user = (User) ((DAO) getLocalUserDAO()).find(session.getUserId());
-        if ( user == null ) {
-          throw new UserNotFoundException();
-        }
-        // check that the user is active
-        assertUserIsActive(user);
-        // check if user enabled
-        if ( ! user.getEnabled() ) {
-          throw new AuthenticationException("User disabled");
-        }
-        // check if user login enabled
-        if ( ! user.getLoginEnabled() ) {
-          throw new AuthenticationException("Login disabled");
-        }
-        // check if group enabled
-        Group group = user.findGroup(x);
-        if ( group != null && ! group.getEnabled() ) {
-          throw new AuthenticationException("Group disabled");
-        }
-        // check if password is valid per validatePassword method
-        validatePassword(x, user, newPassword);
-        // old password does not match
-        if ( ! Password.verify(oldPassword, user.getPassword()) ) {
-          throw new RuntimeException("Old password is incorrect");
-        }
-        // new password is the same
-        if ( Password.verify(newPassword, user.getPassword()) ) {
-          throw new RuntimeException("New password must be different");
-        }
-        // store new password in DAO and put in context
-        user = (User) user.fclone();
-        user.setPasswordLastModified(Calendar.getInstance().getTime());
-        user.setPreviousPassword(user.getPassword());
-        user.setPassword(Password.hash(newPassword));
-        // TODO: modify line to allow actual setting of password expiry in cases where users are required to periodically update their passwords
-        user.setPasswordExpiry(null);
-        user = (User) ((DAO) getLocalUserDAO()).put(user);
-        Subject subject = new Subject.Builder(x).setUser(user).build();
-        session.setContext(session.getContext().put("subject", subject).put("group", group));
-        return user;
+      if ( x == null || SafetyUtil.isEmpty(oldPassword) || SafetyUtil.isEmpty(newPassword) ) {
+        throw new RuntimeException("Invalid parameters");
+      }
+
+      Session session = x.get(Session.class);
+      if ( session == null || session.getUserId() == 0 ) {
+        throw new UserNotFoundException();
+      }
+
+      User user = (User) ((DAO) getLocalUserDAO()).find(session.getUserId());
+      if ( user == null ) {
+        throw new UserNotFoundException();
+      }
+
+      // check user status is not disabled
+      if ( LifecycleState.REJECTED == user.getLifecycleState() ||
+          LifecycleState.DELETED == user.getLifecycleState() ||
+          LifecycleState.DISABLED == user.getLifecycleState() ) {
+        throw new AuthenticationException("User disabled");
+      }
+
+      // check if user group enabled
+      Group group = user.findGroup(x);
+      if ( group != null && ! group.getEnabled() ) {
+        throw new AuthenticationException("User group disabled");
+      }
+
+      // old password does not match
+      if ( ! Password.verify(oldPassword, user.getPassword()) ) {
+        throw new RuntimeException("Old password is incorrect");
+      }
+
+      // new password is the same
+      if ( Password.verify(newPassword, user.getPassword()) ) {
+        throw new RuntimeException("New password must be different");
+      }
+
+      // store new password in DAO and put in context
+      user = (User) user.fclone();
+      user.setDesiredPassword(newPassword);
+      // TODO: modify line to allow actual setting of password expiry in cases where users are required to periodically update their passwords
+      user.setPasswordExpiry(null);
+      user = (User) ((DAO) getLocalUserDAO()).put(user);
+
+      // TODO feel like this should be in a try catch...and have some manual way to ensure the email gets sent...
+      // send user call to notify of password change
+      EmailMessage message = new EmailMessage();
+      message.setTo(new String[] { user.getEmail() });
+      HashMap<String, Object> args = new HashMap<>();
+
+      args.put("name", user.getFirstName());
+      args.put("sendTo", user.getEmail());
+      args.put("templateSource", this.getClass().getName());
+
+      EmailsUtility.sendEmailFromTemplate(x, user, message, "password-changed", args);
+
+      return user;
       `
     },
     {
