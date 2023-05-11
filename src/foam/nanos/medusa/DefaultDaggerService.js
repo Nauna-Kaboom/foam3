@@ -157,6 +157,7 @@ foam.CLASS({
       logger.info("start");
 
       ClusterConfigSupport support = (ClusterConfigSupport) x.get("clusterConfigSupport");
+      // support is null todo?
       ClusterConfig config = support.getConfig(x, support.getConfigId());
       if ( config == null ||
            config.getType() == MedusaType.NODE ||
