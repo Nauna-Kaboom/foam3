@@ -8,7 +8,7 @@ foam.CLASS({
   package: 'foam.nanos.notification.email',
   name: 'EmailConfigEmailPropertyService',
 
-  documentation: 'Fills unset properties on an email with values from the system emailConfig service.',
+  documentation: '@legacy Fills unset properties on an email with values from the spid emailConfig service.',
 
   implements: [
     'foam.nanos.notification.email.EmailPropertyService'
@@ -29,11 +29,13 @@ foam.CLASS({
       type: 'foam.nanos.notification.email.EmailMessage',
       javaCode: `
         Logger logger = Loggers.logger(x, this);
+
         EmailConfig emailConfig = (EmailConfig) ((DAO) x.get("emailConfigDAO")).find(emailMessage.getSpid());
 
-        // Service property check
+        // This is a redundency check and a possible configuration setup for specific spids...but tbh don't use.
+        // theme.supportConfig has an emailConfig... unnessary to go one step up and also have spid specific configs.
+
         if ( emailConfig == null ) {
-          logger.error("EmailConfig not found", "spid", emailMessage.getSpid());
           return emailMessage;
         }
 

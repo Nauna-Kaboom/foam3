@@ -191,13 +191,16 @@ p({
   """
 })
 
-p({
+r({
   "class": "foam.nanos.boot.NSpec",
   "name": "daggerService",
   "serve": false,
   "lazy": false,
   "service": {"class":"foam.nanos.medusa.DefaultDaggerService"}
 })
+//2023-05-12T07:28:26.907-0400,main,ERROR,Error Initializing Service,daggerService,java.lang.NullPointerException: Cannot invoke "foam.nanos.medusa.ClusterConfigSupport.getConfigId()" because "support" is null
+//	at foam.nanos.medusa.DefaultDaggerService.start(DefaultDaggerService.java:1405)
+//	at foam.nanos.boot.NSpecFactory.initService(NSpecFactory.java:107)
 
 p({
   "class": "foam.nanos.boot.NSpec",
