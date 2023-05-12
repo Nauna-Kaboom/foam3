@@ -39,9 +39,7 @@ foam.CLASS({
 
         User user = (User) emailMessage.findUser(getX());
         x = foam.util.Auth.sudo(x, user);
-
-        emailMessage.setSpid(user.getSpid());
-
+        
         Theme theme = (Theme) x.get("theme");
         SupportConfig supportConfig = theme.getSupportConfig();
         EmailConfig emailConfig = supportConfig.getEmailConfig();
@@ -60,7 +58,13 @@ foam.CLASS({
           if ( ! SafetyUtil.isEmpty(emailConfig.getFrom()) ) {
             emailMessage.setFrom(emailConfig.getFrom());
           }
+          // TO:
+          if ( ! emailMessage.isPropertySet("to") ) {
+            emailMessage.setTo(new String[] { user.getEmail() });
+          }
         }
+        // SPID:
+        emailMessage.setSpid(theme.getSpid());
 
         // template name check
         String templateName = (String) templateArgs.get("template");
