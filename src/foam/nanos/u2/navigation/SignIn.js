@@ -31,6 +31,7 @@ foam.CLASS({
     'foam.log.LogLevel',
     'foam.u2.dialog.NotificationMessage',
     'foam.u2.stack.StackBlock',
+    'foam.nanos.auth.AuthenticationException',
     'foam.nanos.auth.DuplicateEmailException',
     'foam.nanos.auth.UnverifiedEmailException'
   ],
@@ -252,11 +253,10 @@ foam.CLASS({
               }
               this.usernameRequired = true;
             }
-            if ( this.UnverifiedEmailException.isInstance(e) ) {
-              // find user
+            // note: AuthenticationException 'User is not active' can be thrown since the code service will set user to active when setting emailVerified
+            if ( this.UnverifiedEmailException.isInstance(e) || this.AuthenticationException.isInstance(e) ) { 
               var email = this.usernameRequired ? this.email : this.identifier;
               this.verifyEmail(x, email, this.userName);
-              // do not show error notification for unverified email
               return;
             }
             this.notifyUser(err.data, this.ERROR_MSG, this.LogLevel.ERROR);

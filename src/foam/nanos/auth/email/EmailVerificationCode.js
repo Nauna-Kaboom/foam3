@@ -28,7 +28,6 @@ foam.CLASS({
 
   imports: [
     'ctrl',
-    'emailVerificationService',
     'pushMenu'
   ],
 
@@ -54,6 +53,12 @@ foam.CLASS({
   ],
 
   properties: [
+    {
+      name: 'emailVerificationService',
+      factory: function() {
+        return this.ctrl.__subContext__.emailVerificationService;
+      }
+    },
     {
       class: 'String',
       name: 'verificationCode',
@@ -109,6 +114,7 @@ foam.CLASS({
     },
     {
       name: 'remainingAttempts',
+      factory: function() { return this.maxAttempts; },
       documentation: `
         Number of remaining attempts to enter current verification code.
         Used in resetPasswordCode error message.
@@ -125,6 +131,8 @@ foam.CLASS({
 
   methods: [
     function init() {
+      // if ( ! this.emailVerificationService ) this.emailVerificationService = this.ctrl.__subContext__.emailVerificationService;
+      if ( ! this.emailVerificationService ) console.debug('this.emailVerificationService missing');
       this.verificationCode$.sub(() => this.verifyCode());
     },
     function cancel() {

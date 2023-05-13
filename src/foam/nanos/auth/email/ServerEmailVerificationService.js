@@ -15,6 +15,7 @@ foam.CLASS({
     'foam.dao.ArraySink',
     'foam.nanos.auth.AuthenticationException',
     'foam.nanos.auth.DuplicateEmailException',
+    'foam.nanos.auth.LifecycleState',
     'foam.nanos.auth.User',
     'foam.nanos.auth.UserNotFoundException',
     'foam.nanos.logger.Logger',
@@ -132,6 +133,7 @@ foam.CLASS({
 
         user = (User) user.fclone();
         user.setEmailVerified(true);
+        user.setLifecycleState(LifecycleState.ACTIVE);
         ((DAO) x.get("localUserDAO")).put(user);
         return true;
       `
