@@ -62,7 +62,8 @@ foam.CLASS({
     'foam.u2.dialog.Popup',
     'foam.core.Latch',
     'registerUser.BannerData',
-    'registerUser.BannerView'
+    'registerUser.BannerView',
+    'foam.nanos.auth.LifecycleState'
   ],
 
   imports: [
@@ -564,7 +565,7 @@ foam.CLASS({
         await this.fetchSubject(false);
         if ( ! this.subject?.user || ( await this.__subContext__.auth.isAnonymous() ) ) {
           // only push the unauthenticated menu if there is no subject
-          // if client is authenticated, go on to fetch theme and set loginsuccess before pushing menu
+          // if client is authenticated, go on to fetch theme before pushing menu
           // use the route instead of the menu so that the menu could be re-created under the updated context
           this.pushMenu(menu.id);
           this.languageInstalled.resolve();
@@ -687,8 +688,12 @@ foam.CLASS({
         if ( result && result.user ) await this.reloadClient();
         this.group = await this.client.auth.getCurrentGroup();
         promptLogin = promptLogin && await this.client.auth.check(this, 'auth.promptlogin');
-        var authResult =  await this.client.auth.check(this, '*');
-        if ( ! result || ! result.user || promptLogin && ! authResult ) throw new Error();
+        if ( this.subject.user.lifecycleState == this.LifecycleState.ACTIVE &&
+          this.subject.user.emailVerified && this.subject.user.loginEnabled ) {
+          this.loginSuccess = true;
+          return;
+        }
+        throw new Error();
       } catch (err) {
         if ( ! promptLogin ) return;
         this.languageInstalled.resolve();
@@ -861,7 +866,6 @@ foam.CLASS({
       location.hash = '';
       return new Promise(function(resolve, reject) {
         self.stack.push(self.StackBlock.create(view));
-        self.loginSuccess$.sub(resolve);
       });
     },
 
@@ -920,7 +924,6 @@ foam.CLASS({
        */
       this.subToNotifications();
 
-      this.loginSuccess = true;
       let check = await this.checkGeneralCapability();
       if ( ! check ) return;
 
@@ -936,8 +939,9 @@ foam.CLASS({
       if ( ! location.hash.substring(1) ) { // todo...maybe
         this.stack.push({ class: 'foam.u2.View' });
       }
-      if ( ! this.subject.user.emailVerified ) {
-        this.loginSuccess = false;
+      if ( this.subject.user.lifecycleState == this.LifecycleState.ACTIVE ) {
+        this.loginSuccess = true;
+      } else {
         return;
       }
       this.initLayout.resolve(); // todo: don't think this is necessary
