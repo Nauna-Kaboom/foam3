@@ -84,6 +84,7 @@ foam.CLASS({
     'crunchController',
     'currentMenu',
     'displayWidth',
+    'fromLogin',
     'group',
     'initLayout',
     'isIframe',
@@ -455,13 +456,16 @@ foam.CLASS({
           isDismissed: true
         });
       }
+    },
+    {
+      class: 'Boolean',
+      name: 'fromLogin'
     }
   ],
 
   methods: [
     function init() {
       this.SUPER();
-      debugger; // note defaultUpdates branch does NOT have this commented out... :()
       // done to start using SectionedDetailViews instead of DetailViews
       this.__subContext__.register(foam.u2.detail.SectionedDetailView, 'foam.u2.DetailView');
 
@@ -690,6 +694,7 @@ foam.CLASS({
         this.languageInstalled.resolve();
        // this.initLayout.resolve();
         await this.requestLogin();
+        this.fromLogin = true;
         return await this.fetchSubject();
       }
     },
@@ -774,7 +779,13 @@ foam.CLASS({
         });
       }
     },
-
+    async function pushDefaultMenu() {
+      var defaultMenu = await this.findDefaultMenu(this.client.menuDAO);
+      defaultMenu = defaultMenu != null ? defaultMenu : '';
+      this.purgeMenuDAO(defaultMenu);
+      this.pushMenu(defaultMenu);
+      return defaultMenu;
+    },
     async function pushMenu_(realMenu, menu, opt_forceReload) {
       dao = this.client.menuDAO;
       let m = this.memento_.str;
@@ -834,8 +845,7 @@ foam.CLASS({
           class: 'foam.nanos.auth.ChangePasswordView',
           modelOf: 'foam.nanos.auth.resetPassword.ResetPasswordByToken'
         };
-      } else if ( location.hash && location.hash === '#sign-up' ) {
-        location.hash = '';
+      } else if ( location.hash && location.hash === '#sign-up' && ! this.loginSuccess ) {
         view = {
           ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }),
           mode_: 'SignUp',
@@ -848,7 +858,7 @@ foam.CLASS({
           }
         };
       }
-
+      location.hash = '';
       return new Promise(function(resolve, reject) {
         self.stack.push(self.StackBlock.create(view));
         self.loginSuccess$.sub(resolve);
@@ -883,6 +893,20 @@ foam.CLASS({
           this.__subSubContext__.notificationDAO.put(clonedNotification);
         }
       }
+    },
+    function purgeMenuDAO(menu) {
+      if ( ! menu || ! menu.handler ) return;
+      var daoKey = '';
+      if ( menu.handler.cls_ == foam.nanos.menu.DAOMenu2 ) {
+        daoKey = menu.handler.config.daoKey;
+      } else if ( menu.handler.cls_ == foam.nanos.menu.DAOMenu ) {
+        daoKey = menu.handler.daoKey;
+      } else {
+        return;
+      }
+
+      this.__subContext__[daoKey].cmd_(this, foam.dao.DAO.PURGE_CMD);
+      this.__subContext__[daoKey].cmd_(this, foam.dao.DAO.RESET_CMD);
     }
   ],
 
@@ -909,7 +933,20 @@ foam.CLASS({
       } else {
         this.pushMenu('');
       }
-
+      if ( ! location.hash.substring(1) ) { // todo...maybe
+        this.stack.push({ class: 'foam.u2.View' });
+      }
+      if ( ! this.subject.user.emailVerified ) {
+        this.loginSuccess = false;
+        return;
+      }
+      this.initLayout.resolve(); // todo: don't think this is necessary
+      
+      if ( this.fromLogin ) {
+        if ( ! this.window.location.hash.substring(1) ) this.pushDefaultMenu();
+        else this.window.onpopstate();
+      }
+      this.fromLogin = false;
 //      this.__subContext__.localSettingDAO.put(foam.nanos.session.LocalSetting.create({id: 'homeDenomination', value: localStorage.getItem("homeDenomination")}));
     },
 

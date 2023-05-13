@@ -13,7 +13,6 @@ foam.CLASS({
     'foam.nanos.auth.Authorizable',
     'foam.nanos.auth.CreatedAware',
     'foam.nanos.auth.EnabledAware',
-    'foam.nanos.auth.HumanNameTrait',
     'foam.nanos.auth.LastModifiedAware',
     'foam.nanos.auth.ServiceProviderAware',
     'foam.nanos.auth.LifecycleAware',

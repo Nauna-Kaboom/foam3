@@ -13,7 +13,6 @@ foam.CLASS({
   documentation: 'renders a password change model',
 
   imports: [
-    'loginView?',
     'stack',
     'theme',
     'user'
@@ -70,7 +69,7 @@ foam.CLASS({
     /* mobile */
     @media only screen and (min-width: /*%DISPLAYWIDTH.MD%*/ 786px ) {
       ^popup ^subTitle,^popup ^sectionView > * {
-        width: 50%;
+        width: 75%;
       }
       ^subTitle {
         padding: 0;
@@ -106,7 +105,6 @@ foam.CLASS({
     },
     {
       class: 'FObjectProperty',
-      of: this.modelOf,
       name: 'data',
       documentation: 'instance of password model used for this view',
       factory: function() {

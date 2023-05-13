@@ -228,7 +228,24 @@ p({
 p({"class":"foam.nanos.menu.Menu","id":"integration.model-doc","label":"UML API Models","handler":{"class":"foam.nanos.menu.ViewMenu","view":{"class":"foam.doc.ModelBrowser","allowedModels":{"net.nanopay.fx.afex.AFEXLog":true}}},"parent":"integration"})
 
 // settings
-p({"class":"foam.nanos.menu.Menu","id":"set-password","label":"Change Password","handler":{"class":"foam.nanos.menu.ViewMenu","view":{"class":"foam.nanos.auth.ChangePasswordView"}},"order":100,"parent":"settings"})
+p({
+  "class": "foam.nanos.menu.Menu",
+  "id": "set-password",
+  "label": "Change Password",
+  "handler": {
+    "class": "foam.nanos.menu.ViewMenu",
+    "view": {
+      "class": "foam.nanos.auth.ChangePasswordView",
+      "modelOf": "foam.nanos.auth.UpdatePassword",
+      "showHeader": true,
+      "isHorizontal": false,
+      "popup": false
+    }
+  },
+  "order": 100,
+  "parent": "settings"
+})
+
 p({"class":"foam.nanos.menu.Menu","id":"sign-out","label":"Sign Out","handler":{"class":"foam.nanos.menu.ViewMenu","view":{"class":"foam.nanos.auth.SignOutView"}},"order":10000,"parent":"settings"})
 
 // hidden

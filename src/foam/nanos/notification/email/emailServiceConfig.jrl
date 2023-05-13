@@ -4,7 +4,7 @@ p({
 })
 p({
   class: 'foam.nanos.notification.email.EmailServiceConfig',
-  documentation: 'this protocol used to send an email to emails that were recieved. So like an automated response?'
+  documentation: 'this protocol used to send an email to emails that were recieved. So like an automated response?',
   id: 'imap',
   protocol: 'imaps',
   port: '993'
