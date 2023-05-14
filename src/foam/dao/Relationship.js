@@ -260,6 +260,15 @@ foam.CLASS({
           propertyOverrides: this.sourceProperty,
           methodOverrides: this.sourceMethod,
         });
+      } else if ( this.cardinality === '*:1' ) {
+        foam.assert(false, 'Inverse implemented 1:* - use instead');
+      } else if ( this.cardinality === '1:1' ) {
+        prop = foam.core.Reference.create({
+          name: this.forwardName,
+          of: this.targetModel,
+          targetDAOKey: this.targetDAOKey,
+          unauthorizedTargetDAOKey: this.unauthorizedTargetDAOKey
+        }).copyFrom(this.sourceProperty);
       } else {
         foam.assert(false, 'Unknown relationship cardinality.');
       }
@@ -303,6 +312,15 @@ foam.CLASS({
           propertyOverrides: this.targetProperty,
           methodOverrides: this.targetMethod,
         });
+      } else if ( this.cardinality === '*:1' ) {
+        foam.assert(false, 'Inverse implemented 1:* - use instead');
+      } else if ( this.cardinality === '1:1' ) {
+        prop = foam.core.Reference.create({
+          name: this.inverseName,
+          of: this.sourceModel,
+          targetDAOKey: this.sourceDAOKey,
+          unauthorizedTargetDAOKey: this.unauthorizedSourceDAOKey
+        }).copyFrom(this.targetProperty);
       } else {
         foam.assert(false, 'Unknown relationship cardinality.');
       }

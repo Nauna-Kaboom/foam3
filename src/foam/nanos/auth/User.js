@@ -837,7 +837,6 @@ foam.CLASS({
         { name: 'x', type: 'Context' }
       ],
       javaCode: `
-
         // check if user enabled
         if ( ! this.getEnabled() ) {
           throw new AuthenticationException("User disabled");

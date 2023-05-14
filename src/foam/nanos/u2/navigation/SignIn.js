@@ -254,7 +254,7 @@ foam.CLASS({
               this.usernameRequired = true;
             }
             // note: AuthenticationException 'User is not active' can be thrown since the code service will set user to active when setting emailVerified
-            if ( this.UnverifiedEmailException.isInstance(e) || this.AuthenticationException.isInstance(e) ) { 
+            if ( this.UnverifiedEmailException.isInstance(e) || 'User is not active' == e?.message ) { 
               var email = this.usernameRequired ? this.email : this.identifier;
               this.verifyEmail(x, email, this.userName);
               return;
