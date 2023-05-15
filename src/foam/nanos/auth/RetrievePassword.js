@@ -95,6 +95,7 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'resetByCode',
+      value: true, // setup for false not complete : todo add reset-password template
       hidden: true
     }
   ],
@@ -118,12 +119,13 @@ foam.CLASS({
             await this.resetPasswordService.resetPasswordByCode(null, this.email, this.username);
             instructionTitle = this.CODE_INSTRUC_TITLE;
             instruction = this.CODE_INSTRUC;
-          } else {
-            const user = await this.User.create({ email: this.email, userName: this.username });
-            await this.resetPasswordToken.generateToken(null, user);
-            instructionTitle = this.TOKEN_INSTRUC_TITLE;
-            instruction = this.TOKEN_INSTRUC;
-          }
+          } 
+          // else { // to use link in emails ... need to at the very least create emailTemplate.reset-password
+          //   const user = await this.User.create({ email: this.email, userName: this.username });
+          //   await this.resetPasswordToken.generateToken(null, user);
+          //   instructionTitle = this.TOKEN_INSTRUC_TITLE;
+          //   instruction = this.TOKEN_INSTRUC;
+          // }
 
           this.ctrl.add(this.NotificationMessage.create({
             message: instructionTitle,
