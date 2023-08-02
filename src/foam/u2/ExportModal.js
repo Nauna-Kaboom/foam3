@@ -219,6 +219,8 @@ foam.CLASS({
           this.note = this.exportData ?
             await this.exportDriver.exportDAO(this.__context__, this.exportData) :
             await this.exportDriver.exportFObject(this.__context__, this.exportObj);
+        } catch (e) {
+          console.error(e);
         } finally {
           if ( this.exportAllColumns )
             this.filteredTableColumns = filteredColumnsCopy;

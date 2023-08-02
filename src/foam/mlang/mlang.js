@@ -2796,11 +2796,13 @@ foam.CLASS({
   properties: [
     {
       class: 'foam.mlang.ExprProperty',
-      name: 'arg1'
+      name: 'arg1',
+      label: 'Model.PROPERTY_AXIOM'
     },
     {
       class: 'foam.mlang.SinkProperty',
-      name: 'arg2'
+      name: 'arg2',
+      label: 'Sink to be returned'
     },
     {
       class: 'Int',
@@ -2886,14 +2888,14 @@ return getGroupKeys();`
         this.pub('propertyChange', 'groups');
       },
       javaCode:
-`foam.dao.Sink group = (foam.dao.Sink) getGroups().get(key);
- if ( group == null ) {
-   group = (foam.dao.Sink) (((foam.core.FObject)getArg2()).fclone());
-   getGroups().put(key, group);
-   if ( ! this.getGroupKeys().contains(key) )
-     getGroupKeys().add(key);
- }
- group.put(obj, sub);`
+        `foam.dao.Sink group = (foam.dao.Sink) getGroups().get(key);
+        if ( group == null ) {
+          group = (foam.dao.Sink) (((foam.core.FObject)getArg2()).fclone());
+          getGroups().put(key, group);
+          if ( ! this.getGroupKeys().contains(key) )
+            getGroupKeys().add(key);
+        }
+        group.put(obj, sub);`
     },
     function reset() {
       this.arg2.reset();
@@ -2920,26 +2922,24 @@ return getGroupKeys();`
         if ( this.groupLimit == this.groups.size ) sub.detach();
       },
       javaCode:
-`Object arg1 = getArg1().f(obj);
-if ( getProcessArrayValuesIndividually() && arg1 instanceof Object[] ) {
-  Object[] keys = (Object[]) arg1;
-  for ( Object key : keys ) {
-    putInGroup_(sub, key, obj);
-  }
-} else {
-  putInGroup_(sub, arg1, obj);
-}
-/*
-if ( getGroupLimit() != -1 ) {
-  System.err.println("************************************* " + getGroupLimit() + " " + getGroups().size() + " " + sub);
-  Thread.dumpStack();
-}*/
-if ( getGroupLimit() == getGroups().size() && sub != null ) sub.detach();
-`
+        `Object arg1 = getArg1().f(obj);
+        if ( getProcessArrayValuesIndividually() && arg1 instanceof Object[] ) {
+          Object[] keys = (Object[]) arg1;
+          for ( Object key : keys ) {
+            putInGroup_(sub, key, obj);
+          }
+        } else {
+          putInGroup_(sub, arg1, obj);
+        }
+        /*
+        if ( getGroupLimit() != -1 ) {
+          System.err.println("************************************* " + getGroupLimit() + " " + getGroups().size() + " " + sub);
+          Thread.dumpStack();
+        }*/
+        if ( getGroupLimit() == getGroups().size() && sub != null ) sub.detach();
+        `
     },
-
     function eof() { },
-
     {
       // TODO(adamvy): Is this right?  Seems like we should be overriding the foam2
       // fclone or deepClone method.
@@ -2950,10 +2950,10 @@ if ( getGroupLimit() == getGroups().size() && sub != null ) sub.detach();
         return this.cls_.create({ arg1: this.arg1, arg2: this.arg2 });
       },
       javaCode:
-`GroupBy clone = new GroupBy();
-clone.setArg1(this.getArg1());
-clone.setArg2(this.getArg2());
-return clone;`
+        `GroupBy clone = new GroupBy();
+        clone.setArg1(this.getArg1());
+        clone.setArg2(this.getArg2());
+        return clone;`
     },
 
     {
