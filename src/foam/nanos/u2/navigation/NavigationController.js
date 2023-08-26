@@ -94,6 +94,7 @@ foam.CLASS({
     'displayWidth',
     'document',
     'initLayout',
+    'layoutInitialized',
     'isMenuOpen',
     'loginSuccess',
     'prefersMenuOpen',
@@ -150,9 +151,9 @@ foam.CLASS({
       this.setNavCtx_();
 
       this.addClass()
-        .add(this.slot( async function(loginSuccess, topNav) {
-          if ( ! loginSuccess || ! topNav ) return null;
-          await this.initLayout;
+        .add(this.slot( async function(layoutInitialized, topNav) {
+          if ( ! topNav || ! layoutInitialized ) return null;
+          // await this.initLayout;
           var topView = foam.u2.ViewSpec.createView(topNav, {}, self, self.navCtx_);
           this.headerSlot_$.set(topView);
           var resize = new ResizeObserver (this.adjustTopBarHeight);

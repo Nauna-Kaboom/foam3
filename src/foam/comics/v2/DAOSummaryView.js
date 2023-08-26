@@ -122,7 +122,7 @@ foam.CLASS({
       class: 'foam.u2.ViewSpec',
       name: 'viewView',
       factory: function() {
-        return this.config?.detailView ?? foam.u2.detail.TabbedDetailView;
+        return this.config?.detailView ?? foam.u2.detail.SectionedDetailView; // foam.u2.detail.TabbedDetailView;
       }
     },
     {
@@ -331,7 +331,7 @@ foam.CLASS({
                 .endContext()
                 .start(self.Cols).style({ 'align-items': 'center', 'margin-bottom': '32px' })
                   .start()
-                    .add(data && data.toSummary() ? data.toSummary() : '')
+                    .add(data && data.id ? `ref.#: ${data.id}` : data.toSummary() ? data.toSummary() : '')
                     .addClass(self.myClass('account-name'))
                     .addClass('truncate-ellipsis')
                   .end()

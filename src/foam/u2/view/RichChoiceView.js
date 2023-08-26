@@ -506,7 +506,7 @@ foam.CLASS({
             return this.E()
               .start()
                 .start('img')
-                  .attrs({ src: 'foam/nanos/images/ic-search.svg' })
+                  .attrs({ src: 'application/src/ideas/images/searchCopy.svg' })
                 .end()
                 .startContext({ data: self })
                   .addClass(self.myClass('search'))

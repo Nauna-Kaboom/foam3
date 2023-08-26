@@ -14,7 +14,6 @@ import foam.dao.ProxySink;
 import foam.dao.Sink;
 import foam.mlang.predicate.Nary;
 import foam.mlang.predicate.Predicate;
-import foam.mlang.sink.GroupBy;
 import foam.nanos.approval.Approvable;
 import foam.nanos.approval.ApprovalRequest;
 import foam.nanos.approval.CompositeApprovable;

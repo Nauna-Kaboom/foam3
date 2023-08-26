@@ -40,7 +40,7 @@ foam.CLASS({
       border: solid 1px #cbcfd4;
       background-color: $white;
 
-      background-image: url(foam/nanos/images/ic-search.svg);
+      background-image: url(application/src/ideas/images/searchCopy.svg);
       background-repeat: no-repeat;
       background-position: 8px;
       padding: 0 21px 0 38px;

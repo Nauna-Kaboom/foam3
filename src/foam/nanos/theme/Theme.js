@@ -351,7 +351,7 @@ foam.CLASS({
       value: `{
         "class": "foam.u2.view.ResponsiveAltView",
         "views": [
-          [{"class": "foam.nanos.u2.navigation.ApplicationSideNav"}, ["XS"]],
+          [{ "class": "foam.nanos.u2.navigation.ApplicationSideNav", "showLogo": false }, ["XS"]],
           [{"class": "foam.nanos.menu.VerticalMenu" }, ["MD"] ]
         ]
       }`,

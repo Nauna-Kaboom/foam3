@@ -46,7 +46,7 @@ foam.CLASS({
     'foam.nanos.theme.Theme',
     'foam.nanos.theme.Themes',
     'foam.nanos.theme.ThemeDomain',
-    'foam.nanos.u2.navigation.NavigationController',
+    'foam.nanos.u2.navigation.NavigationController', //
     'foam.nanos.u2.navigation.TopNavigation',
     'foam.nanos.u2.navigation.FooterView',
     'foam.nanos.crunch.CapabilityIntercept',
@@ -61,9 +61,12 @@ foam.CLASS({
     'foam.nanos.session.SessionTimer',
     'foam.u2.dialog.Popup',
     'foam.core.Latch',
+    'foam.nanos.auth.LifecycleState',
+    'ideas.UI.NavController',
+    'ideas.models.Idea',
+    'ideas.models.Situation',
     'registerUser.BannerData',
     'registerUser.BannerView',
-    'foam.nanos.auth.LifecycleState'
   ],
 
   imports: [
@@ -90,12 +93,17 @@ foam.CLASS({
     'initLayout',
     'isIframe',
     'isMenuOpen',
+    'isAnonymous',
+    'isSituationOpen',
+    'isIdeaOpen',
+    'isPrivate',
     'lastMenuLaunched',
     'lastMenuLaunchedListener',
     'layoutInitialized',
     'loginSuccess',
     'loginVariables',
     'loginView',
+    'mainType',
     'menuListener',
     'notify',
     'prefersMenuOpen',
@@ -110,6 +118,7 @@ foam.CLASS({
     'signUpEnabled',
     'stack',
     'subject',
+    'tableMainView',
     'theme',
     'user',
     'webApp',
@@ -461,7 +470,53 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'fromLogin'
-    }
+    },
+    'tableMainView',
+    {
+      class: 'Boolean',
+      name: 'isAnonymous',
+    },
+    {
+      class: 'Boolean',
+      name: 'mainType',
+      postSet: function(o, n) {
+        if ( o == n ) return;
+        if ( n ) {
+          this.isIdeaOpen = true;
+          this.isSituationOpen = false;
+        } else {
+          this.isIdeaOpen = false;
+          this.isSituationOpen = true;
+        }
+      },
+    },
+    {
+      class: 'Boolean',
+      name: 'isSituationOpen',
+      postSet: function(o, n) {
+        if ( o == n ) return;
+        if ( n ) {
+          this.isIdeaOpen = false;
+          this.mainType = false;
+        }
+      },
+    },
+    {
+      class: 'Boolean',
+      name: 'isIdeaOpen',
+      postSet: function(o, n) {
+        if ( o == n ) return;
+        if ( n ) {
+          this.isSituationOpen = false;
+          this.mainType = true;
+        }
+      },
+    },
+    {
+      name: 'isPrivate',
+      class: 'Boolean',
+      value: true
+    },
   ],
 
   methods: [
@@ -488,6 +543,13 @@ foam.CLASS({
 
         self.onDetach(self.__subContext__.cssTokenOverrideService?.cacheUpdated.sub(self.reloadStyles));
 
+        try {
+          await self.fetchSubject(false);
+          self.isAnonymous = await self.__subContext__.auth.isAnonymous();
+         } catch (e) {
+          self.isAnonymous = false;
+         }
+        
         let ret = await self.initMenu();
         if ( ret ) return; // if menu returned, can ignore below... and just role with the flow
 
@@ -562,8 +624,9 @@ foam.CLASS({
       // since if there is a user session on refresh, this would also
       // find authenticated menus to try to push before fetching subject
       if ( menu && menu.authenticate === false ) {
-        await this.fetchSubject(false);
-        if ( ! this.subject?.user || ( await this.__subContext__.auth.isAnonymous() ) ) {
+        // await this.fetchSubject(false);
+        // this.isAnonymous = await this.__subContext__.auth.isAnonymous();
+        if ( ! this.subject?.user || this.isAnonymous ) {
           // only push the unauthenticated menu if there is no subject
           // if client is authenticated, go on to fetch theme before pushing menu
           // use the route instead of the menu so that the menu could be re-created under the updated context
@@ -915,6 +978,21 @@ foam.CLASS({
   ],
 
   listeners: [
+    function setupBooleansForIdeasTheme() { // if mainType changes, if isPrivate changes
+      if ( this.mainType ) {
+        this.ideaDAO
+        .where(this.EQ(this.Idea.IS_PRIVATE, this.isPrivate ))
+        .select().then( sink => {
+          this.tableMainView = sink.array;
+        });
+      } else {
+        this.situationDAO
+        .where(this.EQ(this.Situation.IS_PRIVATE, this.isPrivate ))
+        .select().then( sink => {
+          this.tableMainView = sink.array;
+        });
+      }
+    },
     async function onUserAgentAndGroupLoaded() {
       /**
        * Called whenever the group updates.
@@ -1005,7 +1083,7 @@ foam.CLASS({
     function addMacroLayout() {
       this
         .addClass(this.myClass())
-        .tag(this.NavigationController, {
+        .tag(this.theme.name == 'ideas' ? this.NavController : this.NavigationController, {
           topNav$: this.topNavigation_$,
           mainView: {
             class: 'foam.u2.stack.DesktopStackView',
