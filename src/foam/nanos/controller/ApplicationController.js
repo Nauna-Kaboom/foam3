@@ -65,6 +65,8 @@ foam.CLASS({
     'ideas.UI.NavController',
     'ideas.models.Idea',
     'ideas.models.Situation',
+    'ideas.models.IdeaTagJunction',
+    'ideas.models.SituationTagJunction',
     'registerUser.BannerData',
     'registerUser.BannerView',
   ],
@@ -73,9 +75,11 @@ foam.CLASS({
     'auth',
     'crunchService',
     'capabilityDAO',
+    'ideaDAO',
     'installCSS',
     'notificationDAO',
     'sessionSuccess',
+    'situationDAO',
     'window'
   ],
 
@@ -118,7 +122,7 @@ foam.CLASS({
     'signUpEnabled',
     'stack',
     'subject',
-    'tableMainView',
+    'mainObjDAO',
     'theme',
     'user',
     'webApp',
@@ -329,6 +333,13 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'isMenuOpen',
+      postSet: function(o, n) {
+        if ( o == n ) return;
+        if ( n ) {
+          this.isSituationOpen = false;
+          this.isIdeaOpen = false;
+        }
+      },
     },
     {
       class: 'Boolean',
@@ -471,7 +482,8 @@ foam.CLASS({
       class: 'Boolean',
       name: 'fromLogin'
     },
-    'tableMainView',
+    'mainObjDAO',
+    'tagZ',
     {
       class: 'Boolean',
       name: 'isAnonymous',
@@ -479,6 +491,8 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'mainType',
+      documentation: `If true, display Idea.
+                      False display Situation.`,
       postSet: function(o, n) {
         if ( o == n ) return;
         if ( n ) {
@@ -587,6 +601,11 @@ foam.CLASS({
         // the line above before executing this one.
         await self.fetchTheme();
         if ( ! self.groupLoadingHandled ) await self.onUserAgentAndGroupLoaded();
+
+        self.onDetach(self.isSituationOpen$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
+        self.setupBooleansForIdeasTheme();
       });
             // Enable session timer.
       this.sessionTimer.enable = true;
@@ -658,17 +677,17 @@ foam.CLASS({
     await this.themeInstalled;
     await this.languageInstalled;
 
-    if ( ! this.isIframe() ) {
+    // if ( ! this.isIframe() ) {
       this.addMacroLayout();
-    } else {
-      this
-        .addClass(this.myClass())
-        .start()
-          .addClass('stack-wrapper')
-          .add(this.BANNER_DATA_.__)
-          .tag(this.DesktopStackView, { data: this.stack, showActions: false, nodeName: 'main' })
-        .end();
-    }
+    // } else {
+    //   this
+    //     .addClass(this.myClass())
+    //     .start()
+    //       .addClass('stack-wrapper')
+    //       .add(this.BANNER_DATA_.__)
+    //       .tag(this.DesktopStackView, { data: this.stack, showActions: false, nodeName: 'main' })
+    //     .end();
+    // }
   },
 
     async function reloadClient() {
@@ -978,20 +997,85 @@ foam.CLASS({
   ],
 
   listeners: [
-    function setupBooleansForIdeasTheme() { // if mainType changes, if isPrivate changes
-      if ( this.mainType ) {
-        this.ideaDAO
-        .where(this.EQ(this.Idea.IS_PRIVATE, this.isPrivate ))
-        .select().then( sink => {
-          this.tableMainView = sink.array;
-        });
+    // OK AppC - sets up variables
+    // NavCon = is the layout controller
+    // TopNav - sets up the buttons
+    // TagSearch handles the tag display and filtering.
+       // BUT the tag effects the objDao...and viseversa
+       // tags - are based on objDAO ...
+          // how - tags
+          // - based on all objDAO tags (jdao)
+          // - based on search ...
+          // obj
+          // - based on tag selection 
+          // - should only be from mainType selection
+          // - based on isPrivate
+
+          // what if var are contained to tags...
+          // then obj is just based off of tagz...
+          // when tagz change so does objDAO...
+          // so ... tagz - first filter objDAO for private and mainType...then finds junctions
+          // then considers search ... so once tagz found to set objDAO find junctions again... 
+          // objDAO the set from tagZ ...
+          // what about selecting a tagZ ...the tagZ list does not change ... its a selection.
+          // TagSearch (sideNav)
+          // set tagZ 
+
+          // tagZ
+          // - based on all objDAO tags (jdao)
+          // - based on search ...
+          // - based on isPrivate
+          // objD
+          // - based on tag selection tagZ.
+          // - should only be from mainType selection
+// if type is getting mixed up ...
+    function setupBooleansForIdeasTheme() {
+      var dao = undefined;
+      var jdao = undefined;
+      var propA = undefined;
+      var propJ = undefined;
+      var propO = undefined;
+      var listObj = undefined;
+      if ( ctrl.mainType ) {
+        dao = this.client.ideaDAO;
+        jdao = this.client[`ideaTagJunctionDAO`];
+        propA = this.Idea.IS_PRIVATE;
+        propJ = this.IdeaTagJunction.TARGET_ID;
+        propC = this.IdeaTagJunction.SOURCE_ID;
+        propO = this.Idea.ID;
       } else {
-        this.situationDAO
-        .where(this.EQ(this.Situation.IS_PRIVATE, this.isPrivate ))
-        .select().then( sink => {
-          this.tableMainView = sink.array;
-        });
+        dao = this.client.situationDAO;
+        jdao = this.client[`situationTagJunctionDAO`];
+        propA = this.Situation.IS_PRIVATE;
+        propJ = this.SituationTagJunction.TARGET_ID;
+        propC = this.SituationTagJunction.SOURCE_ID;
+        propO = this.Situation.ID;
       }
+      if ( ctrl.tagZ ) {
+        ctrl.tagZ.select().then( result => {
+          var tagsList = result.array.map( m => m.key);
+          jdao.where(this.IN(propJ, tagsList))
+          .select(this.PROJECTION(propC))
+          .then( result => {
+            listObj = result.array.map(m=> m.sourceId);
+            dao
+              .where(this.AND(
+                this.EQ(propA, ctrl.isPrivate ),
+                this.IN(propO, listObj)
+              ))
+              .select().then( sink => {
+                ctrl.mainObjDAO = sink.array;
+              });
+          })
+        });
+        return;
+      }
+      ctrl.tagZ = this.client.tagDAO;
+      dao
+        .where(this.EQ(propA, this.isPrivate ))
+        .select().then( sink => {
+          ctrl.mainObjDAO = sink.array;
+        });
     },
     async function onUserAgentAndGroupLoaded() {
       /**
