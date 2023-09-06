@@ -40,7 +40,7 @@ foam.CLASS({
       min-height: 64px;
       justify-content: space-between;
       padding: 8px 16px;
-      position: relative;
+      position: sticky;
       width: 100%;
     }
     ^components-container {

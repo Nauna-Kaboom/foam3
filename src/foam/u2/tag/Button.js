@@ -523,14 +523,15 @@ foam.CLASS({
     async function addContent() {
       /** Add text or icon to button. **/
       var self = this;
+      var icon = this.icon || this.action?.icon;
       if ( ( this.themeIcon && this.theme ) ) {
         this
           .start({ class: 'foam.u2.tag.Image', glyph: this.themeIcon, role: 'presentation' })
             .addClass(this.myClass('SVGIcon'))
           .end();
-      } else if ( this.icon ) {
+      } else if ( icon ) {
         this
-          .start({ class: 'foam.u2.tag.Image', data: this.icon, role: 'presentation', embedSVG: true })
+          .start({ class: 'foam.u2.tag.Image', data: icon, role: 'presentation', embedSVG: true })
             .addClass(this.myClass('SVGIcon'), this.myClass('imgSVGIcon'))
           .end();
       } else if ( this.iconFontName ) {

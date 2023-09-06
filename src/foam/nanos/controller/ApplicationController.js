@@ -50,6 +50,9 @@ foam.CLASS({
     'foam.nanos.u2.navigation.TopNavigation',
     'foam.nanos.u2.navigation.FooterView',
     'foam.nanos.crunch.CapabilityIntercept',
+    'foam.mlang.predicate.And',
+    'foam.mlang.predicate.Eq',
+    'foam.mlang.predicate.In',
     'foam.u2.crunch.CapabilityInterceptView',
     'foam.u2.crunch.CrunchController',
     'foam.u2.crunch.WizardRunner',
@@ -65,6 +68,8 @@ foam.CLASS({
     'ideas.UI.NavController',
     'ideas.models.Idea',
     'ideas.models.Situation',
+    'ideas.models.IdeaUserJunction',
+    'ideas.models.SituationUserJunction',
     'ideas.models.IdeaTagJunction',
     'ideas.models.SituationTagJunction',
     'registerUser.BannerData',
@@ -98,9 +103,11 @@ foam.CLASS({
     'isIframe',
     'isMenuOpen',
     'isAnonymous',
-    'isSituationOpen',
-    'isIdeaOpen',
+    'isTOGOpen',
     'isPrivate',
+    'isOwner',
+    'isStarred',
+    'isFilterOpen',
     'lastMenuLaunched',
     'lastMenuLaunchedListener',
     'layoutInitialized',
@@ -336,8 +343,7 @@ foam.CLASS({
       postSet: function(o, n) {
         if ( o == n ) return;
         if ( n ) {
-          this.isSituationOpen = false;
-          this.isIdeaOpen = false;
+          this.isTOGOpen = false;
         }
       },
     },
@@ -490,46 +496,63 @@ foam.CLASS({
     },
     {
       class: 'Boolean',
+      name: 'isStarred',
+    },
+    {
+      class: 'Boolean',
       name: 'mainType',
       documentation: `If true, display Idea.
                       False display Situation.`,
-      postSet: function(o, n) {
-        if ( o == n ) return;
-        if ( n ) {
-          this.isIdeaOpen = true;
-          this.isSituationOpen = false;
-        } else {
-          this.isIdeaOpen = false;
-          this.isSituationOpen = true;
-        }
-      },
+      // postSet: function(o, n) {
+      //   if ( o == n ) return;
+      //   if ( n ) {
+      //     this.isIdeaOpen = true;
+      //     this.isSituationOpen = false;
+      //   } else {
+      //     this.isIdeaOpen = false;
+      //     this.isSituationOpen = true;
+      //   }
+      // },
+    },
+    {
+      name: 'isTOGOpen',
+      class: 'Boolean'
+    },
+    {
+      name: 'isOwner',
+      class: 'Boolean',
+      documentation: `If user wishes to only view there own ideas`
     },
     {
       class: 'Boolean',
-      name: 'isSituationOpen',
-      postSet: function(o, n) {
-        if ( o == n ) return;
-        if ( n ) {
-          this.isIdeaOpen = false;
-          this.mainType = false;
-        }
-      },
+      name: 'isFilterOpen'
     },
-    {
-      class: 'Boolean',
-      name: 'isIdeaOpen',
-      postSet: function(o, n) {
-        if ( o == n ) return;
-        if ( n ) {
-          this.isSituationOpen = false;
-          this.mainType = true;
-        }
-      },
-    },
+    // {
+    //   class: 'Boolean',
+    //   name: 'isSituationOpen',
+    //   postSet: function(o, n) {
+    //     if ( o == n ) return;
+    //     if ( n ) {
+    //       this.isIdeaOpen = false;
+    //       this.mainType = false;
+    //     }
+    //   },
+    // },
+    // {
+    //   class: 'Boolean',
+    //   name: 'isIdeaOpen',
+    //   postSet: function(o, n) {
+    //     if ( o == n ) return;
+    //     if ( n ) {
+    //       this.isSituationOpen = false;
+    //       this.mainType = true;
+    //     }
+    //   },
+    // },
     {
       name: 'isPrivate',
-      class: 'Boolean',
-      value: true
+      class: 'String',
+      value: 'both'
     },
   ],
 
@@ -602,8 +625,14 @@ foam.CLASS({
         await self.fetchTheme();
         if ( ! self.groupLoadingHandled ) await self.onUserAgentAndGroupLoaded();
 
-        self.onDetach(self.isSituationOpen$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.isTOGOpen$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.mainType$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.isPrivate$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.isOwner$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.isStarred$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.__subContext__.ideaDAO$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.__subContext__.situationDAO$.sub(self.setupBooleansForIdeasTheme));
+        // self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
         self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
         self.setupBooleansForIdeasTheme();
       });
@@ -1029,54 +1058,65 @@ foam.CLASS({
           // - based on tag selection tagZ.
           // - should only be from mainType selection
 // if type is getting mixed up ...
+// * new
+// isPrivate
+// owned my me
+// starred ( still need to develope)
     function setupBooleansForIdeasTheme() {
       var dao = undefined;
       var jdao = undefined;
       var propA = undefined;
       var propJ = undefined;
-      var propO = undefined;
-      var listObj = undefined;
+      var ownerId = ctrl.subject.user.id;
+      var andList = [];
       if ( ctrl.mainType ) {
-        dao = this.client.ideaDAO;
-        jdao = this.client[`ideaTagJunctionDAO`];
-        propA = this.Idea.IS_PRIVATE;
-        propJ = this.IdeaTagJunction.TARGET_ID;
-        propC = this.IdeaTagJunction.SOURCE_ID;
-        propO = this.Idea.ID;
+        dao = ctrl.__subContext__.ideaDAO;
+        propA = ctrl.Idea.IS_PRIVATE;
+        propB = ctrl.Idea.OWNER;
+        propI = ctrl.Idea.ID;
+        jdao = ctrl.__subContext__[`ideaStarredJunctionDAO`];
+        propJ = ctrl.IdeaUserJunction.TARGET_ID;
       } else {
-        dao = this.client.situationDAO;
-        jdao = this.client[`situationTagJunctionDAO`];
-        propA = this.Situation.IS_PRIVATE;
-        propJ = this.SituationTagJunction.TARGET_ID;
-        propC = this.SituationTagJunction.SOURCE_ID;
-        propO = this.Situation.ID;
+        dao = ctrl.__subContext__.situationDAO;
+        propA = ctrl.Situation.IS_PRIVATE;
+        propB = ctrl.Situation.OWNER;
+        propI = ctrl.Situation.ID;
+        jdao = ctrl.__subContext__[`situationStarredJunctionDAO`];
+        propJ = ctrl.SituationUserJunction.TARGET_ID;
       }
-      if ( ctrl.tagZ ) {
-        ctrl.tagZ.select().then( result => {
-          var tagsList = result.array.map( m => m.key);
-          jdao.where(this.IN(propJ, tagsList))
-          .select(this.PROJECTION(propC))
-          .then( result => {
-            listObj = result.array.map(m=> m.sourceId);
-            dao
-              .where(this.AND(
-                this.EQ(propA, ctrl.isPrivate ),
-                this.IN(propO, listObj)
-              ))
-              .select().then( sink => {
-                ctrl.mainObjDAO = sink.array;
-              });
-          })
+      if ( !! ctrl.isPrivate && ctrl.isPrivate != 'both' ) {
+        andList.push(ctrl.Eq.create({ arg1: propA, arg2: (ctrl.isPrivate == 'private') }));
+      }
+      if ( ctrl.isOwner ) {
+        andList.push(ctrl.Eq.create({ arg1: propB, arg2: ownerId }));
+      }
+      if ( ctrl.isStarred ) {
+        jdao.where(ctrl.EQ(propJ, ownerId))
+        .select()
+        .then( juncList => {
+          andList.push(ctrl.In.create({ arg1: propI, arg2: juncList.array.map( m => m.sourceId) }));
+          dao.where(ctrl.And.create({ args: andList })).select().then( result => {
+            ctrl.mainObjDAO = result.array;
+          });
+        }).catch (e => {
+          console.debug(e);
         });
         return;
       }
-      ctrl.tagZ = this.client.tagDAO;
-      dao
-        .where(this.EQ(propA, this.isPrivate ))
-        .select().then( sink => {
-          ctrl.mainObjDAO = sink.array;
-        });
+      if ( ctrl.isTOGOpen ) {
+        andList.push(ctrl.In.create({ arg1: propI, arg2: ctrl.tagZ }));
+      }
+      var predicate = andList?.length > 1 ? ctrl.And.create({ args: andList }) :
+        ( andList?.length == 1 ? andList[0] : undefined);
+      var dd = !! predicate ? dao.where(predicate) : dao;
+      dd.select().then( result => {
+        ctrl.mainObjDAO = result.array;
+      }).catch (e => {
+        console.debug(e);
+      });
+      
     },
+  
     async function onUserAgentAndGroupLoaded() {
       /**
        * Called whenever the group updates.

@@ -18,7 +18,10 @@ foam.CLASS({
       name: 'created',
       documentation: 'Creation date',
       createVisibility: 'HIDDEN',
-      updateVisibility: 'RO'
+      updateVisibility: 'RO',
+      view: {
+        class: 'foam.u2.view.date.RODateView'
+      }
     }
   ]
 });

@@ -72,11 +72,11 @@ foam.CLASS({
     {
       name: 'dropdownIcon',
       documentation: 'fallback dropdown icon that can be specified for non-nanos apps',
-      value: '/images/dropdown-icon.svg'
     },
     // Used for keyboard navigation
     'firstEl_', 'lastEl_',
-    [ 'isMouseClick_', true ]
+    [ 'isMouseClick_', true ],
+    'parent'
   ],
 
   css: `
@@ -166,16 +166,20 @@ foam.CLASS({
         this.add(this.shown$.map(function(shown) {
           var e = self.E().addClass(self.myClass('iconContainer'));
           if ( shown ) {
-            e.callIfElse(self.theme,
-              function() {
-                this.start(self.HTMLView, { data: self.theme.glyphs.dropdown.expandSVG() })
-                  .addClass(self.myClass('SVGIcon'), self.myClass('dropdown'))
-                .end();
-              },
-              function() {
-                this.start('img').attr('src', this.dropdownIcon$).end();
-              }
-            );
+            if ( ! self.dropdownIcon ) {
+              e.callIfElse(self.theme,
+                function() {
+                  this.start(self.HTMLView, { data: self.theme.glyphs.dropdown.expandSVG() })
+                    .addClass(self.myClass('SVGIcon'), self.myClass('dropdown'))
+                  .end();
+                },
+                function() {
+                  this.start('img').attr('src', '/images/dropdown-icon.svg').end();
+                }
+              );
+            } else {
+              e.start('img').attr('src', self.dropdownIcon$).end();
+            }
           }
           return e;
         }));
@@ -221,7 +225,7 @@ foam.CLASS({
         return this.isAvailable.bind(this);
       }));
 
-      var el = this.E().startContext({ data: self.obj, dropdown: self.overlay_ })
+      var el = this.E().startContext({ data: self.obj, dao: self.dao, dropdown: self.overlay_ , calledParent: self.parent })
         .forEach(self.data, function(action, index) {
           if ( availabilities[index] ) {
             this

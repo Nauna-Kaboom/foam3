@@ -67,7 +67,7 @@ foam.CLASS({
       documentation: 'Lets the user choose a predicate to filter the view by.',
     },
     {
-      class: 'Date',
+      class: 'DateTime',
       name: 'date1',
       documentation: `
         A date selectable by the user. Used as the second argument to the
@@ -75,7 +75,7 @@ foam.CLASS({
       `,
     },
     {
-      class: 'Date',
+      class: 'DateTime',
       name: 'date2',
       documentation: `
         A date selectable by the user. Used as the second argument to the

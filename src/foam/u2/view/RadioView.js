@@ -112,7 +112,7 @@ foam.CLASS({
         var id    = 'u' + c.$UID; // TODO: the 'u' + is for U2 compatibility, remove when all moved to U3
         self.start('div').
           addClass('choice').
-            callIf(this.columns != -1, function() { this.style({'flex-basis': (100 / self.columns) + '%'}) }).
+            callIf(this.columns != -1, function() { this.style({'flex-basis': ((100 / self.columns)- 12 )+ '%'}) }).
           start('input', {id: id}).
             attrs({
               type: 'radio',

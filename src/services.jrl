@@ -552,7 +552,7 @@ p({
   """
     return new foam.dao.EasyDAO.Builder(x)
       .setPm(true)
-      .setSeqProperty(true)
+      .setSeqProperty("seqNo")
       .setOf(foam.support.model.SupportEmail.getOwnClassInfo())
       .setJournalType(foam.dao.JournalType.SINGLE_JOURNAL)
       .setJournalName("supportEmails")
