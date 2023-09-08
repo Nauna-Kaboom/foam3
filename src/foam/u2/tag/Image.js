@@ -58,6 +58,10 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'embedSVG'
+    },
+    {
+      class: 'Function',
+      name: 'onCk'
     }
   ],
 
@@ -81,6 +85,7 @@ foam.CLASS({
           if ( glyph ) {
             var indicator = glyph.clone(this).expandSVG();
             return this.E().start(this.HTMLView, { data: indicator })
+              .on('click', () => this.onCk())
               .attrs({ role: this.role })
               .end();
           }
@@ -89,6 +94,7 @@ foam.CLASS({
             var e = this.E();
             this.requestWithCache(data).then(data => {
               e.start(this.HTMLView, { data: data })
+                .on('click', () => this.onCk())
                 .attrs({ role: this.role })
               .end();
             });
@@ -98,6 +104,7 @@ foam.CLASS({
           if ( ! data) return null;
           return this.E()
             .start('img')
+              .on('click', () => this.onCk())
               .attrs({ src: data, role: this.role })
               .style({
                 height:  displayHeight,
