@@ -306,6 +306,13 @@ foam.CLASS({
       code: function () {
         this.richText.focus();
         this.document.execCommand("bold");
+        // Above code told was legacty - below is alternative option
+        // const selection = window.getSelection();
+        // const range = selection.getRangeAt(0); // Assuming there is a selection
+      
+        // const span = document.createElement('span');
+        // span.style.fontWeight = 'bold';
+        // range.surroundContents(span);
       }
     },
     {

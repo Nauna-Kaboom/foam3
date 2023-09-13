@@ -9,9 +9,7 @@ foam.POM({
     version: 3,
     projects: [
         { name: "src/pom" },
-        { name: 'src/foam/demos/u2/AllViews' },
         { name: 'src/foam/nanos/pom' },
         { name: "src/foam/u2/wizard/pom" },
-        { name: "src/foam/flow/laminar/pom" }
     ]
 });

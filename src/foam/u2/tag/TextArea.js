@@ -75,14 +75,9 @@ foam.CLASS({
       }
       this.attrs({rows: this.rows, cols: this.cols, placeholder: this.placeholder$, wrap: this.wrap});
 
-      // This is required because textarea accepts setting the 'value'
-      // after it's output, but before requires output to be between
-      // the tags when it's first output.
-     // this.add((this.data + '').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
-
-      this.attrSlot(
-        'value',
-        this.onKey ? 'input' : 'change').linkFrom(this.data$);
+      // this.attrSlot(
+      //   'value',
+      //   this.onKey ? 'input' : 'change').linkFrom(this.data$);
     },
 
     function load() {

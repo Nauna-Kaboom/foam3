@@ -16,12 +16,28 @@ foam.CLASS({
     {
       class: 'DateTime',
       name: 'created',
+      section: 'mainBodySection',
       documentation: 'Creation date',
       createVisibility: 'HIDDEN',
       updateVisibility: 'RO',
-      view: {
-        class: 'foam.u2.view.date.RODateView'
-      }
+      // view: function(_, x) {
+      //   if ( x?.data?.created ) return;
+      //   return ctrl.E().start()
+      //   .add(`${x.data.created.toDateString()} ${x.data.created.toLocaleTimeString()}`)
+      //   .end()
+      // },
+      view: function(_, x) {
+        return ctrl.E().start().add(x.data.slot(created => {
+          if ( ! created ) return;
+          return ctrl.E().add(`${created.toDateString()} ${created.toLocaleTimeString()}`)
+        }))
+        .end()
+      },
+      // visibility: function() {
+      //   return ctrl.controllerMode == foam.u2.ControllerMode.CREATE ?
+      //     foam.u2.DisplayMode.HIDDEN :
+      //     foam.u2.DisplayMode.RO;
+      // }
     }
   ]
 });
