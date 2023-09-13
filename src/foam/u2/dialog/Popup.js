@@ -31,6 +31,7 @@ foam.CLASS({
 
   exports: [
     'close as closeDialog',
+    'closing',
     'as popup'
   ],
 
@@ -98,6 +99,10 @@ foam.CLASS({
       name: 'closeable',
       value: true
     },
+    {
+      name: 'closeableBackground',
+      class: 'Boolean'
+    },
     'onClose',
     {
       class: 'Boolean',
@@ -113,7 +118,11 @@ foam.CLASS({
       class: 'Boolean',
       name: 'showActions',
       value: true
-    }
+    },
+    {
+      class: 'Boolean',
+      name: 'closing',
+    },
   ],
 
   methods: [
@@ -125,7 +134,7 @@ foam.CLASS({
         .enableClass(this.myClass('fullscreen'), this.fullscreen$)
         .start()
           .addClass(this.myClass('background'))
-          .on('click', this.closeable ? this.closeModal.bind(this) : null)
+          .on('click', this.closeableBackground ? this.closeModal.bind(this) : null)
         .end()
         .start()
           .call(function() { content = this; })
@@ -149,7 +158,13 @@ foam.CLASS({
   ],
 
   listeners: [
-    function close() { this.closeModal(); }
+    function close(a) {
+      if ( a == 'just close' ) {
+        this.setTimeout(() => this.remove(), 32);
+        return;
+      }
+      this.closeModal();
+    }
   ],
 
   actions: [
@@ -159,6 +174,7 @@ foam.CLASS({
       label: '',
       keyboardShortcuts: [ 27 /* Escape */ ],
       code: function() {
+        this.closing = true;
         if ( this.onClose ) this.onClose();
 
         // Delay removal by 32ms (two animation frames) so the action.closeModal

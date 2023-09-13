@@ -630,8 +630,8 @@ foam.CLASS({
         self.onDetach(self.isPrivate$.sub(self.setupBooleansForIdeasTheme));
         self.onDetach(self.isOwner$.sub(self.setupBooleansForIdeasTheme));
         self.onDetach(self.isStarred$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.__subContext__.ideaDAO$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.__subContext__.situationDAO$.sub(self.setupBooleansForIdeasTheme));
+        self.onDetach(self.__subContext__.ideaDAO).sub('update', self.setupBooleansForIdeasTheme);
+        self.onDetach(self.__subContext__.situationDAO).sub('update',self.setupBooleansForIdeasTheme);
         // self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
         self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
         self.setupBooleansForIdeasTheme();
@@ -1068,9 +1068,11 @@ foam.CLASS({
       var propA = undefined;
       var propJ = undefined;
       var ownerId = ctrl.subject.user.id;
+      var prop = undefined;
       var andList = [];
       if ( ctrl.mainType ) {
         dao = ctrl.__subContext__.ideaDAO;
+        prop = this.Idea.CREATED;
         propA = ctrl.Idea.IS_PRIVATE;
         propB = ctrl.Idea.OWNER;
         propI = ctrl.Idea.ID;
@@ -1078,6 +1080,7 @@ foam.CLASS({
         propJ = ctrl.IdeaUserJunction.TARGET_ID;
       } else {
         dao = ctrl.__subContext__.situationDAO;
+        prop = this.Situation.CREATED;
         propA = ctrl.Situation.IS_PRIVATE;
         propB = ctrl.Situation.OWNER;
         propI = ctrl.Situation.ID;
@@ -1109,7 +1112,7 @@ foam.CLASS({
       var predicate = andList?.length > 1 ? ctrl.And.create({ args: andList }) :
         ( andList?.length == 1 ? andList[0] : undefined);
       var dd = !! predicate ? dao.where(predicate) : dao;
-      dd.select().then( result => {
+      dd.orderBy(this.DESC(prop)).select().then( result => {
         ctrl.mainObjDAO = result.array;
       }).catch (e => {
         console.debug(e);
