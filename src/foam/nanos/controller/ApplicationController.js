@@ -706,17 +706,17 @@ foam.CLASS({
     await this.themeInstalled;
     await this.languageInstalled;
 
-    // if ( ! this.isIframe() ) {
-      this.addMacroLayout();
-    // } else {
-    //   this
-    //     .addClass(this.myClass())
-    //     .start()
-    //       .addClass('stack-wrapper')
-    //       .add(this.BANNER_DATA_.__)
-    //       .tag(this.DesktopStackView, { data: this.stack, showActions: false, nodeName: 'main' })
-    //     .end();
-    // }
+    this.addMacroLayout();
+  //fofofofofo1
+    //http://ideas:8080?token=68a548f5-c19f-40d4-8d83-3d80e1bbda62#reset
+    // don't go to log in screen if going to reset password screen
+    if ( location.hash && location.hash === '#reset' ) {
+      view = {
+        class: 'foam.nanos.auth.ChangePasswordView',
+        modelOf: 'foam.nanos.auth.resetPassword.ResetPasswordByToken'
+      };
+      this.add(this.Popup.create({ backgroundColor: 'transparent' }).tag(view));
+    }
   },
 
     async function reloadClient() {
@@ -955,6 +955,7 @@ foam.CLASS({
       var self = this;
       var view = { view: { ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn' }, parent: self };
       await this.themeInstalled;
+      //http://ideas:8080?token=4a2465d5-5603-436b-a969-17628ef885ff#reset
       // don't go to log in screen if going to reset password screen
       if ( location.hash && location.hash === '#reset' ) {
         view = {

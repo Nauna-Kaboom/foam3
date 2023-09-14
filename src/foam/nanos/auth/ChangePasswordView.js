@@ -124,9 +124,9 @@ foam.CLASS({
     function render() {
       const self = this;
       this.addClass()
-        .start(this.popup ? this.StatusPageBorder : '', { showBack: false })
+        .start().style({"background-color":"white"})//this.popup ? this.StatusPageBorder : '', { showBack: false })
           .start()
-            .enableClass(self.myClass('popup'), this.popup$)
+            //.enableClass(self.myClass('popup'), this.popup$)
             .addClass(this.myClass('flex'))
             .callIf(this.data.TITLE, function() {
               this.start().addClass(self.myClass('title'), 'h400').add(self.data.TITLE).end();
@@ -142,12 +142,12 @@ foam.CLASS({
             })
               .addClass(this.myClass('sectionView'))
             .end()
-            .callIf(this.popup, function() {
-              let label = self.stack?.stack_[self.stack.pos - 1]?.breadcrumbTitle
-              this.tag(self.BACK,
-                { label: self.BACK_LABEL + ' ' +  (label || (self.theme?.appName ?? 'home')) }
-              );
-            })
+            // .callIf(this.popup, function() {
+            //   let label = self.stack?.stack_[self.stack.pos - 1]?.breadcrumbTitle
+            //   this.tag(self.BACK,
+            //     { label: self.BACK_LABEL + ' ' +  (label || (self.theme?.appName ?? 'home')) }
+            //   );
+            // })
           .end()
         .end();
     }

@@ -93,8 +93,8 @@ foam.CLASS({
     {
       name: 'finalRedirectionCall',
       code: function() {
-        window.history.replaceState(null, null, window.location.origin);
-        location.reload();
+        // window.history.replaceState(null, null, window.location.origin);
+        // location.reload();
       }
     }
   ]

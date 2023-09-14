@@ -62,6 +62,7 @@
             type: this.LogLevel.INFO,
             transient: true
           }));
+          X.closeDialog();
         }).catch((err) => {
           this.ctrl.add(this.NotificationMessage.create({
               err: err.data,

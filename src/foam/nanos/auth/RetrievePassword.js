@@ -112,34 +112,26 @@ foam.CLASS({
       isEnabled: function(errors_) {
         return ! errors_;
       },
-      code: async function(X) {
-        var instructionTitle, instruction;
-        try {
-          if ( this.resetByCode ) {
-            await this.resetPasswordService.resetPasswordByCode(null, this.email, this.username);
-            instructionTitle = this.CODE_INSTRUC_TITLE;
-            instruction = this.CODE_INSTRUC;
-          } 
-          // else { // to use link in emails ... need to at the very least create emailTemplate.reset-password
-          //   const user = await this.User.create({ email: this.email, userName: this.username });
-          //   await this.resetPasswordToken.generateToken(null, user);
-          //   instructionTitle = this.TOKEN_INSTRUC_TITLE;
-          //   instruction = this.TOKEN_INSTRUC;
-          // }
-
+      code: function(X) {
+        const user = this.User.create({ email: this.email, userName: this.username });
+        this.resetPasswordToken.generateToken(null, user).then((_) => {
           this.ctrl.add(this.NotificationMessage.create({
-            message: instructionTitle,
-            description: instruction,
+            message: `${this.TOKEN_INSTRUC_TITLE}`,
+            description: `${this.TOKEN_INSTRUC}`,
             type: this.LogLevel.INFO,
             transient: true
           }));
-          this.stack.push({ ...(this.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn' }, this);
-        } catch(err) {
-          var msg = this.ERROR_MSG;
-          if ( this.UserNotFoundException.isInstance(err.data.exception) ) {
-            msg = this.USER_NOT_FOUND_ERROR_MSG + this.email;
+        }).catch((err) => {
+          if ( this.UserNotFoundException.isInstance(err?.data?.exception) ) {
+              this.ctrl.add(this.NotificationMessage.create({
+                err: err.data,
+                type: this.LogLevel.ERROR,
+                transient: true
+              }));
+              return;
           }
-          if ( this.DuplicateEmailException.isInstance(err.data.exception) ) {
+          var msg = this.ERROR_MSG;
+          if ( this.DuplicateEmailException.isInstance(err?.data?.exception) ) {
             this.usernameRequired = true;
             msg = this.DUPLICATE_ERROR_MSG;
           }
@@ -148,8 +140,7 @@ foam.CLASS({
             type: this.LogLevel.ERROR,
             transient: true
           }));
-          throw err;
-        }
+        });
       }
     }
   ]
