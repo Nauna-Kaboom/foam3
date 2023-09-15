@@ -130,6 +130,7 @@ foam.CLASS({
     'stack',
     'subject',
     'mainObjDAO',
+    'noteDAO',
     'theme',
     'user',
     'webApp',
@@ -489,6 +490,7 @@ foam.CLASS({
       name: 'fromLogin'
     },
     'mainObjDAO',
+    'noteDAO',
     'tagZ',
     {
       class: 'Boolean',
@@ -1071,6 +1073,9 @@ foam.CLASS({
       var ownerId = ctrl.subject.user.id;
       var prop = undefined;
       var andList = [];
+      ctrl.__subContext__.userNotificationDAO.select().then( result => {
+        ctrl.noteDAO = result.array;
+      });
       if ( ctrl.mainType ) {
         dao = ctrl.__subContext__.ideaDAO;
         prop = this.Idea.CREATED;
