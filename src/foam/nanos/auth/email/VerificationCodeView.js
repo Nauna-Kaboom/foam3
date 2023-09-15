@@ -85,6 +85,10 @@
       class: 'FObjectProperty',
       of: 'foam.nanos.auth.email.EmailVerificationCode',
       name: 'data'
+    },
+    {
+      class: 'Boolean',
+      name: 'showBack'
     }
   ],
 
@@ -98,7 +102,7 @@
         .addClass(this.myClass('sectionView')).end()
         .startContext({ data: this.data })
           .addClass(this.myClass('flex'))
-          .start()
+          .start().show(this.showBack$)
             .add(this.BACK)
           .end()
         .endContext();

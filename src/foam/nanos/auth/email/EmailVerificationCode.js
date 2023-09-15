@@ -28,7 +28,7 @@ foam.CLASS({
 
   imports: [
     'ctrl',
-    'pushMenu'
+    'closeDialog?',
   ],
 
   messages: [
@@ -149,7 +149,6 @@ foam.CLASS({
           this.codeVerified = false;
           return;
         }
-
         try {
           var verified = await this.emailVerificationService.verifyCode(x, this.email, this.userName, this.verificationCode);
           this.report('^verify-success', ['email-verification']);
@@ -180,7 +179,7 @@ foam.CLASS({
       isEnabled: function(codeVerified) {
         return codeVerified;
       },
-      code: async function() {
+      code: async function(x) {
         var success, err;
         if ( ! this.codeVerified ) return;
         try {
@@ -194,6 +193,7 @@ foam.CLASS({
             type: this.LogLevel.INFO
           }));
           this.emailVerificationService.pub('emailVerified');
+          if ( this.closeDialog ) this.closeDialog();
         } else {
           this.ctrl.add(this.NotificationMessage.create({
             message: this.ERROR_MSG,

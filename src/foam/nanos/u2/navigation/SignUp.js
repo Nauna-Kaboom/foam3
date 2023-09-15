@@ -18,6 +18,7 @@ foam.CLASS({
   imports: [
     'appConfig',
     'auth',
+    'closeDialog?',
     'ctrl',
     'emailVerificationService',
     'loginSuccess',
@@ -33,8 +34,13 @@ foam.CLASS({
 
   requires: [
     'foam.log.LogLevel',
+    'foam.nanos.auth.email.EmailVerificationCode',
+    'foam.nanos.auth.email.VerificationCodeView',
     'foam.nanos.auth.User',
-    'foam.u2.stack.StackBlock'
+    'foam.u2.borders.StatusPageBorder',
+    'foam.u2.dialog.Popup',
+    'foam.u2.stack.StackBlock',
+    'foam.u2.view.LoginView',
   ],
 
   messages: [
@@ -206,8 +212,8 @@ foam.CLASS({
   methods: [
     {
       name: 'nextStep',
-      code: async function() {
-        await this.verifyEmail(this.__subContext__, this.email, this.userName);
+      code: async function(x) {
+        await this.verifyEmail(x, this.email, this.userName);
       }
     },
     {
@@ -226,21 +232,19 @@ foam.CLASS({
           this.subject = await this.auth.getCurrentSubject(null);
           this.onDetach(this.emailVerificationService.sub('emailVerified', this.emailVerifiedListener));
           this.ctrl.groupLoadingHandled = true;
-          this.stack.push(this.StackBlock.create({
-            view: {
-              class: 'foam.u2.borders.StatusPageBorder', showBack: false,
-              children: [{
-                class: 'foam.nanos.auth.email.VerificationCodeView',
-                data: {
-                  class: 'foam.nanos.auth.email.EmailVerificationCode',
-                  email: user.email,
-                  userName: user.userName,
-                  showAction: true,
-                  signinOnSubmit: true
-                }
-              }]
+          let view = {
+            class: 'foam.nanos.auth.email.VerificationCodeView',
+            showBack: false,
+            data: {
+              class: 'foam.nanos.auth.email.EmailVerificationCode',
+              email: user.email,
+              userName: user.userName,
+              showAction: true,
+              signinOnSubmit: true
             }
-          }, this));
+          };
+          this.closeDialog();
+          ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
         }
       }
     },
@@ -302,8 +306,14 @@ foam.CLASS({
       label: 'Sign in',
       buttonStyle: 'TEXT',
       code: function(X) {
-        X.window.history.replaceState(null, null, X.window.location.origin);
-        X.stack.push(X.data.StackBlock.create({ view: { ...(X.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn', topBarShow_: X.topBarShow_, param: X.param }, parent: X }));
+        // X.window.history.replaceState(null, null, X.window.location.origin);
+        let view = { ...(X.loginView ?? { class: this.LoginView }),
+          mode_: 'SignIn',
+          topBarShow_: X.topBarShow_,
+          param: X.param
+        };
+        this.closeDialog();
+        ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
       }
     },
     {

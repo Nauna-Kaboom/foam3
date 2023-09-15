@@ -415,21 +415,22 @@ foam.CLASS({
       gridColumns: 6,
       columnPermissionRequired: true
     },
-    {
-      class: 'foam.nanos.fs.FileProperty',
-      name: 'profilePicture',
-      includeInDigest: false,
-      containsPII: true,
-      documentation: `The profile picture of the individual user, initially
-        defaulting to a placeholder picture.`,
-      view: {
-        class: 'foam.nanos.auth.ProfilePictureView',
-        placeholderImage: 'images/ic-placeholder.png'
-      },
-      section: 'userInformation',
-      order: 230,
-      gridColumns: 6
-    },
+    // {
+    //   class: 'foam.nanos.fs.FileProperty',
+    //   name: 'profilePicture',
+    //   label: 'Profile Image (Drag image here to change)',
+    //   includeInDigest: false,
+    //   containsPII: true,
+    //   documentation: `The profile picture of the individual user, initially
+    //     defaulting to a placeholder picture.`,
+    //   view: {
+    //     class: 'foam.nanos.auth.ProfilePictureView',
+    //     placeholderImage: 'images/ic-placeholder.png'
+    //   },
+    //   section: 'userInformation',
+    //   order: 230,
+    //   gridColumns: 6
+    // },
     {
       class: 'String',
       name: 'note',

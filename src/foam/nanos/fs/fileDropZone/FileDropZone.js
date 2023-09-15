@@ -27,7 +27,7 @@ foam.CLASS({
   exports: [
     'allowRemoval',
     'removeFile',
-    'highlight'
+    'highlight',
   ],
 
   css: `
@@ -159,7 +159,15 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'showHelp'
-    }
+    },
+    {
+      class: 'Boolean',
+      name: 'dontShowCard',
+    },
+    {
+      class: 'Function',
+      name: 'propogateChange',
+    },
   ],
 
   methods: [
@@ -228,6 +236,7 @@ foam.CLASS({
       .on('dragenter', e => { this.isDragged_ = true; e.preventDefault(); })
       .on('dragleave', e => { this.isDragged_ = false; e.preventDefault(); })
       .add(this.slot(function(files) {
+        if ( self.dontShowCard ) return;
         var e = this.E().addClass(self.myClass('fileCards'));
         for ( var i = 0; i < files.length; i++ ) {
           e.tag({
@@ -305,6 +314,7 @@ foam.CLASS({
       }
       if ( this.selected ) this.selected = this.files.length - 1;
       this.files = Array.from(this.files);
+      if ( this.propogateChange ) this.propogateChange();
     },
 
     function isFileType(file) {

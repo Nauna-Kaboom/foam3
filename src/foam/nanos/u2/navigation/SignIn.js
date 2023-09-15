@@ -16,6 +16,7 @@ foam.CLASS({
   imports: [
     'auth',
     'ctrl',
+    'closeDialog?',
     'emailVerificationService',
     'loginSuccess',
     'loginView?',
@@ -29,11 +30,17 @@ foam.CLASS({
 
   requires: [
     'foam.log.LogLevel',
+    'foam.u2.borders.StatusPageBorder',
+    'foam.u2.dialog.Popup',
     'foam.u2.dialog.NotificationMessage',
     'foam.u2.stack.StackBlock',
     'foam.nanos.auth.AuthenticationException',
+    'foam.nanos.auth.ChangePasswordView',
     'foam.nanos.auth.DuplicateEmailException',
-    'foam.nanos.auth.UnverifiedEmailException'
+    'foam.nanos.auth.UnverifiedEmailException',
+    'foam.nanos.auth.twofactor.TwoFactorSignInView',
+    'foam.nanos.auth.email.EmailVerificationCode',
+    'foam.nanos.auth.email.VerificationCodeView',
   ],
 
   messages: [
@@ -143,9 +150,9 @@ foam.CLASS({
         if ( this.subject.realUser.twoFactorEnabled ) {
           this.loginSuccess = false;
           this.window.history.replaceState({}, document.title, '/');
-          this.stack.push(this.StackBlock.create({
-            view: { class: 'foam.nanos.auth.twofactor.TwoFactorSignInView' }
-          }));
+          let view = { class: this.TwoFactorSignInView };
+          this.closeDialog();
+          ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
         }
       }
     },
@@ -154,20 +161,18 @@ foam.CLASS({
       code: async function(x, email, username) {
       this.ctrl.groupLoadingHandled = true;
         this.onDetach(this.emailVerificationService.sub('emailVerified', this.emailVerifiedListener));
-        this.stack.push(this.StackBlock.create({
-          view: {
-            class: 'foam.u2.borders.StatusPageBorder', showBack: false,
-            children: [{
-              class: 'foam.nanos.auth.email.VerificationCodeView',
-              data: {
-                class: 'foam.nanos.auth.email.EmailVerificationCode',
-                email: email,
-                userName: username,
-                showAction: true
-              }
-            }]
-          }
-        }, this));
+        let view = {
+            class: 'foam.nanos.auth.email.VerificationCodeView',
+            showBack: false,
+            data: {
+              class: 'foam.nanos.auth.email.EmailVerificationCode',
+              email: email,
+              userName: username,
+              showAction: true
+            }
+          };
+        this.closeDialog();
+        ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
       }
     },
     {
@@ -274,8 +279,14 @@ foam.CLASS({
       buttonStyle: 'TEXT',
       isAvailable: function(showAction) { return showAction; },
       code: function(X) {
-        X.window.history.replaceState(null, null, X.window.location.origin);
-        X.stack.push(X.data.StackBlock.create({ view: { ...(X.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignUp', topBarShow_: X.topBarShow_, param: X.param }, parent: X }));
+        // X.window.history.replaceState(null, null, X.window.location.origin);
+        view = { ...(X.loginView ?? { class: this.LoginView }),
+        mode_: 'SignUp',
+        topBarShow_: X.topBarShow_,
+        param: X.param }
+        this.closeDialog();
+        ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
+
       }
     },
     {
@@ -285,12 +296,12 @@ foam.CLASS({
       buttonStyle: 'LINK',
       isAvailable: function(showAction) { return showAction; },
       code: function(X) {
-        X.stack.push(X.data.StackBlock.create({
-          view: {
-            class: 'foam.nanos.auth.ChangePasswordView',
-            modelOf: 'foam.nanos.auth.RetrievePassword'
-          }
-        }));
+        view = {
+          class: this.ChangePasswordView,
+          modelOf: 'foam.nanos.auth.RetrievePassword'
+        }
+        ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
+        this.closeDialog();
       }
     }
   ]

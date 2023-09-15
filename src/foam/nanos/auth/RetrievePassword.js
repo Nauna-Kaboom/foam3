@@ -12,6 +12,7 @@ foam.CLASS({
 
   imports: [
     'ctrl',
+    'closeDialog?',
     'loginView?',
     'resetPasswordService',
     'resetPasswordToken',
@@ -121,6 +122,11 @@ foam.CLASS({
             type: this.LogLevel.INFO,
             transient: true
           }));
+          try {
+            this.closeDialog();
+          } catch(e) {
+            // ignore - user can close if an issues
+          }
         }).catch((err) => {
           if ( this.UserNotFoundException.isInstance(err?.data?.exception) ) {
               this.ctrl.add(this.NotificationMessage.create({
