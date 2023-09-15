@@ -100,6 +100,7 @@ foam.CLASS({
       var doneTypingInterval = 400; 
 
       this.addClass()
+      .start('form')
         .start(this.TextField, {
           type$: this.type$,
           data$: this.data$,
@@ -116,6 +117,7 @@ foam.CLASS({
             this.isAvailable = true;
           })
         .end()
+      .end()
 
         .start('img')
           .show(this.passwordIcon$)
