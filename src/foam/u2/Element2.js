@@ -2035,17 +2035,17 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
-  package: 'foam.u2',
-  name: 'CodeViewRefinement',
-  refines: 'foam.core.Code',
+// foam.CLASS({
+//   package: 'foam.u2',
+//   name: 'CodeViewRefinement',
+//   refines: 'foam.core.Code',
 
-  requires: [ 'foam.u2.view.CodeView' ],
+//   requires: [ 'foam.u2.view.CodeView' ],
 
-  properties: [
-    [ 'view', { class: 'foam.u2.view.CodeView' } ]
-  ]
-});
+//   properties: [
+//     [ 'view', { class: 'foam.u2.view.CodeView' } ]
+//   ]
+// });
 
 
 foam.CLASS({
