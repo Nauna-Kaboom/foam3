@@ -74,6 +74,7 @@ foam.CLASS({
     'ideas.models.SituationTagJunction',
     'registerUser.BannerData',
     'registerUser.BannerView',
+    'ideas.UI.ObjectContainer',
   ],
 
   imports: [
@@ -89,6 +90,10 @@ foam.CLASS({
   ],
 
   exports: [
+    'openObjectIds',
+    'openMainObjects',
+    'browserChangee',
+    'browserOpen',
     'agent',
     'appConfig',
     'as ctrl',
@@ -131,6 +136,7 @@ foam.CLASS({
     'subject',
     'mainObjDAO',
     'noteDAO',
+    'notedaoCount',
     'theme',
     'user',
     'webApp',
@@ -491,6 +497,7 @@ foam.CLASS({
     },
     'mainObjDAO',
     'noteDAO',
+    'notedaoCount',
     'tagZ',
     {
       class: 'Boolean',
@@ -556,9 +563,106 @@ foam.CLASS({
       class: 'String',
       value: 'both'
     },
+    {
+      name: 'openObjectIds',
+      value: [],
+    },
+    {
+      name: 'openMainObjects',
+      value: [],
+    },
+    {
+      class: 'Boolean',
+      name: 'browserChangee',
+    },
+    {
+      class: 'String',
+      name: 'openId',
+    },
+    {
+      class: 'String',
+      name: 'openType',
+    },
   ],
 
   methods: [
+    async function browserOpen(obj, type) {
+      // leaving off here - need to refresh all after a call to this - 
+      // check duplications
+      const typS = typeof obj == 'string';
+      let id_ = typS ? obj : obj.id;
+      let cl_ = type ? type : obj.cls_.name;
+      var isDuplicate = ctrl.openObjectIds.some(function(item) {
+        return item.id === id_ && item.type === cl_;
+      });
+      if ( ! isDuplicate ) {
+        ctrl.openObjectIds.push({ id: id_, type: cl_ });
+      }
+      ctrl.openMainObjects = [];
+      let promA = [];
+      for (let i = 0; i < ctrl.openObjectIds.length; i++ ) {
+        var r = ctrl.openObjectIds[i];
+        if ( ! typS && obj.id == r.id ) {
+          promA.push(
+            ctrl.openMainObjects.push(
+              this.ObjectContainer.create( { objectStorage: obj })));
+        } else {
+          promA.push(
+            await ctrl.__subContext__[foam.String.daoize(r.type)]
+            .find(r.id)
+            .then( rr => {
+              ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: rr }));
+            }));
+        }
+        ctrl.openType = cl_;
+        ctrl.openId = id_;
+        await Promise.all(promA);
+        ctrl.browserChangee = ! ctrl.browserChangee;
+      }
+      // if ( typS ) {
+        
+      //     if ( ! r ) throw new Error('obj trying to open not found');
+      //     var isDuplicate = ctrl.openMainObjects.some(function(item) {
+      //       return item.objectStorage.id === r.id && item.objectStorage.cls_.name === r.cls_.name;
+      //     });
+      //     if (!isDuplicate) {
+      //       ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: r }));
+      //     } else {
+      //       // remove
+      //       ctrl.openMainObjects = ctrl.openMainObjects.filter((item) => {
+      //         return item.objectStorage.id !== r.id;
+      //       });
+      //       // add
+            
+      //     }
+      //     if ( ! dontOpenJustRefresh ) {
+      //       ctrl.openType = type;
+      //       ctrl.openId = r.id;
+      //       ctrl.browserChangee = ! ctrl.browserChangee;
+      //     }
+      //   });
+      // } else {
+      //   var isDuplicate = ctrl.openMainObjects.some(function(item) {
+      //     return item.objectStorage.id === obj.id && item.objectStorage.cls_.name === obj.cls_.name;
+      //   });
+      //   if (!isDuplicate) {
+      //     ctrl.openObjectIds.push({ id: obj.id, type: obj.cls_.name });
+      //     ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: obj }));
+      //   } else {
+      //     // remove
+      //     ctrl.openMainObjects = ctrl.openMainObjects.filter((item) => {
+      //       return item.objectStorage.id !== obj.id;
+      //     });
+      //     // add
+      //     ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: obj }));
+      //   }
+      //   if ( ! dontOpenJustRefresh ) {
+      //     ctrl.openType = obj.cls_.name;
+      //     ctrl.openId = obj.id;
+      //     ctrl.browserChangee = ! ctrl.browserChangee;
+      //   }
+      // }
+    },
     function init() {
       this.SUPER();
       // done to start using SectionedDetailViews instead of DetailViews
@@ -634,9 +738,12 @@ foam.CLASS({
         self.onDetach(self.isStarred$.sub(self.setupBooleansForIdeasTheme));
         self.onDetach(self.__subContext__.ideaDAO).sub('update', self.setupBooleansForIdeasTheme);
         self.onDetach(self.__subContext__.situationDAO).sub('update',self.setupBooleansForIdeasTheme);
+        self.onDetach(self.__subContext__.userNotificationDAO).sub('update',self.setupBooleansForIdeasTheme);
         // self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
         self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
         self.setupBooleansForIdeasTheme();
+
+        await self.findHash();
       });
             // Enable session timer.
       this.sessionTimer.enable = true;
@@ -650,6 +757,24 @@ foam.CLASS({
            (this.subject && this.subject.realUser && this.subject.realUser.emailVerified) ) {
         this.add(this.Popup.create({ closeable: false }).tag(this.SessionTimeoutModal));
       }
+    },
+    function findHash() {
+      // Get the query parameters from the URL
+      var urlParams = new URLSearchParams(window.location.search);
+
+      // Retrieve the values of openObjId and openObjIdType
+      var openObjId = urlParams.get('openObjId');
+      var openObjIdType = urlParams.get('openObjIdType');
+
+      console.log('openObjId:', openObjId);
+      console.log('openObjIdType:', openObjIdType);
+      if ( openObjId && openObjIdType) {
+        this.browserOpen(openObjId, openObjIdType).catch(e => {
+          this.notify('failed to open browser', '', this.LogLevel.ERROR, true);
+        });
+      }
+      var url = new URL(window.location.href);
+      window.history.replaceState({}, '', url.origin);
     },
     function isIframe() {
       try {
@@ -1075,6 +1200,7 @@ foam.CLASS({
       var andList = [];
       ctrl.__subContext__.userNotificationDAO.select().then( result => {
         ctrl.noteDAO = result.array;
+        ctrl.notedaoCount = result.array.filter(m=> !m.read).length;
       });
       if ( ctrl.mainType ) {
         dao = ctrl.__subContext__.ideaDAO;
@@ -1123,7 +1249,7 @@ foam.CLASS({
       }).catch (e => {
         console.debug(e);
       });
-      
+      this.browserChangee = ! this.browserChangee;
     },
   
     async function onUserAgentAndGroupLoaded() {
