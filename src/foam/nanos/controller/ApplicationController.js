@@ -75,6 +75,7 @@ foam.CLASS({
     'registerUser.BannerData',
     'registerUser.BannerView',
     'ideas.UI.ObjectContainer',
+    'ideas.user.OpenObjectSaver',
   ],
 
   imports: [
@@ -86,14 +87,17 @@ foam.CLASS({
     'notificationDAO',
     'sessionSuccess',
     'situationDAO',
-    'window'
+    'userDAO',
+    'window',
   ],
 
   exports: [
+    'removeObject',
     'openObjectIds',
     'openMainObjects',
     'browserChangee',
     'browserOpen',
+    'reBuildVertical',
     'agent',
     'appConfig',
     'as ctrl',
@@ -536,28 +540,6 @@ foam.CLASS({
       class: 'Boolean',
       name: 'isFilterOpen'
     },
-    // {
-    //   class: 'Boolean',
-    //   name: 'isSituationOpen',
-    //   postSet: function(o, n) {
-    //     if ( o == n ) return;
-    //     if ( n ) {
-    //       this.isIdeaOpen = false;
-    //       this.mainType = false;
-    //     }
-    //   },
-    // },
-    // {
-    //   class: 'Boolean',
-    //   name: 'isIdeaOpen',
-    //   postSet: function(o, n) {
-    //     if ( o == n ) return;
-    //     if ( n ) {
-    //       this.isSituationOpen = false;
-    //       this.mainType = true;
-    //     }
-    //   },
-    // },
     {
       name: 'isPrivate',
       class: 'String',
@@ -586,82 +568,78 @@ foam.CLASS({
   ],
 
   methods: [
+    {
+      name: 'removeObject',
+      code: async function(obj) {
+        console.log(`Start removeObject - %o`, obj);
+        var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); 
+        await u.openObjectIds.remove(this.OpenObjectSaver.create({
+          oId: obj.src.obj.objectStorage.id,
+          oCl: obj.src.obj.objectStorage.cls_.name
+        })).catch(e => {
+          console.log(`remove: ${id_}, ${cl_} match?: ${item.id}, ${item.type} - filter: ${item.id != id_ && item.type != cl_}`);
+          console.log(e);
+        });
+        await ctrl.reBuildVertical();
+        console.log(`finished removeObject`);
+      }
+    },
+    async function reBuildVertical(obj) {
+      console.log(`Start reBuildVertical - %o`, obj);
+      ctrl.openMainObjects = [];
+      const promA = [];
+      var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id);
+      await u.openObjectIds.select(oos => {
+        console.log(`selecting from reBuildVertical - %o`, oos.instance_);
+        // promA.push(
+        //   await ctrl.__subContext__[foam.String.daoize(oos.oCl)]
+        //   .find(oos.oId)
+        //   .then( rr => {
+        //     ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: rr }));
+        //   }));
+        if ( obj?.id == oos.oId ) {
+          console.log(`about to push to promA obj match reBuildVertical - %o`, obj?.id);
+          return promA.push(
+            ctrl.openMainObjects.push(
+            this.ObjectContainer.create( { objectStorage: obj }))
+            );
+        } else {
+          console.log(`about to find->promA reBuildVertical`);
+          return promA.push(
+            ctrl.__subContext__[foam.String.daoize(oos.oCl)]
+            .find(oos.oId)
+            .then(rr => {
+              console.log(`about to  push promA reBuildVertical - %o`, rr?.id);
+              return ctrl.openMainObjects.push(
+                this.ObjectContainer.create( { objectStorage: rr }));
+            })
+            );
+        }
+      }).then( async _ => {
+        await Promise.all(promA);
+        ctrl.browserChangee = ! ctrl.browserChangee;
+        console.log(`finished reBuildVertical`);
+      });
+      
+    },
     async function browserOpen(obj, type) {
-      // leaving off here - need to refresh all after a call to this - 
-      // check duplications
+      console.log(`Start browserOpen - obj: %o, type: %o`, obj, type);
       const typS = typeof obj == 'string';
       let id_ = typS ? obj : obj.id;
       let cl_ = type ? type : obj.cls_.name;
-      var isDuplicate = ctrl.openObjectIds.some(function(item) {
-        return item.id === id_ && item.type === cl_;
-      });
-      if ( ! isDuplicate ) {
-        ctrl.openObjectIds.push({ id: id_, type: cl_ });
+      var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); // await client.userDAO.put(user) //client$userDAO
+      var isDuplicate = await u.openObjectIds.where(this.AND(this.EQ(this.OpenObjectSaver.O_ID, id_),this.EQ(this.OpenObjectSaver.O_CL, cl_))).select();
+      if ( isDuplicate.array.length == 0 ) {
+        console.log(`isDuplicate browserOpen - id_: %o, cl_: %o`, id_, cl_);
+        await u.openObjectIds.put(new this.OpenObjectSaver.create({ oId: id_, oCl: cl_ })).catch (e => {
+          console.log(`shouldn't really ever get here - but if this is an update and not create... l: ${isDuplicate.array.length}, isD: %o and oId: ${id_}, oCl: ${cl_}`, isDuplicate);
+          console.log(e);
+        });
       }
-      ctrl.openMainObjects = [];
-      let promA = [];
-      for (let i = 0; i < ctrl.openObjectIds.length; i++ ) {
-        var r = ctrl.openObjectIds[i];
-        if ( ! typS && obj.id == r.id ) {
-          promA.push(
-            ctrl.openMainObjects.push(
-              this.ObjectContainer.create( { objectStorage: obj })));
-        } else {
-          promA.push(
-            await ctrl.__subContext__[foam.String.daoize(r.type)]
-            .find(r.id)
-            .then( rr => {
-              ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: rr }));
-            }));
-        }
-        ctrl.openType = cl_;
-        ctrl.openId = id_;
-        await Promise.all(promA);
-        ctrl.browserChangee = ! ctrl.browserChangee;
-      }
-      // if ( typS ) {
-        
-      //     if ( ! r ) throw new Error('obj trying to open not found');
-      //     var isDuplicate = ctrl.openMainObjects.some(function(item) {
-      //       return item.objectStorage.id === r.id && item.objectStorage.cls_.name === r.cls_.name;
-      //     });
-      //     if (!isDuplicate) {
-      //       ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: r }));
-      //     } else {
-      //       // remove
-      //       ctrl.openMainObjects = ctrl.openMainObjects.filter((item) => {
-      //         return item.objectStorage.id !== r.id;
-      //       });
-      //       // add
-            
-      //     }
-      //     if ( ! dontOpenJustRefresh ) {
-      //       ctrl.openType = type;
-      //       ctrl.openId = r.id;
-      //       ctrl.browserChangee = ! ctrl.browserChangee;
-      //     }
-      //   });
-      // } else {
-      //   var isDuplicate = ctrl.openMainObjects.some(function(item) {
-      //     return item.objectStorage.id === obj.id && item.objectStorage.cls_.name === obj.cls_.name;
-      //   });
-      //   if (!isDuplicate) {
-      //     ctrl.openObjectIds.push({ id: obj.id, type: obj.cls_.name });
-      //     ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: obj }));
-      //   } else {
-      //     // remove
-      //     ctrl.openMainObjects = ctrl.openMainObjects.filter((item) => {
-      //       return item.objectStorage.id !== obj.id;
-      //     });
-      //     // add
-      //     ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: obj }));
-      //   }
-      //   if ( ! dontOpenJustRefresh ) {
-      //     ctrl.openType = obj.cls_.name;
-      //     ctrl.openId = obj.id;
-      //     ctrl.browserChangee = ! ctrl.browserChangee;
-      //   }
-      // }
+      ctrl.openType = cl_;
+      ctrl.openId = id_;
+      await this.reBuildVertical(obj);
+      console.log(`finished browserOpen`);
     },
     function init() {
       this.SUPER();
@@ -742,8 +720,9 @@ foam.CLASS({
         // self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
         self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
         self.setupBooleansForIdeasTheme();
-
+        // /* not used but could ... */self.onDetach(self.__subContext__.openObjectDAO).sub('update', self.reBuildVertical);
         await self.findHash();
+
       });
             // Enable session timer.
       this.sessionTimer.enable = true;
@@ -769,9 +748,7 @@ foam.CLASS({
       console.log('openObjId:', openObjId);
       console.log('openObjIdType:', openObjIdType);
       if ( openObjId && openObjIdType) {
-        this.browserOpen(openObjId, openObjIdType).catch(e => {
-          this.notify('failed to open browser', '', this.LogLevel.ERROR, true);
-        });
+        this.browserOpen(openObjId, openObjIdType);
       }
       var url = new URL(window.location.href);
       window.history.replaceState({}, '', url.origin);
@@ -1232,6 +1209,7 @@ foam.CLASS({
           andList.push(ctrl.In.create({ arg1: propI, arg2: juncList.array.map( m => m.sourceId) }));
           dao.where(ctrl.And.create({ args: andList })).select().then( result => {
             ctrl.mainObjDAO = result.array;
+            this.reBuildVertical();
           });
         }).catch (e => {
           console.debug(e);
@@ -1246,10 +1224,10 @@ foam.CLASS({
       var dd = !! predicate ? dao.where(predicate) : dao;
       dd.orderBy(this.DESC(prop)).select().then( result => {
         ctrl.mainObjDAO = result.array;
+        this.reBuildVertical();
       }).catch (e => {
         console.debug(e);
       });
-      this.browserChangee = ! this.browserChangee;
     },
   
     async function onUserAgentAndGroupLoaded() {
