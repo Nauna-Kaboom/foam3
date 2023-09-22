@@ -502,7 +502,11 @@ foam.CLASS({
     'mainObjDAO',
     'noteDAO',
     'notedaoCount',
-    'tagZ',
+    // 'tagZ',
+    {
+      class: 'Boolean',
+      name: 'isBLoading',
+    },
     {
       class: 'Boolean',
       name: 'isAnonymous',
@@ -585,18 +589,14 @@ foam.CLASS({
       }
     },
     async function reBuildVertical(obj) {
+      if ( ctrl.isBLoading ) return;
+      ctrl.isBLoading = true;
       console.log(`Start reBuildVertical - %o`, obj);
       ctrl.openMainObjects = [];
       const promA = [];
       var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id);
       await u.openObjectIds.select(oos => {
         console.log(`selecting from reBuildVertical - %o`, oos.instance_);
-        // promA.push(
-        //   await ctrl.__subContext__[foam.String.daoize(oos.oCl)]
-        //   .find(oos.oId)
-        //   .then( rr => {
-        //     ctrl.openMainObjects.push(this.ObjectContainer.create( { objectStorage: rr }));
-        //   }));
         if ( obj?.id == oos.oId ) {
           console.log(`about to push to promA obj match reBuildVertical - %o`, obj?.id);
           return promA.push(
@@ -619,7 +619,7 @@ foam.CLASS({
         await Promise.all(promA);
         ctrl.browserChangee = ! ctrl.browserChangee;
         console.log(`finished reBuildVertical`);
-      });
+      }).finally( _ => ctrl.isBLoading = false);
       
     },
     async function browserOpen(obj, type) {
@@ -718,7 +718,7 @@ foam.CLASS({
         self.onDetach(self.__subContext__.situationDAO).sub('update',self.setupBooleansForIdeasTheme);
         self.onDetach(self.__subContext__.userNotificationDAO).sub('update',self.setupBooleansForIdeasTheme);
         // self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
+        // self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
         self.setupBooleansForIdeasTheme();
         // /* not used but could ... */self.onDetach(self.__subContext__.openObjectDAO).sub('update', self.reBuildVertical);
         await self.findHash();
@@ -745,8 +745,6 @@ foam.CLASS({
       var openObjId = urlParams.get('openObjId');
       var openObjIdType = urlParams.get('openObjIdType');
 
-      console.log('openObjId:', openObjId);
-      console.log('openObjIdType:', openObjIdType);
       if ( openObjId && openObjIdType) {
         this.browserOpen(openObjId, openObjIdType);
       }
