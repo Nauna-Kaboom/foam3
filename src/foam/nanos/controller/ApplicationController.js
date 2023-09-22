@@ -75,7 +75,7 @@ foam.CLASS({
     'registerUser.BannerData',
     'registerUser.BannerView',
     'ideas.UI.ObjectContainer',
-    'ideas.user.OpenObjectSaver',
+    'user.connectedModels.OpenObjectSaver',
   ],
 
   imports: [
@@ -575,7 +575,6 @@ foam.CLASS({
     {
       name: 'removeObject',
       code: async function(obj) {
-        console.log(`Start removeObject - %o`, obj);
         var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); 
         await u.openObjectIds.remove(this.OpenObjectSaver.create({
           oId: obj.src.obj.objectStorage.id,
@@ -585,31 +584,25 @@ foam.CLASS({
           console.log(e);
         });
         await ctrl.reBuildVertical();
-        console.log(`finished removeObject`);
       }
     },
     async function reBuildVertical(obj) {
       if ( ctrl.isBLoading ) return;
       ctrl.isBLoading = true;
-      console.log(`Start reBuildVertical - %o`, obj);
       ctrl.openMainObjects = [];
       const promA = [];
       var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id);
       await u.openObjectIds.select(oos => {
-        console.log(`selecting from reBuildVertical - %o`, oos.instance_);
         if ( obj?.id == oos.oId ) {
-          console.log(`about to push to promA obj match reBuildVertical - %o`, obj?.id);
           return promA.push(
             ctrl.openMainObjects.push(
             this.ObjectContainer.create( { objectStorage: obj }))
             );
         } else {
-          console.log(`about to find->promA reBuildVertical`);
           return promA.push(
             ctrl.__subContext__[foam.String.daoize(oos.oCl)]
             .find(oos.oId)
             .then(rr => {
-              console.log(`about to  push promA reBuildVertical - %o`, rr?.id);
               return ctrl.openMainObjects.push(
                 this.ObjectContainer.create( { objectStorage: rr }));
             })
@@ -618,19 +611,16 @@ foam.CLASS({
       }).then( async _ => {
         await Promise.all(promA);
         ctrl.browserChangee = ! ctrl.browserChangee;
-        console.log(`finished reBuildVertical`);
       }).finally( _ => ctrl.isBLoading = false);
       
     },
     async function browserOpen(obj, type) {
-      console.log(`Start browserOpen - obj: %o, type: %o`, obj, type);
       const typS = typeof obj == 'string';
       let id_ = typS ? obj : obj.id;
       let cl_ = type ? type : obj.cls_.name;
       var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); // await client.userDAO.put(user) //client$userDAO
       var isDuplicate = await u.openObjectIds.where(this.AND(this.EQ(this.OpenObjectSaver.O_ID, id_),this.EQ(this.OpenObjectSaver.O_CL, cl_))).select();
       if ( isDuplicate.array.length == 0 ) {
-        console.log(`isDuplicate browserOpen - id_: %o, cl_: %o`, id_, cl_);
         await u.openObjectIds.put(new this.OpenObjectSaver.create({ oId: id_, oCl: cl_ })).catch (e => {
           console.log(`shouldn't really ever get here - but if this is an update and not create... l: ${isDuplicate.array.length}, isD: %o and oId: ${id_}, oCl: ${cl_}`, isDuplicate);
           console.log(e);
@@ -639,7 +629,6 @@ foam.CLASS({
       ctrl.openType = cl_;
       ctrl.openId = id_;
       await this.reBuildVertical(obj);
-      console.log(`finished browserOpen`);
     },
     function init() {
       this.SUPER();

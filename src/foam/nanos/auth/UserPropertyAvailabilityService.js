@@ -43,13 +43,12 @@ foam.CLASS({
           throw new AuthorizationException();
         }
         
-        Theme theme = (Theme) ((Themes) x.get("themes")).findTheme(x);
-        var spid = theme.getSpid();
-        if ( "email".equals(targetProperty) &&
-             PreventDuplicateEmailAction.spidGrantsDuplicateEmailPermission(getX(), spid) ) {
-            return true;
+        if ( "email".equals(targetProperty) ) {
+            AuthService auth = (AuthService) x.get("auth");
+            if ( auth.check(x, "spid.default.allowDuplicateEmails") ) return true;
         }
 
+        Theme theme = (Theme) ((Themes) x.get("themes")).findTheme(x);
         DAO userDAO = ((DAO) getX().get("localUserDAO")).inX(x);
         return
           (
@@ -57,7 +56,7 @@ foam.CLASS({
             .find(AND(
               EQ("email".equals(targetProperty) ? User.EMAIL : User.USER_NAME, value),
               EQ(User.TYPE, "User"),
-              EQ(User.SPID, spid)))
+              EQ(User.SPID, theme.getSpid())))
           ) == null;
       `
     }

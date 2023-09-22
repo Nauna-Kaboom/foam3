@@ -5,7 +5,7 @@ p({
   "priority":100,
   "ruleGroup":"PasswordHistory",
   "documentation":"When user password changes, update the password history array with a timestamped entry.",
-  "daoKey":"localUserDAO",
+  "daoKey":"userDAO",
   "operation":1,
   "predicate":{
     "class":"foam.nanos.ruler.predicate.PropertyChangePredicate",
@@ -21,15 +21,16 @@ p({
   "id":"user-prevent-duplicate-usernames-rule",
   "name":"Prevent Duplicate Username Rule",
   "priority": 100,
-  "enabled": true,
+  "enabled": false,
   "ruleGroup": "auth",
   "documentation": "Prevent Duplicate Username Rule",
-  "daoKey": "localUserDAO",
+  "daoKey": "userDAO",
   "operation": 3, 
   "after": false,
   "action":{ "class":"foam.nanos.auth.ruler.PreventDuplicateUsernameAction" },
   "lifecycleState":1
 })
+// ^ logic set earlier...thus enabled false
 p({
   "class":"foam.nanos.ruler.Rule",
   "id":"user-prevent-duplicate-email-rule",
@@ -38,7 +39,7 @@ p({
   "enabled": true,
   "ruleGroup": "auth",
   "documentation": "Prevent Duplicate Email Rule",
-  "daoKey": "localUserDAO",
+  "daoKey": "userDAO",
   "operation": 3, 
   "after": false,
   "action":{ "class":"foam.nanos.auth.ruler.PreventDuplicateEmailAction" },

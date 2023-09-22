@@ -36,13 +36,13 @@ foam.CLASS({
 
         User user = (User) obj;
 
-        // Check against the spid of the user who is submitting the request in
-        // case the user.spid is not set (or was cleared by PermissionedPropertyDAO).
+              // Check against the spid of the user who is submitting the request in
+              // case the user.spid is not set (or was cleared by PermissionedPropertyDAO).
         var spid = user.getSpid();
-        if ( SafetyUtil.isEmpty(spid) ) {
-          var subject = (Subject) x.get("subject");
-          spid = subject.getUser().getSpid();
-        }
+              // if ( SafetyUtil.isEmpty(spid) ) { // ?????
+              //   var subject = (Subject) x.get("subject");
+              //   spid = subject.getUser().getSpid();
+              // }
 
         Count count = new Count();
         count = (Count) userDAO
