@@ -619,7 +619,11 @@ foam.CLASS({
       let id_ = typS ? obj : obj.id;
       let cl_ = type ? type : obj.cls_.name;
       var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); // await client.userDAO.put(user) //client$userDAO
-      var isDuplicate = await u.openObjectIds.where(this.AND(this.EQ(this.OpenObjectSaver.O_ID, id_),this.EQ(this.OpenObjectSaver.O_CL, cl_))).select();
+      var isDuplicate = await u.openObjectIds.where(
+        this.AND(
+          this.EQ(this.OpenObjectSaver.O_ID, id_),
+          this.EQ(this.OpenObjectSaver.O_CL, cl_),
+          this.EQ(this.OpenObjectSaver.SRC_USER, u.id))).select();
       if ( isDuplicate.array.length == 0 ) {
         await u.openObjectIds.put(new this.OpenObjectSaver.create({ oId: id_, oCl: cl_ })).catch (e => {
           console.log(`shouldn't really ever get here - but if this is an update and not create... l: ${isDuplicate.array.length}, isD: %o and oId: ${id_}, oCl: ${cl_}`, isDuplicate);
@@ -1170,7 +1174,7 @@ foam.CLASS({
         dao = ctrl.__subContext__.ideaDAO;
         prop = this.Idea.CREATED;
         propA = ctrl.Idea.IS_PRIVATE;
-        propB = ctrl.Idea.OWNER;
+        propB = ctrl.Idea.CREATED_BY;
         propI = ctrl.Idea.ID;
         jdao = ctrl.__subContext__[`ideaStarredJunctionDAO`];
         propJ = ctrl.IdeaUserJunction.TARGET_ID;
@@ -1178,7 +1182,7 @@ foam.CLASS({
         dao = ctrl.__subContext__.situationDAO;
         prop = this.Situation.CREATED;
         propA = ctrl.Situation.IS_PRIVATE;
-        propB = ctrl.Situation.OWNER;
+        propB = ctrl.Situation.CREATED_BY;
         propI = ctrl.Situation.ID;
         jdao = ctrl.__subContext__[`situationStarredJunctionDAO`];
         propJ = ctrl.SituationUserJunction.TARGET_ID;
