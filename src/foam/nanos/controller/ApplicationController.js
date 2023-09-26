@@ -65,39 +65,20 @@ foam.CLASS({
     'foam.u2.dialog.Popup',
     'foam.core.Latch',
     'foam.nanos.auth.LifecycleState',
-    'ideas.UI.NavController',
-    'ideas.models.Idea',
-    'ideas.models.Situation',
-    'ideas.models.IdeaUserJunction',
-    'ideas.models.SituationUserJunction',
-    'ideas.models.IdeaTagJunction',
-    'ideas.models.SituationTagJunction',
-    'registerUser.BannerData',
-    'registerUser.BannerView',
-    'ideas.UI.ObjectContainer',
-    'user.connectedModels.OpenObjectSaver',
   ],
 
   imports: [
     'auth',
     'crunchService',
     'capabilityDAO',
-    'ideaDAO',
     'installCSS',
     'notificationDAO',
     'sessionSuccess',
-    'situationDAO',
     'userDAO',
     'window',
   ],
 
   exports: [
-    'removeObject',
-    'openObjectIds',
-    'openMainObjects',
-    'browserChangee',
-    'browserOpen',
-    'reBuildVertical',
     'agent',
     'appConfig',
     'as ctrl',
@@ -112,19 +93,12 @@ foam.CLASS({
     'isIframe',
     'isMenuOpen',
     'isAnonymous',
-    'isTOGOpen',
-    'isCGOpen',
-    'isPrivate',
-    'isOwner',
-    'isStarred',
-    'isFilterOpen',
     'lastMenuLaunched',
     'lastMenuLaunchedListener',
     'layoutInitialized',
     'loginSuccess',
     'loginVariables',
     'loginView',
-    'mainType',
     'menuListener',
     'notify',
     'prefersMenuOpen',
@@ -139,9 +113,6 @@ foam.CLASS({
     'signUpEnabled',
     'stack',
     'subject',
-    'mainObjDAO',
-    'noteDAO',
-    'notedaoCount',
     'theme',
     'user',
     'webApp',
@@ -500,148 +471,16 @@ foam.CLASS({
       class: 'Boolean',
       name: 'fromLogin'
     },
-    'mainObjDAO',
-    'noteDAO',
-    'notedaoCount',
-    // 'tagZ',
-    {
-      class: 'Boolean',
-      name: 'isBLoading',
-    },
     {
       class: 'Boolean',
       name: 'isAnonymous',
-    },
-    {
-      class: 'Boolean',
-      name: 'isStarred',
-    },
-    {
-      class: 'Boolean',
-      name: 'mainType',
-      documentation: `If true, display Idea.
-                      False display Situation.`,
-      // postSet: function(o, n) {
-      //   if ( o == n ) return;
-      //   if ( n ) {
-      //     this.isIdeaOpen = true;
-      //     this.isSituationOpen = false;
-      //   } else {
-      //     this.isIdeaOpen = false;
-      //     this.isSituationOpen = true;
-      //   }
-      // },
-    },
-    {
-      name: 'isTOGOpen',
-      class: 'Boolean'
-    },
-    {
-      name: 'isCGOpen',
-      class: 'Boolean'
-    },
-    {
-      name: 'isOwner',
-      class: 'Boolean',
-      documentation: `If user wishes to only view there own ideas`
-    },
-    {
-      class: 'Boolean',
-      name: 'isFilterOpen'
-    },
-    {
-      name: 'isPrivate',
-      class: 'String',
-      value: 'both'
-    },
-    {
-      name: 'openObjectIds',
-      value: [],
-    },
-    {
-      name: 'openMainObjects',
-      value: [],
-    },
-    {
-      class: 'Boolean',
-      name: 'browserChangee',
-    },
-    {
-      class: 'String',
-      name: 'openId',
-    },
-    {
-      class: 'String',
-      name: 'openType',
-    },
+    }
   ],
 
   methods: [
-    {
-      name: 'removeObject',
-      code: async function(obj) {
-        var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); 
-        await u.openObjectIds.remove(this.OpenObjectSaver.create({
-          id: obj.src.obj.id,
-          oId: obj.src.obj.objectStorage.id,
-          oCl: obj.src.obj.objectStorage.cls_.name
-        })).catch(e => {
-          console.log(`remove: ${id_}, ${cl_} match?: ${item.id}, ${item.type} - filter: ${item.id != id_ && item.type != cl_}`);
-          console.log(e);
-        });
-        await ctrl.reBuildVertical();
-      }
-    },
-    async function reBuildVertical(obj) {
-      if ( ctrl.isBLoading ) return;
-      ctrl.isBLoading = true;
-      ctrl.openMainObjects = [];
-      const promA = [];
-      var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id);
-      await u.openObjectIds.select(oos => {
-        if ( obj?.id == oos.oId ) {
-          return promA.push(
-            ctrl.openMainObjects.push(
-            this.ObjectContainer.create( { objectStorage: obj, id: oos.id }))
-            );
-        } else {
-          return promA.push(
-            ctrl.__subContext__[foam.String.daoize(oos.oCl)]
-            .find(oos.oId)
-            .then(rr => {
-              return ctrl.openMainObjects.push(
-                this.ObjectContainer.create( { objectStorage: rr, id: oos.id }));
-            })
-            );
-        }
-      }).then( async _ => {
-        await Promise.all(promA);
-        ctrl.browserChangee = ! ctrl.browserChangee;
-      }).finally( _ => ctrl.isBLoading = false);
-      
-    },
-    async function browserOpen(obj, type) {
-      const typS = typeof obj == 'string';
-      let id_ = typS ? obj : obj.id;
-      let cl_ = type ? type : obj.cls_.name;
-      var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); // await client.userDAO.put(user) //client$userDAO
-      var isDuplicate = await u.openObjectIds.where(
-        this.AND(
-          this.EQ(this.OpenObjectSaver.O_ID, id_),
-          this.EQ(this.OpenObjectSaver.O_CL, cl_),
-          this.EQ(this.OpenObjectSaver.SRC_USER, u.id))).select();
-      if ( isDuplicate.array.length == 0 ) {
-        await u.openObjectIds.put(new this.OpenObjectSaver.create({ oId: id_, oCl: cl_ })).catch (e => {
-          console.log(`shouldn't really ever get here - but if this is an update and not create... l: ${isDuplicate.array.length}, isD: %o and oId: ${id_}, oCl: ${cl_}`, isDuplicate);
-          console.log(e);
-        });
-      }
-      ctrl.openType = cl_;
-      ctrl.openId = id_;
-      await this.reBuildVertical(obj);
-    },
     function init() {
       this.SUPER();
+
       // done to start using SectionedDetailViews instead of DetailViews
       this.__subContext__.register(foam.u2.detail.SectionedDetailView, 'foam.u2.DetailView');
 
@@ -663,17 +502,15 @@ foam.CLASS({
 
         self.onDetach(self.__subContext__.cssTokenOverrideService?.cacheUpdated.sub(self.reloadStyles));
 
+        let ret = await self.initMenu();
+        if ( ret ) return;
+
         try {
           await self.fetchSubject(false);
           self.isAnonymous = await self.__subContext__.auth.isAnonymous();
          } catch (e) {
           self.isAnonymous = false;
          }
-        
-        let ret = await self.initMenu();
-        if ( ret ) return; // if menu returned, can ignore below... and just role with the flow
-
-        await self.fetchSubject();
 
         if ( self.client != client ) {
           console.log('Stale Client in ApplicationController, waiting for update.');
@@ -684,7 +521,6 @@ foam.CLASS({
 
         await self.maybeReinstallLanguage(self.client);
         self.languageInstalled.resolve();
-
         // add user and agent for backward compatibility
         Object.defineProperty(self, 'user', {
           get: function() {
@@ -707,66 +543,12 @@ foam.CLASS({
         // the line above before executing this one.
         await self.fetchTheme();
         if ( ! self.groupLoadingHandled ) await self.onUserAgentAndGroupLoaded();
-
-        self.onDetach(self.isTOGOpen$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.mainType$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.isPrivate$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.isOwner$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.isStarred$.sub(self.setupBooleansForIdeasTheme));
-        self.onDetach(self.__subContext__.ideaDAO).sub('update', self.setupBooleansForIdeasTheme);
-        self.onDetach(self.__subContext__.situationDAO).sub('update',self.setupBooleansForIdeasTheme);
-        self.onDetach(self.__subContext__.userNotificationDAO).sub('update',self.setupBooleansForIdeasTheme);
-        // self.onDetach(self.isIdeaOpen$.sub(self.setupBooleansForIdeasTheme));
-        // self.onDetach(self.tagZ$.sub(self.setupBooleansForIdeasTheme));
-        self.setupBooleansForIdeasTheme();
-        // /* not used but could ... */self.onDetach(self.__subContext__.openObjectDAO).sub('update', self.reBuildVertical);
-        await self.findHash();
-
       });
-            // Enable session timer.
-      this.sessionTimer.enable = true;
-      this.sessionTimer.onSessionTimeout = this.onSessionTimeout.bind(this);
 
       // Reload styling on theme change
       this.onDetach(this.sub('themeChange', this.reloadStyles));
     },
-    function onSessionTimeout() {
-      if ( (this.subject && this.subject.user && this.subject.user.emailVerified) ||
-           (this.subject && this.subject.realUser && this.subject.realUser.emailVerified) ) {
-        this.add(this.Popup.create({ closeable: false }).tag(this.SessionTimeoutModal));
-      }
-    },
-    function findHash() {
-      // Get the query parameters from the URL
-      var urlParams = new URLSearchParams(window.location.search);
 
-      // Shared object link
-      // Retrieve the values of openObjId and openObjIdType
-      var openObjId = urlParams.get('openObjId');
-      var openObjIdType = urlParams.get('openObjIdType');
-      // Contact invite link
-      // url +"?cgi-token=" + token.getId()
-      var cgiToken = urlParams.get('cgi-token');
-
-      if ( openObjId && openObjIdType) {
-        this.browserOpen(openObjId, openObjIdType);
-      }
-
-      if ( cgiToken ) {
-        console.log(` TODO: token invite - check token if fail promt to login, if login success try token again...`)
-      }
-
-      // reset to default url
-      var url = new URL(window.location.href);
-      window.history.replaceState({}, '', url.origin);
-    },
-    function isIframe() {
-      try {
-        return globalThis.self !== globalThis.top;
-      } catch (e) {
-        return true;
-      }
-    },
     async function initMenu() {
       var menu;
 
@@ -795,39 +577,57 @@ foam.CLASS({
           return 1;
         }
       }
-   },
+    },
 
-  async function render() {
-    // adding a listener to track the display width here as well since we don't call super
-    window.addEventListener('resize', this.updateDisplayWidth);
-    this.updateDisplayWidth();
+    function onSessionTimeout() {
+      if ( (this.subject && this.subject.user && this.subject.user.emailVerified) ||
+            (this.subject && this.subject.realUser && this.subject.realUser.emailVerified) ) {
+        this.add(this.Popup.create({ closeable: false }).tag(this.SessionTimeoutModal));
+      }
+    },
 
-    this.initLayout.then(() => {
-      this.layoutInitialized = true;
-    });
+    function isIframe() {
+      try {
+        return globalThis.self !== globalThis.top;
+      } catch (e) {
+        return true;
+      }
+    },
 
-    // If we don't wait for the Theme object to load then we'll get
-    // errors when trying to expand the CSS macros in these models.
-    await this.clientPromise;
-    await this.fetchTheme();
+    function render() {
+      var self = this;
+      this.initLayout.then(() => {
+        this.layoutInitialized = true;
+      });
+      window.addEventListener('resize', this.updateDisplayWidth);
+      this.updateDisplayWidth();
 
-    this.AppStyles.create();
-    this.themeInstalled.resolve();
 
-    await this.themeInstalled;
-    await this.languageInstalled;
 
-    this.addMacroLayout();
-    //http://ideas:8080?token=68a548f5-c19f-40d4-8d83-3d80e1bbda62#reset
-    // don't go to log in screen if going to reset password screen
-    if ( location.hash && location.hash === '#reset' ) {
-      view = {
-        class: 'foam.nanos.auth.ChangePasswordView',
-        modelOf: 'foam.nanos.auth.resetPassword.ResetPasswordByToken'
-      };
-      this.add(this.Popup.create({ backgroundColor: 'transparent' }).tag(view));
-    }
-  },
+//      this.__subSubContext__.notificationDAO.where(
+//        this.EQ(this.Notification.USER_ID, userNotificationQueryId)
+//      ).on.put.sub((sub, on, put, obj) => {
+//        if ( obj.toastState == this.ToastState.REQUESTED ) {
+//          this.add(this.NotificationMessage.create({
+//            message: obj.toastMessage,
+//            type: obj.severity,
+//            description: obj.toastSubMessage
+//          }));
+//          var clonedNotification = obj.clone();
+//          clonedNotification.toastState = this.ToastState.DISPLAYED;
+//          this.__subSubContext__.notificationDAO.put(clonedNotification);
+//        }
+//      });
+
+      this.clientPromise.then(() => {
+        this.fetchTheme().then(() => {
+          // Work around to ensure wrapCSS is exported into context before
+          // calling AppStyles which needs theme replacement
+          self.AppStyles.create();
+          self.addMacroLayout();
+        });
+      });
+    },
 
     async function reloadClient() {
       this.clientReloading.pub();
@@ -907,20 +707,14 @@ foam.CLASS({
         this.initSubject = true;
         var result = await this.client.auth.getCurrentSubject(null);
         if ( result && result.user ) await this.reloadClient();
-        this.group = await this.client.auth.getCurrentGroup();
+
         promptLogin = promptLogin && await this.client.auth.check(this, 'auth.promptlogin');
-        if ( this.subject.user.lifecycleState == this.LifecycleState.ACTIVE &&
-          this.subject.user.emailVerified && this.subject.user.loginEnabled ) {
-          this.loginSuccess = true;
-          return;
-        }
-        throw new Error();
+        var authResult =  await this.client.auth.check(this, '*');
+        if ( ! result || ! result.user ) throw new Error();
       } catch (err) {
-        if ( ! promptLogin ) return;
+        if ( ! promptLogin || authResult ) return;
         this.languageInstalled.resolve();
-       // this.initLayout.resolve();
         await this.requestLogin();
-        this.fromLogin = true;
         return await this.fetchSubject();
       }
     },
@@ -1005,13 +799,6 @@ foam.CLASS({
         });
       }
     },
-    async function pushDefaultMenu() {
-      var defaultMenu = await this.findDefaultMenu(this.client.menuDAO);
-      defaultMenu = defaultMenu != null ? defaultMenu : '';
-      this.purgeMenuDAO(defaultMenu);
-      this.pushMenu(defaultMenu);
-      return defaultMenu;
-    },
     async function pushMenu_(realMenu, menu, opt_forceReload) {
       dao = this.client.menuDAO;
       let m = this.memento_.str;
@@ -1061,33 +848,23 @@ foam.CLASS({
         .catch(e => console.error(e.message || e));
     },
 
-    async function requestLogin() {
+    function requestLogin() {
       var self = this;
-      var view = { view: { ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn' }, parent: self };
-      await this.themeInstalled;
-      //http://ideas:8080?token=4a2465d5-5603-436b-a969-17628ef885ff#reset
+
       // don't go to log in screen if going to reset password screen
       if ( location.hash && location.hash === '#reset' ) {
-        view = {
-          class: 'foam.nanos.auth.ChangePasswordView',
-          modelOf: 'foam.nanos.auth.resetPassword.ResetPasswordByToken'
-        };
-      } else if ( location.hash && location.hash === '#sign-up' && ! this.loginSuccess ) {
-        view = {
-          ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }),
-          mode_: 'SignUp',
-          param: {
-            token_: tokenParam,
-            email:  searchParams.get('email'),
-            firstName: searchParams.has('firstName') ? searchParams.get('firstName') : '',
-            lastName:  searchParams.has('lastName')  ? searchParams.get('lastName') : '',
-            phone:     searchParams.has('phone')     ? searchParams.get('phone') : ''
-          }
-        };
+        return new Promise(function(resolve, reject) {
+          self.stack.push(self.StackBlock.create({ view: {
+            class: 'foam.nanos.auth.ChangePasswordView',
+            modelOf: 'foam.nanos.auth.resetPassword.ResetPasswordByToken'
+            }}));
+          self.loginSuccess$.sub(resolve);
+        });
       }
-      location.hash = '';
+
       return new Promise(function(resolve, reject) {
-        self.stack.push(self.StackBlock.create(view));
+        self.stack.push(self.StackBlock.create({ view: { ...(self.loginView ?? { class: 'foam.u2.view.LoginView' }), mode_: 'SignIn' }, parent: self }));
+        self.loginSuccess$.sub(resolve);
       });
     },
 
@@ -1137,105 +914,6 @@ foam.CLASS({
   ],
 
   listeners: [
-    // OK AppC - sets up variables
-    // NavCon = is the layout controller
-    // TopNav - sets up the buttons
-    // TagSearch handles the tag display and filtering.
-       // BUT the tag effects the objDao...and viseversa
-       // tags - are based on objDAO ...
-          // how - tags
-          // - based on all objDAO tags (jdao)
-          // - based on search ...
-          // obj
-          // - based on tag selection 
-          // - should only be from mainType selection
-          // - based on isPrivate
-
-          // what if var are contained to tags...
-          // then obj is just based off of tagz...
-          // when tagz change so does objDAO...
-          // so ... tagz - first filter objDAO for private and mainType...then finds junctions
-          // then considers search ... so once tagz found to set objDAO find junctions again... 
-          // objDAO the set from tagZ ...
-          // what about selecting a tagZ ...the tagZ list does not change ... its a selection.
-          // TagSearch (sideNav)
-          // set tagZ 
-
-          // tagZ
-          // - based on all objDAO tags (jdao)
-          // - based on search ...
-          // - based on isPrivate
-          // objD
-          // - based on tag selection tagZ.
-          // - should only be from mainType selection
-// if type is getting mixed up ...
-// * new
-// isPrivate
-// owned my me
-// starred ( still need to develope)
-    function setupBooleansForIdeasTheme() {
-      var dao = undefined;
-      var jdao = undefined;
-      var propA = undefined;
-      var propJ = undefined;
-      var ownerId = ctrl.subject.user.id;
-      var prop = undefined;
-      var andList = [];
-      ctrl.__subContext__.userNotificationDAO.select().then( result => {
-        ctrl.noteDAO = result.array;
-        ctrl.notedaoCount = result.array.filter(m=> !m.read).length;
-      });
-      if ( ctrl.mainType ) {
-        dao = ctrl.__subContext__.ideaDAO;
-        prop = this.Idea.CREATED;
-        propA = ctrl.Idea.IS_PRIVATE;
-        propB = ctrl.Idea.CREATED_BY;
-        propI = ctrl.Idea.ID;
-        jdao = ctrl.__subContext__[`ideaStarredJunctionDAO`];
-        propJ = ctrl.IdeaUserJunction.TARGET_ID;
-      } else {
-        dao = ctrl.__subContext__.situationDAO;
-        prop = this.Situation.CREATED;
-        propA = ctrl.Situation.IS_PRIVATE;
-        propB = ctrl.Situation.CREATED_BY;
-        propI = ctrl.Situation.ID;
-        jdao = ctrl.__subContext__[`situationStarredJunctionDAO`];
-        propJ = ctrl.SituationUserJunction.TARGET_ID;
-      }
-      if ( !! ctrl.isPrivate && ctrl.isPrivate != 'both' ) {
-        andList.push(ctrl.Eq.create({ arg1: propA, arg2: (ctrl.isPrivate == 'private') }));
-      }
-      if ( ctrl.isOwner ) {
-        andList.push(ctrl.Eq.create({ arg1: propB, arg2: ownerId }));
-      }
-      if ( ctrl.isStarred ) {
-        jdao.where(ctrl.EQ(propJ, ownerId))
-        .select()
-        .then( juncList => {
-          andList.push(ctrl.In.create({ arg1: propI, arg2: juncList.array.map( m => m.sourceId) }));
-          dao.where(ctrl.And.create({ args: andList })).select().then( result => {
-            ctrl.mainObjDAO = result.array;
-            this.reBuildVertical();
-          });
-        }).catch (e => {
-          console.debug(e);
-        });
-        return;
-      }
-      if ( ctrl.isTOGOpen ) {
-        andList.push(ctrl.In.create({ arg1: propI, arg2: ctrl.tagZ }));
-      }
-      var predicate = andList?.length > 1 ? ctrl.And.create({ args: andList }) :
-        ( andList?.length == 1 ? andList[0] : undefined);
-      var dd = !! predicate ? dao.where(predicate) : dao;
-      dd.orderBy(this.DESC(prop)).select().then( result => {
-        ctrl.mainObjDAO = result.array;
-        this.reBuildVertical();
-      }).catch (e => {
-        console.debug(e);
-      });
-    },
-  
     async function onUserAgentAndGroupLoaded() {
       /**
        * Called whenever the group updates.
@@ -1245,6 +923,7 @@ foam.CLASS({
        */
       this.subToNotifications();
 
+      this.loginSuccess = true;
       let check = await this.checkGeneralCapability();
       if ( ! check ) return;
 
@@ -1257,21 +936,7 @@ foam.CLASS({
       } else {
         this.pushMenu('');
       }
-      if ( ! location.hash.substring(1) ) { // todo...maybe
-        this.stack.push({ class: 'foam.u2.View' });
-      }
-      if ( this.subject.user.lifecycleState == this.LifecycleState.ACTIVE ) {
-        this.loginSuccess = true;
-      } else {
-        return;
-      }
-      this.initLayout.resolve(); // todo: don't think this is necessary
-      
-      if ( this.fromLogin ) {
-        if ( ! this.window.location.hash.substring(1) ) this.pushDefaultMenu();
-        else this.window.onpopstate();
-      }
-      this.fromLogin = false;
+
 //      this.__subContext__.localSettingDAO.put(foam.nanos.session.LocalSetting.create({id: 'homeDenomination', value: localStorage.getItem("homeDenomination")}));
     },
 
