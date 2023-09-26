@@ -991,7 +991,7 @@ foam.CLASS({
     function addMacroLayout() {
       this
         .addClass(this.myClass())
-        .tag(this.theme.name == 'ideas' ? this.NavController : this.NavigationController, {
+        .tag(this.NavigationController, {
           topNav$: this.topNavigation_$,
           mainView: {
             class: 'foam.u2.stack.DesktopStackView',
