@@ -260,7 +260,8 @@ foam.CLASS({
       }
     },
     { class: 'Boolean', name: 'showLogo', value: true },
-    { class: 'Boolean', name: 'showTitle', value: true }
+    { class: 'Boolean', name: 'showTitle', value: true },
+    { class: 'Boolean', name: 'defaultLogin', value: true }
   ],
 
   messages: [
@@ -318,7 +319,9 @@ foam.CLASS({
             .tag(this.data.SUB_FOOTER)
           .end()
         .end()
+        .start().show(this.defaultLogin$)
         .tag(this.data.LOGIN)
+        .end()
         .add(
           this.slot(function(data$showAction) {
             return self.E().callIf(data$showAction, function() {
