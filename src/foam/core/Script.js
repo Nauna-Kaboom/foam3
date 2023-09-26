@@ -26,7 +26,8 @@ foam.CLASS({
     },
     {
       class: 'Function',
-      name: 'code'
+      name: 'code',
+      view: { class: 'foam.u2.tag.TextArea', rows: 3, cols: 80 }
     },
     {
       name: 'flags'
