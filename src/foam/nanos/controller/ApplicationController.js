@@ -113,6 +113,7 @@ foam.CLASS({
     'isMenuOpen',
     'isAnonymous',
     'isTOGOpen',
+    'isCGOpen',
     'isPrivate',
     'isOwner',
     'isStarred',
@@ -536,6 +537,10 @@ foam.CLASS({
       class: 'Boolean'
     },
     {
+      name: 'isCGOpen',
+      class: 'Boolean'
+    },
+    {
       name: 'isOwner',
       class: 'Boolean',
       documentation: `If user wishes to only view there own ideas`
@@ -577,6 +582,7 @@ foam.CLASS({
       code: async function(obj) {
         var u = await ctrl.__subContext__.userDAO.find(ctrl.subject.user.id); 
         await u.openObjectIds.remove(this.OpenObjectSaver.create({
+          id: obj.src.obj.id,
           oId: obj.src.obj.objectStorage.id,
           oCl: obj.src.obj.objectStorage.cls_.name
         })).catch(e => {
@@ -596,7 +602,7 @@ foam.CLASS({
         if ( obj?.id == oos.oId ) {
           return promA.push(
             ctrl.openMainObjects.push(
-            this.ObjectContainer.create( { objectStorage: obj }))
+            this.ObjectContainer.create( { objectStorage: obj, id: oos.id }))
             );
         } else {
           return promA.push(
@@ -604,7 +610,7 @@ foam.CLASS({
             .find(oos.oId)
             .then(rr => {
               return ctrl.openMainObjects.push(
-                this.ObjectContainer.create( { objectStorage: rr }));
+                this.ObjectContainer.create( { objectStorage: rr, id: oos.id }));
             })
             );
         }
@@ -734,13 +740,23 @@ foam.CLASS({
       // Get the query parameters from the URL
       var urlParams = new URLSearchParams(window.location.search);
 
+      // Shared object link
       // Retrieve the values of openObjId and openObjIdType
       var openObjId = urlParams.get('openObjId');
       var openObjIdType = urlParams.get('openObjIdType');
+      // Contact invite link
+      // url +"?cgi-token=" + token.getId()
+      var cgiToken = urlParams.get('cgi-token');
 
       if ( openObjId && openObjIdType) {
         this.browserOpen(openObjId, openObjIdType);
       }
+
+      if ( cgiToken ) {
+        console.log(` TODO: token invite - check token if fail promt to login, if login success try token again...`)
+      }
+
+      // reset to default url
       var url = new URL(window.location.href);
       window.history.replaceState({}, '', url.origin);
     },
@@ -802,7 +818,6 @@ foam.CLASS({
     await this.languageInstalled;
 
     this.addMacroLayout();
-  //fofofofofo1
     //http://ideas:8080?token=68a548f5-c19f-40d4-8d83-3d80e1bbda62#reset
     // don't go to log in screen if going to reset password screen
     if ( location.hash && location.hash === '#reset' ) {
