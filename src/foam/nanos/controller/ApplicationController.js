@@ -502,15 +502,17 @@ foam.CLASS({
 
         self.onDetach(self.__subContext__.cssTokenOverrideService?.cacheUpdated.sub(self.reloadStyles));
 
-        let ret = await self.initMenu();
-        if ( ret ) return;
-
         try {
           await self.fetchSubject(false);
           self.isAnonymous = await self.__subContext__.auth.isAnonymous();
          } catch (e) {
           self.isAnonymous = false;
          }
+        
+        let ret = await self.initMenu();
+        if ( ret ) return; // if menu returned, can ignore below... and just role with the flow
+
+        await self.fetchSubject();
 
         if ( self.client != client ) {
           console.log('Stale Client in ApplicationController, waiting for update.');
@@ -521,29 +523,15 @@ foam.CLASS({
 
         await self.maybeReinstallLanguage(self.client);
         self.languageInstalled.resolve();
-        // add user and agent for backward compatibility
-        Object.defineProperty(self, 'user', {
-          get: function() {
-            console.info("Deprecated use of user. Use Subject to retrieve user");
-            return this.subject.user;
-          },
-          set: function(newValue) {
-            console.warn("Deprecated use of user setter");
-            this.subject.user = newValue;
-          }
-        });
-        Object.defineProperty(self, 'agent', {
-          get: function() {
-            console.warn("Deprecated use of agent");
-            return this.subject.realUser;
-          }
-        });
 
         // Fetch the group only once the user has logged in. That's why we await
         // the line above before executing this one.
         await self.fetchTheme();
         if ( ! self.groupLoadingHandled ) await self.onUserAgentAndGroupLoaded();
       });
+            // Enable session timer.
+      this.sessionTimer.enable = true;
+      this.sessionTimer.onSessionTimeout = this.onSessionTimeout.bind(this);
 
       // Reload styling on theme change
       this.onDetach(this.sub('themeChange', this.reloadStyles));
@@ -923,7 +911,6 @@ foam.CLASS({
        */
       this.subToNotifications();
 
-      this.loginSuccess = true;
       let check = await this.checkGeneralCapability();
       if ( ! check ) return;
 
@@ -936,8 +923,21 @@ foam.CLASS({
       } else {
         this.pushMenu('');
       }
-
-//      this.__subContext__.localSettingDAO.put(foam.nanos.session.LocalSetting.create({id: 'homeDenomination', value: localStorage.getItem("homeDenomination")}));
+      if ( ! location.hash.substring(1) ) { // todo...maybe
+        this.stack.push(this.StackBlock.create({ class: 'foam.u2.View' }));
+      }
+      if ( this.subject.user.lifecycleState == this.LifecycleState.ACTIVE ) {
+        this.loginSuccess = true;
+      } else {
+        return;
+      }
+      this.initLayout.resolve(); // todo: don't think this is necessary
+      
+      if ( this.fromLogin ) {
+        if ( ! this.window.location.hash.substring(1) ) this.pushDefaultMenu();
+        else this.window.onpopstate();
+      }
+      this.fromLogin = false;
     },
 
     // TODO: simplify in NP-8928
