@@ -231,7 +231,8 @@ foam.CLASS({
       class: 'Code',
       name: 'code',
       includeInDigest: true,
-      writePermissionRequired: true
+      writePermissionRequired: true,
+      view: { class: 'foam.u2.tag.TextArea', rows: 3, cols: 80 }
     },
     {
       class: 'String',

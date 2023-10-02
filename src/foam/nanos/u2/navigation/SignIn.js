@@ -21,6 +21,8 @@ foam.CLASS({
     'loginSuccess',
     'loginView?',
     'memento_',
+    'setTimeout',
+    'notify',
     'menuDAO',
     'pushMenu',
     'stack',
@@ -148,7 +150,7 @@ foam.CLASS({
       name: 'nextStep',
       code: async function() {
         if ( this.subject.realUser.twoFactorEnabled ) {
-          this.loginSuccess = false;
+          ctrl.loginSuccess = false;
           this.window.history.replaceState({}, document.title, '/');
           let view = { class: this.TwoFactorSignInView };
           this.closeDialog();
@@ -206,70 +208,31 @@ foam.CLASS({
       // work correctly. Chorme for example will not read a field auto populated without a user action
       isAvailable: function(showAction) { return showAction; },
       code: async function(x) {
-        if ( this.identifier.length > 0 ) {
-          if ( ! this.password ) {
-            this.notifyUser(undefined, this.ERROR_MSG3, this.LogLevel.ERROR);
+        if ( this.identifier.length == 0 ) {
+          this.notifyUser(undefined, this.ERROR_MSG2, this.LogLevel.ERROR);
+          return;
+        }
+        if ( ! this.password ) {
+          this.notifyUser(undefined, this.ERROR_MSG3, this.LogLevel.ERROR);
+          return;
+        }
+        await this.auth.login(x, this.identifier, this.password)
+        .then( _ => {
+          ctrl.loginSuccess = true;
+          this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
+          this.setTimeout(() => this.remove(), 1000);
+            window.location.reload();
+            this.__subContext__.closeDialog();
+        }).catch( err => {
+          this.loginFailed = true;
+          let e = err && err.data ? err.data.exception : err;
+          if ( this.UnverifiedEmailException.isInstance(e) || 'User is not active' == e?.message ) { 
+            var email = this.usernameRequired ? this.email : this.identifier;
+            this.verifyEmail(x, email, this.userName);
             return;
           }
-          try {
-            var loginId = this.usernameRequired ? this.username : this.identifier;
-            let logedInUser = await this.auth.login(x, loginId, this.password);
-            this.loginFailed = false;
-            if ( ! logedInUser ) return;
-            this.email = logedInUser.email;
-            this.username = logedInUser.userName;
-            if ( this.token_ ) {
-              logedInUser.signUpToken = this.token_;
-              try {
-                let updatedUser = await this.dao_.put(logedInUser);
-                this.subject.user = updatedUser;
-                this.subject.realUser = updatedUser;
-                if ( ! this.pureLoginFunction ) await this.nextStep();
-              } catch ( err ) {
-                this.notifyUser(err.data, this.ERROR_MSG, this.LogLevel.ERROR);
-              }
-            } else {
-              this.subject.user = logedInUser;
-              this.subject.realUser = logedInUser;
-              if ( ! this.pureLoginFunction ) await this.nextStep();
-            }
-
-            this.loginSuccess = true;
-            await this.ctrl.reloadClient();
-            // Temp fix to prevent breaking wizard sign in since that also calls this function
-            if ( ! this.pureLoginFunction )
-              await this.ctrl.onUserAgentAndGroupLoaded();
-          } catch (err) {
-            this.loginFailed = true;
-            let e = err && err.data ? err.data.exception : err;
-            if ( this.DuplicateEmailException.isInstance(e) ) {
-              this.email = this.identifier;
-              if ( this.username ) {
-                try {
-                  logedInUser = await this.auth.login(x, this.username, this.password);
-                  this.loginFailed = false;
-                  this.subject.user = logedInUser;
-                  this.subject.realUser = logedInUser;
-                  if ( ! this.pureLoginFunction ) await this.nextStep();
-                  return;
-                } catch ( err ) {
-                  this.username = '';
-                }
-              }
-              this.usernameRequired = true;
-            }
-            // note: AuthenticationException 'User is not active' can be thrown since the code service will set user to active when setting emailVerified
-            if ( this.UnverifiedEmailException.isInstance(e) || 'User is not active' == e?.message ) { 
-              var email = this.usernameRequired ? this.email : this.identifier;
-              this.verifyEmail(x, email, this.userName);
-              return;
-            }
-            this.notifyUser(err.data, this.ERROR_MSG, this.LogLevel.ERROR);
-          }
-        } else {
-          // TODO: Add functionality to push to sign up if the user identifier doesnt exist
-          this.notifyUser(undefined, this.ERROR_MSG2, this.LogLevel.ERROR);
-        }
+          this.notifyUser(err.data, this.ERROR_MSG, this.LogLevel.ERROR);
+        });
       }
     },
     {
