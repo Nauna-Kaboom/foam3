@@ -153,7 +153,7 @@ foam.CLASS({
           ctrl.loginSuccess = false;
           this.window.history.replaceState({}, document.title, '/');
           let view = { class: this.TwoFactorSignInView };
-          this.closeDialog();
+          if ( this.closeDialog ) this.closeDialog();
           ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
         }
       }
@@ -173,7 +173,7 @@ foam.CLASS({
               showAction: true
             }
           };
-        this.closeDialog();
+        if ( this.closeDialog ) this.closeDialog();
         ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
       }
     },
@@ -222,7 +222,7 @@ foam.CLASS({
           this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
           this.setTimeout(() => this.remove(), 1000);
             window.location.reload();
-            this.__subContext__.closeDialog();
+            if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
         }).catch( err => {
           this.loginFailed = true;
           let e = err && err.data ? err.data.exception : err;
@@ -247,7 +247,7 @@ foam.CLASS({
         mode_: 'SignUp',
         topBarShow_: X.topBarShow_,
         param: X.param }
-        this.closeDialog();
+        if ( this.closeDialog ) this.closeDialog();
         ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
 
       }
@@ -263,8 +263,8 @@ foam.CLASS({
           class: this.ChangePasswordView,
           modelOf: 'foam.nanos.auth.RetrievePassword'
         }
+        if (this.closeDialog ) this.closeDialog();
         ctrl.add(this.Popup.create({ backgroundColor: 'white' }).tag(view));
-        this.closeDialog();
       }
     }
   ]
