@@ -47,25 +47,102 @@ foam.CLASS({
 
   methods: [
     {
-      name: 'find_',
-      code: function find_(x, id) {
-        var self = this;
-        var junction = this.relationship.createJunction(id)
+      name: 'put_',
+      code: function(obj) {
+        throw new Error("Create a junction - puts aren't accepted.");
+      },
+      javaCode: `
+        throw new UnsupportedOperationException("Create a junction - puts aren't accepted.");
+      `,
+    },
 
-        return this.relationship.junctionDAO.find(junction.id).then(function(a) {
-          return a && self.delegate.find_(x, id);
-        });
-      }
+    {
+      name: 'remove_',
+      code: async function remove_(x, obj) {
+        var objId = typeof obj == 'object' ? obj.id : obj;
+        return await this.relationship.junctionDAO
+          .remove({ class: `${this.relationship.junctionDAO.of.id}`, sourceId: `${this.relationship.sourceId}`, targetId: objId });
+      },
+      javaCode: `
+        Object objectId = null;
+        if ( obj instanceof foam.core.FObject ) {
+          objectId = ((foam.core.PropertyInfo) obj.getClassInfo().getAxiomByName("id")).f(obj);
+        } else {
+          objectId = obj;
+        }
+        var a = getRelationship().getJunctionDAO().find(foam.mlang.MLang.AND(foam.mlang.MLang.EQ(getRelationship().getSourceProperty(),getRelationship().getSourceId()), foam.mlang.MLang.EQ(getRelationship().getTargetProperty(), objectId)));
+        return getRelationship().getJunctionDAO().remove(a);
+      `,
+    },
+    {
+      name: 'removeAll_',
+      code: async function removeAll_() {
+        return await this.relationship.junctionDAO
+          .where(this.EQ(this.relationship.sourceProperty, this.relationship.sourceId))
+          .select( obj => {
+            this.relationship.junctionDAO.remove(obj);
+          });
+      },
+      javaCode: `
+      // .setSourceId(getId())
+      // .setSourceProperty(ideas.contacts.ContactGroupPublicUserJunction.SOURCE_ID)
+      // .setTargetProperty(ideas.contacts.ContactGroupPublicUserJunction.TARGET_ID)
+      // .setTargetDAOKey("publicUserDAO")
+      // .setUnauthorizedTargetDAOKey("")
+      // .setJunctionDAOKey("contactGroupPublicUserJunctionDAO")
+      // .setJunction(ideas.contacts.ContactGroupPublicUserJunction.getOwnClassInfo())
+
+      // CALL would be: cg.getMembers(x).getDAO().removeAll(); // hold is there only one? yes...s&t unique
+      var pred = foam.mlang.MLang.EQ(getRelationship().getSourceProperty(), getRelationship().getSourceId());
+      var p = predicate != null ?
+        foam.mlang.MLang.AND(predicate, pred ) :
+        pred;
+        
+        getRelationship().getJunctionDAO()
+          .select_(x, new foam.dao.RemoveSink(x, getRelationship().getJunctionDAO()), skip, limit, order, p);
+          // .where(foam.mlang.MLang.EQ(getRelationship().getSourceProperty(), getRelationship().getSourceId() ))
+          // .select(new foam.dao.AbstractSink() {
+          //   @Override
+          //   public void put(Object obj, Detachable sub) {
+          //     getRelationship().getJunctionDAO().remove(obj);
+          //   }
+          // });
+      `,
+    },
+    {
+      name: 'find_',
+      code: async function find_(x, id) {
+        var r = await this.relationship.junctionDAO.
+          find(this.AND(
+            this.EQ(this.relationship.sourceProperty, this.relationship.sourceId),
+            this.EQ(this.relationship.targetProperty, id)
+          ));
+        if ( r ) return this.delegate.find(id);
+      },
+      javaCode: `
+        foam.mlang.sink.Map junction = (foam.mlang.sink.Map) getRelationship().getJunctionDAO()
+          .where(foam.mlang.MLang.EQ(getRelationship().getSourceProperty(), getRelationship().getSourceId()))
+          .select(foam.mlang.MLang.MAP(getRelationship().getTargetProperty(), new foam.dao.ArraySink()));
+
+        foam.nanos.auth.Subject subject = (foam.nanos.auth.Subject) getX().get("subject");
+        if ( subject != null && subject.getUser() != null && subject.getUser().getId() == foam.nanos.auth.User.SYSTEM_USER_ID && getUnauthorizedTargetDAOKey().length() != 0 ) {
+          setDelegate(((foam.dao.DAO) getX().get(getUnauthorizedTargetDAOKey())).inX(getX()));
+        }
+
+        return getDelegate()
+          .where(foam.mlang.MLang.IN(getPrimaryKey(), ((foam.dao.ArraySink) (junction.getDelegate())).getArray().toArray()))
+          .find_(x, id);
+      `,
     },
     {
       name: 'select_',
-      code: function select_(x, sink, skip, limit, order, predicate) {
+      code: async function select_(x, sink, skip, limit, order, predicate) {
         var self = this;
 
-        return this.relationship.junctionDAO.
+        return await this.relationship.junctionDAO.
           where(self.EQ(this.relationship.sourceProperty, this.relationship.sourceId)).
-          select(self.MAP(this.relationship.targetProperty)).then(function(map) {
-            return self.delegate.select_(x, sink, skip, limit, order, self.AND(
+          select(self.MAP(this.relationship.targetProperty)).then(async function(map) {
+            return await self.delegate.select_(x, sink, skip, limit, order, self.AND(
               predicate || self.TRUE,
               self.IN(self.of.ID, map.delegate.array)));
           });
