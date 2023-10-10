@@ -96,7 +96,7 @@ foam.CLASS({
         templateArgs.put("privacyLabel", appConfig.getPrivacy());
 
         // Temporary color until token support is added for email
-        templateArgs.put("theme", theme);
+        // templateArgs.put("theme", theme);
 
         // personal support user
         User psUser = supportConfig.findPersonalSupportUser(getX());
