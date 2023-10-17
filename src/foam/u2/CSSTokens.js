@@ -15,14 +15,14 @@ foam.CLASS({
   */
   cssTokens: {
     // COLOUR
-    'blue50': '#D7E4FF',
-    'blue100': '#96B8F9',
-    'blue200': '#6795EE',
-    'blue300': '#366EDC',
-    'blue400': '#0A4AC6',
-    'blue500': '#04338D',
-    'blue600': '#022568',
-    'blue700': '#011B4E',
+    'blue50': '#edd50b', //#D7E4FF',
+    'blue100': '#8fdf14', //#96B8F9',
+    'blue200': '#edd50b', //'#6795EE',
+    'blue300': '#8fdf14', //'#366EDC',
+    'blue400': '#edd50b', //'#0A4AC6',
+    'blue500': '#8fdf14', //'#04338D',
+    'blue600': '#edd50b', //'#022568',
+    'blue700': '#8fdf14', //'#011B4E',
 
     'yellow100': '#FFF3BF',
     'yellow200': '#FFEFAC',

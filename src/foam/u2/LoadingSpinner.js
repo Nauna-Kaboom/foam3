@@ -45,7 +45,7 @@ foam.CLASS({
       name: 'isHidden',
       value: false,
       postSet: function (_, n) {
-        if ( n === false )
+        if ( ! n )
           this.tick();
       }
     },

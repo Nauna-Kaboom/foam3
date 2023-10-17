@@ -21,7 +21,7 @@
       background-image: url("application/src/ideas/images/searchCopy.svg");
       background-repeat: no-repeat;
       background-position: left 0.5em top 50%, 0 0;
-      padding: 0 16px 0 32px;
+      padding: 0 0 0 30px;
     }
   `,
 
