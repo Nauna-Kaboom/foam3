@@ -29,6 +29,7 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'skipToData',
+      documentation: 'Crunch specific - for Documents',
       value: false
     }
   ],
@@ -46,6 +47,7 @@ foam.CLASS({
     async function processFiles(obj) {
       var props1 = obj.cls_.getAxiomsByClass(foam.nanos.fs.FileArray);
       let label, capabilityId;
+      let isPrivate = obj.isPrivate;
       if ( foam.nanos.crunch.document.Document.isInstance(obj) ) {
         label = obj.capability.label;
         capabilityId = obj.capability.id;
@@ -53,6 +55,7 @@ foam.CLASS({
       var values = await Promise.all(props1.map(prop => Promise.all(prop.f(obj).map(f => {
           f.label = label;
           f.capabilityId = capabilityId;
+          f.isPrivate = isPrivate;
           return this.processFile(f);
         }))));
       values.forEach(f => f.forEach(f2 => {

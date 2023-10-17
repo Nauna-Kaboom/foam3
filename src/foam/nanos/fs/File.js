@@ -251,6 +251,11 @@ foam.CLASS({
       class: 'Reference',
       of: 'foam.nanos.crunch.Capability',
       name: 'capabilityId'
+    },
+    {
+      class: 'Boolean',
+      name: 'isPrivate',
+      value: true
     }
   ],
   methods: [
@@ -268,6 +273,7 @@ foam.CLASS({
       javaCode: `
         User user = ((Subject) x.get("subject")).getUser();
         AuthService auth = (AuthService) x.get("auth");
+        if ( ! getIsPrivate() ) return;
         if (
           ! ( ( user != null && SafetyUtil.equals(this.getOwner(), user.getId()) ) ||
               auth.check(x, "file.read." + this.getId()) )

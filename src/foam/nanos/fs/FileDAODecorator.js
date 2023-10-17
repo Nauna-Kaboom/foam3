@@ -50,6 +50,7 @@ foam.CLASS({
         } else {
           file.dataString = undefined;
         }
+        file.isPrivate = obj.isPrivate;
         return self.fileDAO.put(file).then(function (b) {
           prop.set(obj, b);
           return a();
