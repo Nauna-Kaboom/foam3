@@ -33,17 +33,34 @@ foam.CLASS({
       name: 'put_',
       javaCode: `
       File file = (File) obj;
-      if ( ! SafetyUtil.isEmpty(file.getDataString()) ) {
-        return getDelegate().put_(x, obj);
-      }
+
+      // if ( file.filesize <= self.maxStringDataSize ) {
+      //   file.dataString = await self.encode(file.data.blob);
+      //   file.instance_.data = undefined;
+      // } else {
+      //   file.dataString = undefined;
+      // }
+      // ^ from client decorators ... on objects that 
+      // if small file
+      // - dataString = encoded, data = null, and bypass below
+      // if larger
+      // - dataString = null, data is unknown, assume flow through below
+
+      // doesn't seem necessary when we do the same client checks on the server(below). 
+      // and this is only nesessary cause of the client code sets these conditions...
+      // TODO here is remove the client decorators FileDAODecorator and most likekly fileArrayDAODecorator
+      
+      // if ( ! SafetyUtil.isEmpty(file.getDataString()) ) { // small files
+      //   return getDelegate().put_(x, obj);
+      // }
 
       Blob blob = file.getData();
-      if ( blob == null ) {
+      if ( blob == null ) { // small files...or some error?
         return getDelegate().put_(x, obj);
       }
 
       // save to data string
-      if ( file.getFilesize() <= getMaxStringDataSize() ) {
+      if ( file.getFilesize() <= getMaxStringDataSize() ) { // again looking at small files...
         try {
           java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream((int) file.getFilesize());
           blob.read(os, 0, file.getFilesize());
@@ -88,7 +105,7 @@ foam.CLASS({
         }
       }
 
-      try {
+      try { // if file is larger...
         // save to filesystem
         BlobService blobStore = (BlobService) x.get("blobStore");
         IdentifiedBlob result = (IdentifiedBlob) blobStore.put(blob);
