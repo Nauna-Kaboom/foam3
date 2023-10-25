@@ -250,7 +250,6 @@ foam.CLASS({
   body {
     min-height: var(--max-height, 100vh);
     min-height: -webkit-fill-available;
-    line-height: 1.5;
   }
 
   /* A elements that don't have a class get default styles */

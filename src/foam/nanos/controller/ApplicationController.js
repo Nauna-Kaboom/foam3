@@ -140,38 +140,38 @@ foam.CLASS({
         'DisplayWidth.MD',
         'DisplayWidth.LG',
         'DisplayWidth.XL',
-        'primary1', // 35
-        'primary2', // 35
-        'primary3', // 30
+        'primary1',
+        'primary2',
+        'primary3',
         'primary4',
         'primary5',
-        'approval1', // 35 - tran of p
-        'approval2', // 35 - tran of p
-        'approval3', // 30 - tran of p
-        'approval4', // 30
+        'approval1',
+        'approval2',
+        'approval3',
+        'approval4',
         'approval5',
-        'secondary1', // 35 - grd of p
-        'secondary2', // 35 - grd of p
-        'secondary3', // 30 - grd of p
-        'secondary4',// 30
+        'secondary1',
+        'secondary2',
+        'secondary3',
+        'secondary4',
         'secondary5',
         'warning1',
         'warning2',
         'warning3',
         'warning4',
         'warning5',
-        'destructive1', // 30 -1 font
+        'destructive1',
         'destructive2',
         'destructive3',
         'destructive4',
         'destructive5',
-        'grey1', // border
-        'grey2', // hover
-        'grey3', // tooltip
-        'grey4', // tooltip font
+        'grey1',
+        'grey2',
+        'grey3',
+        'grey4',
         'grey5',
-        'black',  // font
-        'white', // background
+        'black',
+        'white',
         'inputHeight',
         'inputVerticalPadding',
         'inputHorizontalPadding'

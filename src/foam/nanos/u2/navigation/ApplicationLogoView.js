@@ -29,10 +29,7 @@ foam.CLASS({
       cursor: pointer;
     }
     ^ img, ^ svg {
-      height: 25px;
-      max-height: 40px;
-      /* remove and override any image styling to preserve aspect ratio */
-      width: unset;
+      height: 13vh;
     }
   `,
 
