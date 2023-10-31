@@ -15,14 +15,14 @@ foam.CLASS({
   */
   cssTokens: {
     // COLOUR
-    'blue50': '#edd50b', //#D7E4FF',
-    'blue100': '#8fdf14', //#96B8F9',
-    'blue200': '#edd50b', //'#6795EE',
-    'blue300': '#8fdf14', //'#366EDC',
-    'blue400': '#edd50b', //'#0A4AC6',
-    'blue500': '#8fdf14', //'#04338D',
-    'blue600': '#edd50b', //'#022568',
-    'blue700': '#8fdf14', //'#011B4E',
+    'blue50': '#ff0000', // #edd50b', //#D7E4FF',
+    'blue100': '#edd50b', //#96B8F9',
+    'blue200': '#ff0000', //'#6795EE',
+    'blue300': '#edd50b', //'#366EDC',
+    'blue400': '#ff0000', //'#0A4AC6',
+    'blue500': '#edd50b', //'#04338D',
+    'blue600': '#ff0000', //'#022568',
+    'blue700': '#edd50b', //'#011B4E',
 
     'yellow100': '#FFF3BF',
     'yellow200': '#FFEFAC',
@@ -143,7 +143,7 @@ foam.CLASS({
     'inputHeight': '34px',
     'inputHorizontalPadding': '8px',
     'inputVerticalPadding': '8px',
-    'inputBorderRadius': '10px',
+    'inputBorderRadius': '26px',
 
     // FONT
     'font1': `'Source Sans Pro', sans-serif`

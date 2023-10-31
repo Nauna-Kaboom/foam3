@@ -32,6 +32,8 @@ foam.CLASS({
       padding-right: 2.1em;
       text-overflow: ellipsis;
       width: 100%;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
     }
     ^ option {
       padding: 4px;

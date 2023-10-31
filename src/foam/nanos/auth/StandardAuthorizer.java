@@ -43,7 +43,6 @@ public class StandardAuthorizer
     AuthService authService = (AuthService) x.get("auth");
 
     if ( ! authService.check(x, p) ) {
-      ((foam.nanos.logger.Logger) x.get("logger")).debug("StandardAuthorizer", "Permission denied.", p);
       throw new AuthorizationException();
     }
   }

@@ -257,7 +257,6 @@ foam.CLASS({
         AuthService auth = (AuthService) x.get("auth");
 
         if ( ! auth.check(x, permission) ) {
-          ((foam.nanos.logger.Logger) x.get("logger")).debug("AuthorizableAuthorizer", "Permission denied.", permission);
           throw new AuthorizationException("Permission denied: Cannot create NSpec.");
         }
       `
@@ -273,7 +272,6 @@ foam.CLASS({
         try {
           checkAuthorization(x);
         } catch ( AuthorizationException e ) {
-          ((foam.nanos.logger.Logger) x.get("logger")).debug("AuthorizableAuthorizer", "Permission denied", "service." + getId());
           throw new AuthorizationException("Permission denied: Cannot read this NSpec.");
         }
       `
@@ -292,7 +290,6 @@ foam.CLASS({
       AuthService auth = (AuthService) x.get("auth");
 
       if ( ! auth.check(x, permission) ) {
-        ((foam.nanos.logger.Logger) x.get("logger")).debug("AuthorizableAuthorizer", "Permission denied.", permission);
         throw new AuthorizationException("Permission denied: Cannot update this NSpec.");
       }
       `
@@ -309,7 +306,6 @@ foam.CLASS({
         AuthService auth = (AuthService) x.get("auth");
 
         if ( ! auth.check(x, permission) ) {
-          ((foam.nanos.logger.Logger) x.get("logger")).debug("AuthorizableAuthorizer", "Permission denied.", permission);
           throw new AuthorizationException("Permission denied: Cannot delete this NSpec.");
         }
       `
