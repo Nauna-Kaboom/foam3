@@ -28,8 +28,12 @@ foam.CLASS({
         /* Override a few of the styles in foam.u2.TextInputCSS */
         ^ {
           height: auto;
-          padding-top: $inputVerticalPadding;
-          padding-bottom: $inputVerticalPadding;
+          padding-top: /*$inputVerticalPadding*/ 8px;
+          padding-bottom: /*$inputVerticalPadding*/ 8px;
+          border-radius: 2px;
+          border-left: none;
+          border-right: none;
+          border-top: none;
         }
       `
     }
