@@ -73,7 +73,8 @@ foam.CLASS({
       if ( this.escapeTextArea ) {
         this.style({'white-space': 'pre'});
       }
-      this.attrs({rows: this.rows, cols: this.cols, placeholder: this.placeholder$, wrap: this.wrap});
+      this.rows$.linkTo(this.attrSlot('rows'));
+      this.attrs({ cols: this.cols, placeholder: this.placeholder$, wrap: this.wrap });
 
       // this.attrSlot(
       //   'value',
