@@ -57,9 +57,6 @@ foam.CLASS({
 
   /* ON RIGHT SIDE ALL **** */
   ^ .centerVertical {
-    padding-top: 3vh;
-    max-width: 30vw;
-    margin: 0 auto;
   }
 
 
@@ -94,11 +91,6 @@ foam.CLASS({
 
   /* ON DATA */
   ^content-form {
-    width: 75%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
   }
 
   /* ON ALL FOOTER TEXT */
@@ -178,6 +170,14 @@ foam.CLASS({
     ^content-form {
       align-self: center;
     }
+  }
+  ^card-container {
+    padding: 20px;
+    box-shadow: inset 0px -2px 4px 1px black;
+    background: white;
+  }
+  ^ .prim-action {
+    text-align: center;
   }
   `,
 
@@ -295,7 +295,7 @@ foam.CLASS({
       let logo = self.imgPath || (this.theme.largeLogo ? this.theme.largeLogo : this.theme.logo);
 
       // CREATE DATA VIEW
-      var right = this.E()
+      var right = this.E().addClass(this.myClass('card-container'))
       // Header on-top of rendering data
         .start()
           .add(
@@ -319,8 +319,10 @@ foam.CLASS({
             .tag(this.data.SUB_FOOTER)
           .end()
         .end()
-        .start().show(this.defaultLogin$)
-        .tag(this.data.LOGIN)
+        .start()
+          .addClass('prim-action')
+          .show(this.defaultLogin$)
+          .tag(this.data.LOGIN)
         .end()
         .add(
           this.slot(function(data$showAction) {
