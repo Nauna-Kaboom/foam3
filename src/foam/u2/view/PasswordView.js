@@ -37,7 +37,6 @@ foam.CLASS({
       --fieldSize: $inputHeight;
       position: absolute;
       width: 16px;
-      height: calc( var(--fieldSize) / 1.2);
       top: calc( var(--fieldSize) / 15);
       right: 1vh;
       opacity: 0.3;
