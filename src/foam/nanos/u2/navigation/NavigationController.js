@@ -62,9 +62,14 @@ foam.CLASS({
 
     ^stack-view {
       grid-column: 2 / 3;
-      height: 100%;
       overflow: auto;
       transition: 0.2s ease;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      box-shadow: inset 0 1px 20px 15px black;
+      background: #ffe700d6;
     }
 
     ^sidebar^sideNav{
