@@ -22,32 +22,45 @@ foam.CLASS({
   `,
 
   properties: [
-    'resizable'
+    'resizable',
+    {
+      class: 'Boolean',
+      name: 'isLink'
+    }
   ],
 
   methods: [    
     function render() {
       this.SUPER();
       this.addClass();
-
+      var att = {};
+      if ( this.isLink ) att = { src: this.data, target: "_parent" };
+      else att = { srcdoc: this.data }
       this.start('iframe')
-        .attrs({ srcdoc: this.data })
+        .attrs(att)
         .enableClass(this.myClass('resize'), this.resizable$)
-        .on('load', evt => this.resizeIFrame(evt.target))
+        .callIf(this.isLink, _ => {
+          this.on('error', _ => console.log('error'))
+        })
+        .on('load', evt => this.resizeIFrame(evt))
       .end();
     },
 
-    function resizeIFrame(el) {
-      // reset padding and margins of iframe document body
-      el.contentDocument.body.style.padding = 0;
-      el.contentDocument.body.style.margin = 0;
+    function resizeIFrame(evt) {
+      var el = evt.target;
+      if ( ! this.isLink ) {
+        // reset padding and margins of iframe document body
+        el.contentDocument.body.style.padding = 0;
+        el.contentDocument.body.style.margin = 0;
 
-      // set iframe dimensions according to the document / its content
-      el.style.height = Math.max(
-        el.contentDocument.documentElement.scrollHeight,
-        el.contentDocument.body.firstElementChild.scrollHeight
-      );
-      el.style.width = "100%";
+        // set iframe dimensions according to the document / its content
+        el.style.height = Math.max(
+          el.contentDocument.documentElement.scrollHeight,
+          el.contentDocument.body.firstElementChild.scrollHeight
+        );
+        el.style.width = "100%";
+      }
+      console.log(`load event iframe %o`, evt)
     }
   ]
 });

@@ -18,8 +18,7 @@ foam.CLASS({
       name: 'created',
       section: 'mainBodySection',
       documentation: 'Creation date',
-      createVisibility: 'HIDDEN',
-      updateVisibility: 'RO',
+      visibility: 'HIDDEN',
       // view: function(_, x) {
       //   if ( x?.data?.created ) return;
       //   return ctrl.E().start()
