@@ -11,6 +11,7 @@ foam.CLASS({
   documentation: 'Email message',
 
   implements: [
+    'foam.nanos.auth.Authorizable',
     'foam.nanos.auth.CreatedAware',
     'foam.nanos.auth.CreatedByAware',
     'foam.nanos.auth.LastModifiedByAware',
@@ -23,6 +24,8 @@ foam.CLASS({
 
   javaImports: [
     'foam.core.X',
+    'foam.nanos.auth.AuthService',
+    'foam.nanos.auth.AuthorizationException',
     'foam.nanos.auth.ServiceProviderAwareSupport',
     'foam.util.SafetyUtil',
     'java.util.HashMap',
@@ -263,5 +266,64 @@ foam.CLASS({
       hidden: true,
       javaFactory: 'return 1L;'
     }
+  ],
+  methods: [
+    {
+      name: 'authorizeOnCreate',
+      args: [
+        { name: 'x', type: 'Context' }
+      ],
+      javaThrows: ['AuthorizationException'],
+      javaCode: `
+        // "this is client service - should not be created"
+        AuthService auth = (AuthService) x.get("auth");
+        if ( auth.check(x, "permission.toCreate.clientEmail") ) return;
+        
+        throw new AuthorizationException();
+      `
+    },
+    {
+      name: 'authorizeOnRead',
+      args: [
+        { name: 'x', type: 'Context' }
+      ],
+      javaThrows: ['AuthorizationException'],
+      javaCode: `
+        // "this is client service - should not be created"
+        AuthService auth = (AuthService) x.get("auth");
+        if ( auth.check(x, "permission.toRead.clientEmail") ) return;
+        
+        throw new AuthorizationException();
+      `
+    },
+    {
+      name: 'authorizeOnUpdate',
+      args: [
+        { name: 'x', type: 'Context' },
+        { name: 'oldObj', type: 'foam.core.FObject' }
+      ],
+      javaThrows: ['AuthorizationException'],
+      javaCode: `
+        // "this is client service - should not be created"
+        AuthService auth = (AuthService) x.get("auth");
+        if ( auth.check(x, "permission.toUpdate.clientEmail") ) return;
+        
+        throw new AuthorizationException();
+      `
+    },
+    {
+      name: 'authorizeOnDelete',
+      args: [
+        { name: 'x', type: 'Context' }
+      ],
+      javaThrows: ['AuthorizationException'],
+      javaCode: `
+      // "this is client service - should not be created"
+      AuthService auth = (AuthService) x.get("auth");
+      if ( auth.check(x, "permission.toDelete.clientEmail") ) return;
+      
+      throw new AuthorizationException();
+      `
+    },
   ]
 });
