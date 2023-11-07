@@ -147,7 +147,7 @@ foam.CLASS({
                         if ( ! json.class ) json.class = 'foam.dao.EasyDAO';
                         var cls = foam.lookup(json.class);
                         if ( cls == null ) {
-                          self.error('Uknown Client class:', json.class, 'for service:', spec.name);
+                          self.error('Unknown Client class:', json.class, 'for service:', spec.name);
                           return null;
                         }
                         var defaults = {
