@@ -271,12 +271,12 @@ foam.CLASS({
     {
       name: 'authorizeOnRead',
       javaCode: `
+        if ( ! getIsPrivate() ) return;
         User user = ((Subject) x.get("subject")).getUser();
         AuthService auth = (AuthService) x.get("auth");
-        if ( ! getIsPrivate() ) return;
         if (
-          ! ( ( user != null && SafetyUtil.equals(this.getOwner(), user.getId()) ) ||
-              auth.check(x, "file.read." + this.getId()) )
+          ! ( ( user != null && SafetyUtil.equals(getOwner(), user.getId()) ) ||
+              auth.check(x, "file.read." + getId()) )
          ) {
           throw new AuthorizationException();
         }
@@ -292,6 +292,8 @@ foam.CLASS({
     {
       name: 'authorizeOnDelete',
       javaCode: `
+        User user = ((Subject) x.get("subject")).getUser();
+        if ( SafetyUtil.equals(getCreatedBy(), user.getId()) ) return;
         AuthService auth = (AuthService) x.get("auth");
         if ( ! auth.check(x, "file.remove." + getId()) ) {
           throw new AuthorizationException();

@@ -12,7 +12,8 @@
   documentation: 'view to enter email verification code',
 
   imports: [
-    'pushMenu'
+    'pushMenu',
+    'theme'
   ],
 
   requires: [
@@ -20,9 +21,19 @@
   ],
 
   css: `
-    ^ {
-      height: 100%;
-    }
+  ^ {
+    background-color: #fff;
+    max-width: 450px;
+    width: 100vw;
+    overflow-y: auto;
+    display: flex;
+    border-radius: $inputBorderRadius;
+    box-shadow: inset 0px -2px 4px 1px black;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+  }
     ^flex {
       display: flex;
       flex-direction: column;
@@ -35,6 +46,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
+      margin-bottom: 55px;
     }
     ^title {
         text-align:center;
@@ -95,7 +107,7 @@
   methods: [
     function render() {
       this
-        .addClass(this.myClass(), this.myClass('flex'))
+        .addClass(this.myClass(), this.myClass('flex')).style({ 'border': `2px ridge ${(this.theme.primary4 || '#edd50b')}`})
         .start('h1').addClass(this.myClass('title')).add(this.data.TITLE).end()
         .start('p').addClass(this.myClass('subTitle')).add(this.data.INSTRUCTION).end()
         .start(this.SectionView, { data$: this.data$, sectionName: 'verificationCodeSection', showTitle: false })

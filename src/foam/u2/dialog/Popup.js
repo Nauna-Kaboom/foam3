@@ -58,6 +58,7 @@ foam.CLASS({
       cursor: pointer;
       transition: all ease-in 0.1s;
       padding: 0;
+      border-radius: 50%;
     }
     ^X:hover{
       transform: scale(1.1)

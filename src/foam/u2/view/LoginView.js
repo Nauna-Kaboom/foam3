@@ -175,6 +175,7 @@ foam.CLASS({
     padding: 20px;
     box-shadow: inset 0px -2px 4px 1px black;
     background: white;
+    border-radius: $inputBorderRadius;
   }
   ^ .prim-action {
     text-align: center;
@@ -295,7 +296,7 @@ foam.CLASS({
       let logo = self.imgPath || (this.theme.largeLogo ? this.theme.largeLogo : this.theme.logo);
 
       // CREATE DATA VIEW
-      var right = this.E().addClass(this.myClass('card-container'))
+      var right = this.E().addClass(this.myClass('card-container')).style({ 'border': `2px ridge ${(this.theme.primary4 || '#edd50b')}`})
       // Header on-top of rendering data
         .start()
           .add(

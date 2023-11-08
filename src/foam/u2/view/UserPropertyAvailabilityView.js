@@ -35,7 +35,7 @@ foam.CLASS({
       position: absolute;
       right: 0;
       margin-right: 11px;
-      margin-top: 11px;
+      margin-top: 4px;
     }
   `,
 
