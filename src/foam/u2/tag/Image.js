@@ -19,8 +19,7 @@ foam.CLASS({
   package: 'foam.u2.tag',
   name: 'Image',
   extends: 'foam.u2.View',
-
-  imports: [ 'theme' ], //needed?
+  mixins: ['foam.u2.view.NavButtonMixin'],
 
   requires: [
     'foam.net.HTTPRequest',
@@ -30,6 +29,14 @@ foam.CLASS({
   css: `
     ^ .foam-u2-HTMLView {
       padding: 0;
+    }
+    ^imgHov:hover {
+      background: $NavButtonBackgroundColor$hover;
+      border-radius: $inputBorderRadius;
+      box-shadow: 1px 1px 1px 0px #b1a5a5;
+    }
+    ^imgHov {
+      cursor: pointer;
     }
   `,
 
@@ -62,6 +69,13 @@ foam.CLASS({
     {
       class: 'Function',
       name: 'onCk'
+    },
+    {
+      class: 'Boolean',
+      name: 'isOnClick',
+      expression: function(onCk) {
+        return !! onCk;
+      }
     }
   ],
 
@@ -82,16 +96,16 @@ foam.CLASS({
       this
         .addClass(this.myClass())
         .add(this.slot(function(data, glyph, displayWidth, displayHeight, alpha) {
+          var e = this.E().enableClass(this.myClass('imgHov'), this.isOnClick$);
           if ( glyph ) {
             var indicator = glyph.clone(this).expandSVG();
-            return this.E().start(this.HTMLView, { data: indicator })
+            return e.start(this.HTMLView, { data: indicator })
               .on('click', () => this.onCk())
               .attrs({ role: this.role })
               .end();
           }
 
           if ( this.embedSVG && data?.endsWith('svg') ) {
-            var e = this.E();
             this.requestWithCache(data).then(data => {
               e.start(this.HTMLView, { data: data })
                 .on('click', () => this.onCk())
@@ -102,8 +116,7 @@ foam.CLASS({
             return e;
           }
           if ( ! data) return null;
-          return this.E()
-            .start('img')
+          return e.start('img')
               .on('click', () => this.onCk())
               .attrs({ src: data, role: this.role })
               .style({
