@@ -60,6 +60,7 @@ foam.CLASS({
     ^:hover:not(:disabled):not(:active):not(.selected) {
       background-color: $NavButtonBackgroundColor$hover;
       color: $NavButtonBackgroundColor$hover$foreground;
+      border-radius: 50%;
     }
     ^:hover:not(:disabled):not(:active):not(.selected) svg {
       fill: $NavButtonBackgroundColor$hover$foreground;
@@ -73,6 +74,7 @@ foam.CLASS({
     }
     ^{
       color: $NavButtonBackgroundColor$foreground;
+      border-radius: $buttonRadius;
     }
     ^ svg {
       fill: $NavButtonBackgroundColor$foreground;

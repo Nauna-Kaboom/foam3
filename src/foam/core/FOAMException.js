@@ -108,7 +108,7 @@ foam.CLASS({
     {
       name: 'hostname',
       class: 'String',
-      javaFactory: 'return System.getProperty("hostname", "localhost");',
+      javaFactory: 'return System.getProperty("hostname", "localhost");', //
       visibilty: 'RO'
     },
     {

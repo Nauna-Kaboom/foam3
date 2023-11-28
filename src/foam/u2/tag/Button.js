@@ -25,7 +25,7 @@ foam.CLASS({
   cssTokens: [
     {
       name: 'buttonRadius',
-      value: '4px'
+      value: '18px'
     },
     {
       class: 'foam.u2.ColorToken',

@@ -18,16 +18,16 @@
 foam.CLASS({
   package: 'foam.json2',
   name: 'Test',
-  requires: [
-    'foam.test.AllProperties'
-  ],
+  // requires: [
+  //   'foam.test.AllProperties'
+  // ],
   methods: [
     function init() {
-      var o1 = this.AllProperties.create({
-        str: 'str',
-        n: 12,
-        function: function(asdfasdf) { console.log("arg is:", asdfasdf); }
-      });
+      var o1 = '';//this.AllProperties.create({
+      //   str: 'str',
+      //   n: 12,
+      //   function: function(asdfasdf) { console.log("arg is:", asdfasdf); }
+      // });
 
       var o2 = foam.json2.Deserializer.create({ parseFunctions: true }).aparseString(
         foam.__context__,
