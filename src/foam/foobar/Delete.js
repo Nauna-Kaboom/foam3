@@ -58,32 +58,32 @@ foam.CLASS({
           throw new Error(`attempted to delete protected path: ${absPath}`);
         }
       }
-      // await this.fs_.rm(absPath, {
-      //   recursive: this.recursive,
-      //   force: this.force,
-      // });
-      // **
-      await this.fs_.readdir(absPath, (err, files) => {
-        if (err) {
-          console.error(`Error reading directory: ${err}`);
-          return;
-        }
-    
-        // Filter out files that don't end with '.0'
-        const filesToDelete = files.filter(file => ! file.endsWith('.0'));
-    
-        // Delete the remaining files
-        filesToDelete.forEach(file => {
-          const filePath = path.join(directoryPath, file);
-          fs.unlink(filePath, (err) => {
-            if (err) {
-              console.error(`Error deleting file ${filePath}: ${err}`);
-            } else {
-              console.log(`Deleted: ${filePath}`);
-            }
-          });
-        });
+      await this.fs_.rm(absPath, {
+        recursive: this.recursive,
+        force: this.force,
       });
+      // **
+      // await this.fs_.readdir(absPath, (err, files) => {
+      //   if (err) {
+      //     console.error(`Error reading directory: ${err}`);
+      //     return;
+      //   }
+    
+      //   // Filter out files that don't end with '.0'
+      //   const filesToDelete = files.filter(file => ! file.endsWith('.0'));
+    
+      //   // Delete the remaining files
+      //   filesToDelete.forEach(file => {
+      //     const filePath = path.join(directoryPath, file);
+      //     fs.unlink(filePath, (err) => {
+      //       if (err) {
+      //         console.error(`Error deleting file ${filePath}: ${err}`);
+      //       } else {
+      //         console.log(`Deleted: ${filePath}`);
+      //       }
+      //     });
+      //   });
+      // });
       // **
       // this.fs_.access(directoryPath, fs.constants.F_OK, (err) => {
       //   if (err) {
