@@ -443,7 +443,6 @@ foam.POM({
     { name: "demo/relationship/Professor",                                                flags: "js|java" },
     { name: "demo/relationship/Student",                                                  flags: "js|java" },
     { name: "demo/relationship/Controller",                                               flags: "js" },
-    { name: "dashboard/Demo",                                                             flags: "js" },
     { name: "ticket/TicketStatus",                                                        flags: "js|java" },
     { name: "ticket/TicketComment",                                                       flags: "js|java" },
     { name: "ticket/Ticket",                                                              flags: "js|java" },
