@@ -6,7 +6,7 @@ p({
   "appName":"FOAM",
   "appConfig": {
     "class": "foam.nanos.app.AppConfig",
-    "url": "http://www.darrtt.com"
+    "url": "http://localhost:8080"
   },
   "description":"The default FOAM theme.",
   "topNavigation":"foam.nanos.u2.navigation.ResponsiveTopNav",
