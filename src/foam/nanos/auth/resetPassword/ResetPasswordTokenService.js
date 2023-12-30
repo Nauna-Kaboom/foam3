@@ -29,6 +29,8 @@ foam.CLASS({
     'foam.nanos.auth.UserNotFoundException',
     'foam.nanos.auth.token.Token',
     'foam.nanos.notification.email.EmailMessage',
+    'foam.nanos.theme.Theme',
+    'foam.nanos.theme.Themes',
     'foam.util.Email',
     'foam.util.Password',
     'foam.util.SafetyUtil',
@@ -163,6 +165,7 @@ foam.CLASS({
         message.setUser(userResult.getId());
         HashMap<String, Object> args = new HashMap<>();
         args.put("name", userResult.getFirstName());
+        args.put("theme", ((Themes) x.get("themes")).findTheme(x));
         args.put("sendTo", userResult.getEmail());
         args.put("link", url);
         args.put("templateSource", this.getClass().getName());

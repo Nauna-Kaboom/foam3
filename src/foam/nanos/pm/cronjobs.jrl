@@ -2,6 +2,7 @@ p({
   "class": "foam.nanos.cron.Cron",
   "id": "PMHourlyReduce",
   "description": "",
+  enabled: false,
   "clusterable": false,
   "schedule": {
     "class": "foam.nanos.cron.CronSchedule",
@@ -26,6 +27,7 @@ p({
   "class": "foam.nanos.cron.Cron",
   "id": "PMDailyReduce",
   "description": "",
+  enabled: false,
   "clusterable":false,
   "schedule": {
     "class": "foam.nanos.cron.CronSchedule",

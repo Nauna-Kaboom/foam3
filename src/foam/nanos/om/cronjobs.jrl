@@ -1,7 +1,7 @@
 p({
   class:"foam.nanos.cron.Cron",
   id:"om5MinuteReduce",
-  enabled:true,
+  enabled:false,
   clusterable:false,
   schedule:{
     class:"foam.nanos.cron.IntervalSchedule",
@@ -22,7 +22,7 @@ p({
 p({
   "class":"foam.nanos.cron.Cron",
   "id":"omHourlyReduce",
-  "enabled":true,
+  "enabled":false,
   clusterable:false,
   "schedule":{
     "class":"foam.nanos.cron.CronSchedule",
@@ -45,7 +45,7 @@ p({
 p({
   "class":"foam.nanos.cron.Cron",
   "id":"omDailyReduce",
-  "enabled":true,
+  "enabled":false,
   clusterable:false,
   "schedule":{
     "class":"foam.nanos.cron.CronSchedule",
