@@ -48,6 +48,7 @@ foam.CLASS({
       this
         .addClass(this.myClass())
         .add(this.slot(function(sections, data) {
+          const DisplayMode = foam.u2.DisplayMode;
           if ( ! data ) return;
           var grid = self.Grid.create()
             .forEach(sections, function(s) {
@@ -62,6 +63,15 @@ foam.CLASS({
                 // return a dummy element here and set display: none so that the
                 // grid doesn't add whitespace around it.
                 if ( ! isAvailable ) return self.E().style({ display: 'none' });
+                var modeProp = self.__subContext__.controllerMode.modePropertyName;
+                var vis = s.properties.map(m => m[modeProp]);
+                var actualVisProps = vis.filter( m => {
+                  if ( foam.String.isInstance(m) )
+                    return m != 'HIDDEN';
+                  if ( DisplayMode.isInstance(m) )
+                    return m != DisplayMode.HIDDEN;
+                });
+                if ( ! actualVisProps.length ) return self.E().style({ display: 'none' });
 
                 // Support string titles and functions
                 var title$ = foam.Function.isInstance(s.title) ?
