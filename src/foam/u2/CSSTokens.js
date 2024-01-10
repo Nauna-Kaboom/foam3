@@ -75,8 +75,8 @@ foam.CLASS({
     'grey300': '#DADDE2',
     'grey400': '#B2B6BD',
     'grey500': '#6B778C',
-    'grey600': '#4B5768',
-    'grey700': '#494F59',
+    'grey600': '#000000',
+    'grey700': '#000000',
 
     'warmGrey50': '#FBF9F6',
     'warmGrey100': '#EDEAE5',
