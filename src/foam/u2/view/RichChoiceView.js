@@ -239,8 +239,6 @@ foam.CLASS({
       border-bottom: none;
       width: 100%;
       border: none;
-      padding-left: $inputHorizontalPadding;
-      padding-right: $inputHorizontalPadding;
       height: $inputHeight;
     }
 
@@ -505,15 +503,12 @@ foam.CLASS({
             if ( ! searchEnabled ) return null;
             return this.E()
               .start()
-                .start('img')
-                  .attrs({ src: 'application/src/ideas/images/searchCopy.svg' })
-                .end()
                 .startContext({ data: self })
                   .addClass(self.myClass('search'))
                   .add(self.FILTER_.clone().copyFrom({ view: {
-                    class: 'foam.u2.view.TextField',
-                    placeholder: this.searchPlaceholder,
-                    onKey: true
+                    class: 'foam.u2.SearchField',
+                    onKey: true,
+                    autofocus: true
                   } }))
                 .endContext()
               .end();
