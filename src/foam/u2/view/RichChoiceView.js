@@ -473,7 +473,11 @@ foam.CLASS({
         });
       }
     },
-    'selectionEl_'
+    'selectionEl_',
+    {
+      class: 'Function',
+      name: 'onSelectfunc'
+    }
   ],
 
   methods: [
@@ -616,6 +620,7 @@ foam.CLASS({
       this.fullObject_ = obj;
       this.data = obj[this.idProperty];
       this.isOpen_ = false;
+      if ( this.onSelectfunc ) this.onSelectfunc();
     },
 
     function addAction(action, actionData) {
