@@ -131,7 +131,6 @@ foam.CLASS({
 
   methods: [
     function init() {
-      // if ( ! this.emailVerificationService ) this.emailVerificationService = this.ctrl.__subContext__.emailVerificationService;
       if ( ! this.emailVerificationService ) console.debug('this.emailVerificationService missing');
       this.verificationCode$.sub(() => this.verifyCode());
     },
@@ -151,11 +150,11 @@ foam.CLASS({
         }
         try {
           var verified = await this.emailVerificationService.verifyCode(x, this.email, this.userName, this.verificationCode);
-          this.report('^verify-success', ['email-verification']);
-          this.assert(verified, 'verified should be true when no exception was thrown')
+          //this.report('^verify-success', ['email-verification']);
+          //this.assert(verified, 'verified should be true when no exception was thrown')
           this.codeVerified = verified;
         } catch (error) {
-          this.report('^verify-failure', error);
+         // this.report('^verify-failure', error);
           if ( error?.data?.exception && this.VerificationCodeException.isInstance(error.data.exception) ) {
             this.remainingAttempts = error.data.exception.remainingAttempts;
             this.codeVerified = false;
@@ -212,7 +211,7 @@ foam.CLASS({
       },
       buttonStyle: 'TEXT',
       code: async function() {
-        this.report('^resend-verification');
+       // this.report('^resend-verification');
         if ( this.codeVerified ) return;
         try {
           await this.emailVerificationService.verifyByCode(null, this.email, this.userName, '');
@@ -223,8 +222,8 @@ foam.CLASS({
           }));
           return true;
         } catch ( err ) {
-          this.error('^resend-verification-failed', err);
-          this.assert('false', 'exception when resending verification', err.message);
+          // this.error('^resend-verification-failed', err);
+          // this.assert('false', 'exception when resending verification', err.message);
           this.ctrl.add(this.NotificationMessage.create({
             err: err.data,
             message: this.RESEND_ERROR_MSG,

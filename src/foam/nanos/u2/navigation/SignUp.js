@@ -25,6 +25,7 @@ foam.CLASS({
     'loginView?',
     'notify?',
     'pushMenu',
+    'setTimeout',
     'stack',
     'subject',
     'theme',
@@ -197,10 +198,11 @@ foam.CLASS({
       code: async function() {
         try {
           await this.auth.login(x, this.userName, this.desiredPassword);
-          this.subject = this.ctrl.__subContext__.auth.getCurrentSubject(null);
-          this.loginSuccess = true;
-          await this.ctrl.reloadClient();
-          await this.ctrl.onUserAgentAndGroupLoaded();
+          ctrl.loginSuccess = true;
+          this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
+          this.setTimeout(() => this.remove(), 1000);
+          window.location.reload();
+          if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
         } catch(err) {
           this.notify(this.ERROR_MSG_LOGIN, '', this.LogLevel.ERROR, true);
           this.pushMenu('sign-in', true);
