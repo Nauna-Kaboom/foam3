@@ -87,6 +87,7 @@ foam.CLASS({
   ^ .title-top {
     font-size: 2.5em;    
     font-weight: bold;
+    text-align: center;
   }
 
   /* ON DATA */
@@ -99,6 +100,7 @@ foam.CLASS({
   }
   ^center-footer {
     text-align: center;
+    margin-top: 60px;
   }
   ^ .align-end {
     text-align: end;

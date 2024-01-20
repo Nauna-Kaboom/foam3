@@ -239,7 +239,8 @@ foam.CLASS({
       name: 'footer',
       label: 'Create an Account',
       section: 'footerSection',
-      buttonStyle: 'TEXT',
+      buttonStyle: 'SECONDARY',
+      size: 'large',
       isAvailable: function(showAction) { return showAction; },
       code: function(X) {
         // X.window.history.replaceState(null, null, X.window.location.origin);
