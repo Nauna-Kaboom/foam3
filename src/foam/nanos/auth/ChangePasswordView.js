@@ -58,11 +58,11 @@ foam.CLASS({
       padding: 0 15px;
       text-align: center;
     }
-    ^ .foam-u2-detail-SectionView .foam-u2-detail-SectionView-actionDiv {
-      justify-content: center;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+    // ^ .foam-u2-detail-SectionView .foam-u2-detail-SectionView-actionDiv {
+    //   justify-content: center;
+    //   flex-direction: column;
+    //   gap: 0.5rem;
+    // }
     ^ form {
       margin-bottom: 0;
     }
@@ -109,7 +109,7 @@ foam.CLASS({
       documentation: 'instance of password model used for this view',
       factory: function() {
         return foam.lookup(this.modelOf)
-          .create({ isHorizontal: this.isHorizontal }, this);
+          .create({ isHorizontal: this.isHorizontal, token: this.token }, this);
       },
       view: { class: 'foam.u2.detail.VerticalDetailView' }
     },
@@ -117,7 +117,8 @@ foam.CLASS({
       class: 'Boolean',
       name: 'popup',
       value: true
-    }
+    },
+    'token'
   ],
 
   methods: [

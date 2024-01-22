@@ -147,12 +147,12 @@ foam.CLASS({
       isEnabled: function(errors_) {
         return ! errors_;
       },
-
-      code: function() {
+      code: function(X) {
         this.auth.updatePassword(null, this.originalPassword, this.newPassword)
         .then((result) => {
           this.reset_();
           this.notify(this.SUCCESS_MSG, '', this.LogLevel.INFO, true);
+          X.closeDialog();
         })
         .catch((err) => {
           this.notify(err.message, '', this.LogLevel.ERROR, true);

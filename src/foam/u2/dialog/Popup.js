@@ -51,14 +51,14 @@ foam.CLASS({
       z-index: 1000;
     }
     ^X {
-      position: absolute;
+      position: absolute !important;
       top: min(10%, 16px);
       right: min(10%, 16px);
       z-index: 1000;
       cursor: pointer;
       transition: all ease-in 0.1s;
-      padding: 0;
-      border-radius: 50%;
+      padding: 0 !important;
+      border-radius: 50% !important;
     }
     ^X:hover{
       transform: scale(1.1)
