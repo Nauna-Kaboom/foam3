@@ -291,10 +291,8 @@ foam.CLASS({
       this.SUPER();
       var self = this;
 
-      this.document.addEventListener('keyup', this.onKeyPressed);
-      this.onDetach(() => {
-        this.document.removeEventListener('keyup', this.onKeyPressed);
-      });
+      // Works with the password field only cause password is nodetype form. Enter on identifier does nothing.
+      this.onDetach(this.document.addEventListener('submit', this.onKeyPressed));
       let logo = self.imgPath || (this.theme.largeLogo ? this.theme.largeLogo : this.theme.logo);
 
       // CREATE DATA VIEW
@@ -430,11 +428,7 @@ foam.CLASS({
       }
     },
     function onKeyPressed(e) {
-      e.preventDefault();
-      var key = e.key || e.keyCode;
-      if ( key === 'Enter' || key === 13 ) {
-          this.data.login();
-      }
+      this.data.login();
     }
   ]
 });
