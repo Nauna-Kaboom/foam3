@@ -379,7 +379,7 @@ foam.CLASS({
       message.setTo(new String[] { user.getEmail() });
       HashMap<String, Object> args = new HashMap<>();
       args.put("theme", ((Themes) x.get("themes")).findTheme(x));
-      args.put("name", user.getFirstName());
+      args.put("name", user.getUserName());
       args.put("sendTo", user.getEmail());
       args.put("templateSource", this.getClass().getName());
 
