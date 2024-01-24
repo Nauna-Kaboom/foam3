@@ -242,7 +242,7 @@ foam.CLASS({
 
       setTimeout(() => {
         this.remove();
-      }, 9900);
+      }, 20000);
     }
   ],
 

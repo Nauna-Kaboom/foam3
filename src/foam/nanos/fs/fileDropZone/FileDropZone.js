@@ -112,7 +112,11 @@ foam.CLASS({
     {
       name: 'supportedFormats',
       documentation: `Please use the following format: { 'image/jpg' : 'JPG' }`,
-      value: {}
+      value: {
+          'image/png': 'PNG',
+          'image/jpg' : 'JPG',
+          'image/jpeg' : 'JPEG'
+        }
     },
     {
       class: 'Boolean',
