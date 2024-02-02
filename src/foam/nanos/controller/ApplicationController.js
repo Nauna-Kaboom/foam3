@@ -1067,7 +1067,7 @@ foam.CLASS({
           .concat()
           .sort((a, b) => b.minWidth - a.minWidth)
           .find(o => o.minWidth <= Math.min(window.innerWidth, window.screen.width) );
-        if ( result ) this.displayWidth = result;
+        if ( result && result != this.displayWidth ) this.displayWidth = result;
       }
     },
     function replaceStyleTag(text, eid) {
