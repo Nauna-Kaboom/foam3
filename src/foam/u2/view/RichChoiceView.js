@@ -511,8 +511,7 @@ foam.CLASS({
                   .addClass(self.myClass('search'))
                   .add(self.FILTER_.clone().copyFrom({ view: {
                     class: 'foam.u2.SearchField',
-                    onKey: true,
-                    autofocus: true
+                    onKey: true
                   } }))
                 .endContext()
               .end();

@@ -60,7 +60,6 @@ foam.CLASS({
         );
         el.style.width = "100%";
       }
-      console.log(`load event iframe %o`, evt)
     }
   ]
 });
