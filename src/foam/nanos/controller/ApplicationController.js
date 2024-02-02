@@ -1063,10 +1063,13 @@ foam.CLASS({
       name: 'updateDisplayWidth',
       isFramed: true,
       code: function() {
-        this.displayWidth = foam.u2.layout.DisplayWidth.VALUES
+        foam.u2.layout.DisplayWidth.VALUES
           .concat()
           .sort((a, b) => b.minWidth - a.minWidth)
-          .find(o => o.minWidth <= Math.min(window.innerWidth, window.screen.width) );
+          .find(o => o.minWidth <= Math.min(window.innerWidth, window.screen.width) )
+          .then( r => {
+            this.displayWidth = r;
+          });
       }
     },
     function replaceStyleTag(text, eid) {
