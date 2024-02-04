@@ -138,7 +138,7 @@ foam.CLASS({
       this.setPosition(x, y);
       this.ro_?.observe(this.parentEl);
       this.opened = true;
-      this.window.addEventListener('resize', this.onResize);
+//      this.window.addEventListener('resize', this.onResize);
     },
 
     function setPosition(x, y) {
@@ -258,9 +258,9 @@ foam.CLASS({
       e.stopPropagation();
     },
 
-    function onResize() {
-      this.close();
-      window.removeEventListener('resize', onResize);
-    }
+   // function onResize() {
+     // this.close();
+      //window.removeEventListener('resize', onResize);
+   // }
   ]
 });
