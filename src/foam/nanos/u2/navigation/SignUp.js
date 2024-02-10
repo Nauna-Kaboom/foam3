@@ -178,6 +178,19 @@ foam.CLASS({
       }
     },
     {
+      class: 'URL',
+      name: 'acceptDocc',
+      label: '',
+      view: { class: 'foam.nanos.dig.LinkView', linkValue: 'Terms and Conditions' },
+      value: 'https://docs.google.com/document/d/e/2PACX-1vRqDvsbNbaI7fFyg19lPvmQwAaLVQR1yNH46jbIbRlW8QkTTMwtbnVn3IEBWUkBRGEhlNDe9d0jlrYK/pub?embedded=true',
+    },
+    {
+      class: 'Boolean',
+      name: 'acceptDoc',
+      label: 'Please view and accept the terms and conditions.',
+      required: true
+    },
+    {
       class: 'Boolean',
       name: 'showAction',
       visibility: 'HIDDEN',

@@ -182,6 +182,11 @@ foam.CLASS({
   ^ .prim-action {
     text-align: center;
   }
+  ^secondart-action-css {
+    border: 2px solid red;
+    border-radius: 30px;
+    padding: 9px 0;
+  }
   `,
 
   properties: [
@@ -340,6 +345,7 @@ foam.CLASS({
                       .add(self.data.FOOTER_TXT)
                     .end()
                     .start('span')
+                      .addClass(self.myClass('secondart-action-css'))
                       .add(self.data.FOOTER)
                     .end()
                   .end()

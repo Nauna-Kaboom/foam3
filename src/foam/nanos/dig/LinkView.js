@@ -9,15 +9,23 @@ foam.CLASS({
   name: 'LinkView',
   extends: 'foam.u2.View',
 
-  properties: [ [ 'nodeName', 'a' ] ],
+  properties: [
+    [ 'nodeName', 'a' ],
+    {
+      name: 'linkValue',
+      expression: function(data) {
+        return data;
+      }
+    }
+  ],
 
   methods: [
     function render() {
       this.SUPER();
 
       this
-        .attrs({href: this.data$})
-        .add(this.data$);
+        .attrs({href: this.data$, target:'_blank'})
+        .add(this.linkValue$);
     }
   ]
 });
