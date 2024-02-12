@@ -288,7 +288,9 @@ foam.CLASS({
   name: 'BlobBlob',
   extends: 'foam.blob.AbstractBlob',
   flags: ['web'],
-
+  javaImports: [
+    'java.io.*'
+  ],
   properties: [
     {
       name: 'blob',
@@ -305,24 +307,44 @@ foam.CLASS({
   ],
 
   methods: [
-    function read(out, offset, length) {
-      var reader = new FileReader();
+    {
+      name: 'read',
+      code: function(out, offset, length) {
+        var reader = new FileReader();
+  
+        var b = this.blob.slice(offset, offset + length);
+  
+        return new Promise(function(resolve, reject) {
+          reader.onload = function(e) {
+            out(reader.result);
+            resolve();
+          };
+  
+          reader.onerror = function(e) {
+            reject(e);
+          };
+  
+          reader.readAsArrayBuffer(b);
+        });
+      },
+      //  java code SHOULD WORK BUT NOT REALLY TESTED - and wasn't working with or without this.
+      // not even sure this is called with the server - look like it was but not sure which blob...didn't follow through found another way- t&cs link
+      // was testing the upload of a file txt or pdf in backportal
+      javaCode: `
+        try (FileInputStream fis = new FileInputStream(file)) {
+          fis.skip(offset);
 
-      var b = this.blob.slice(offset, offset + length);
+          byte[] buffer = new byte[(int) length];
+          int bytesRead = fis.read(buffer);
 
-      return new Promise(function(resolve, reject) {
-        reader.onload = function(e) {
-          out(reader.result);
-          resolve();
-        };
-
-        reader.onerror = function(e) {
-          reject(e);
-        };
-
-        reader.readAsArrayBuffer(b);
-      });
-    }
+          if (bytesRead == length) {
+            out.write(buffer);
+          } else {
+            throw new IOException("Unable to read the specified length from the file.");
+          }
+        }
+      `
+    },
   ]
 });
 
@@ -362,12 +384,20 @@ foam.CLASS({
   ],
 
   methods: [
-    function read(buffer, offset) {
-      return this.delegate.then(function(d) {
-        return d.read(buffer, offset);
-      });
+    {
+      name: 'read',
+      code: function(buffer, offset) {
+        return this.delegate.then(function(d) {
+          return d.read(buffer, offset);
+        });
+      },
+      //  java code -SHOULD WORK BUT NOT REALLY TESTED - and wasn't working with or without this.
+      // not even sure this is called with the server - look like it was but not sure which blob...didn't follow through
+      // was testing the upload of a file txt or pdf in backportal
+      javaCode: `
+       return getDelegate().read(out, offset, length);
+      `
     },
-
     {
       name: 'compareTo',
       type: 'int',
