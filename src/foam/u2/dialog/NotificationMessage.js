@@ -187,8 +187,8 @@ foam.CLASS({
           console.info('notification: ' + this.message);
           indicator = {
             size: 32,
-            backgroundColor: this.theme.approval3,
-            borderColor: this.theme.approval3,
+            backgroundColor: this.theme.approval4,
+            borderColor: this.theme.approval4,
             icon: this.theme.glyphs.checkmark.getDataUrl({
               fill: this.theme.white
             })
