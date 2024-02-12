@@ -47,15 +47,18 @@ foam.CLASS({
         AppConfig appConfig = (AppConfig) x.get("appConfig");
         String url = appConfig.getUrl().replaceAll("/$", "");
 
+        // Below is partially legacy although possible - main app running with anonymous user
         // The context passed to us won't have a user in it because obviously the user
         // isn't logged in if they're resetting their password. However, decorators on
         // DAOs we access down the line from here will want to use the user from the
         // context. Therefore we put the system user in the context here so that
         // decorators down the line won't throw NPEs when trying to access the user in
         // the context.
-        User systemUser = ((Subject) getX().get("subject")).getUser();
-        Subject subject = new Subject.Builder(x).setUser(systemUser).build();
-        x = x.put("subject", subject);
+        if ( ((Subject)x.get("subject")).getUser() == null ) {
+          User systemUser = ((Subject) getX().get("subject")).getUser();
+          Subject subject = new Subject.Builder(x).setUser(systemUser).build();
+          x = x.put("subject", subject);
+        }
 
         DAO userDAO = (DAO) getLocalUserDAO();
         DAO tokenDAO = (DAO) getTokenDAO();
@@ -96,7 +99,7 @@ foam.CLASS({
         String templateName = getParameter(parameters, "templateName", "reset-password");
         args.put("template", templateName);
         message.setTemplateArguments(args);
-        ((DAO) getX().get("emailMessageDAO")).put(message);
+        ((DAO) x.get("emailMessageDAO")).put(message);
         return true;
       `
     },
@@ -107,6 +110,7 @@ foam.CLASS({
           throw new RuntimeException("Cannot leave new password field empty");
         }
 
+        // Below is partially legacy although possible - main app running with anonymous user
         // The context passed to us won't have a user in it because obviously the user
         // isn't logged in if they're resetting their password. However, decorators on
         // DAOs we access down the line from here will want to use the user from the
@@ -114,11 +118,12 @@ foam.CLASS({
         // decorators down the line won't throw NPEs when trying to access the user in
         // the context.
         AppConfig appConfig = (AppConfig) x.get("appConfig");
-        User systemUser = ((Subject) getX().get("subject")).getUser();
-        Subject subject = new Subject.Builder(x).setUser(systemUser).build();
-        x = x.put("subject", subject);
-
-
+        if ( ((Subject)x.get("subject")).getUser() == null ) {
+          User systemUser = ((Subject) getX().get("subject")).getUser();
+          Subject subject = new Subject.Builder(x).setUser(systemUser).build();
+          x = x.put("subject", subject);
+        }
+        
         String newPassword = user.getDesiredPassword();
         String url = appConfig.getUrl().replaceAll("/$", "");
 
