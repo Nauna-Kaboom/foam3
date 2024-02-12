@@ -26,7 +26,7 @@ foam.CLASS({
     { name: 'INSTRUCTION', message: 'Create a new password for your account' },
     { name: 'SUCCESS_MSG', message: 'Your password was successfully updated' },
     { name: 'ORIGINAL_PASSWORD_MISSING', message: 'Please enter the original password' },
-    { name: 'PASSWORD_LENGTH_10_ERROR', message: 'Password must be at least 10 characters' },
+    { name: 'PASSWORD_LENGTH_10_ERROR', message: 'Password must be at least 6 characters' },
     { name: 'PASSWORD_NOT_MATCH', message: 'Passwords do not match' },
     { name: 'WEAK_PASSWORD_ERR', message: 'Password is weak.' }
   ],
@@ -73,11 +73,11 @@ foam.CLASS({
           autocomplete: 'new-password'
         }
       },
-      minLength: 10,
+      minLength: 6,
       validationPredicates: [
         {
           args: ['newPassword'],
-          query: 'newPassword.len>=10',
+          query: 'newPassword.len>=6',
           errorMessage: 'PASSWORD_LENGTH_10_ERROR'
         },
         {

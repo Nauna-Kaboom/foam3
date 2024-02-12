@@ -31,7 +31,7 @@ foam.CLASS({
     {
       name: 'MIN_PASSWORD_LENGTH',
       type: 'Long',
-      value: 10
+      value: 6
     }
   ],
 
@@ -95,22 +95,22 @@ foam.CLASS({
           throw new RuntimeException("Password must be at least " + minLength + " characters long.");
         }
 
-        // check weak password
-        DAO commonPasswordDAO = (DAO) getX().get("commonPasswordDAO");
-        if ( commonPasswordDAO.find(potentialPassword.toLowerCase()) != null ) {
-          throw new RuntimeException("Password is weak.");
-        }
+        // // check weak password
+        // DAO commonPasswordDAO = (DAO) getX().get("commonPasswordDAO");
+        // if ( commonPasswordDAO.find(potentialPassword.toLowerCase()) != null ) {
+        //   throw new RuntimeException("Password is weak.");
+        // }
 
-        // check password history
-        if ( this.getPriorPasswordsToCheckCount() > 0 && user != null ) {
-          PriorPassword[] priorPasswords = user.getPasswordHistory();
-          int maxCount = Math.min((int) this.getPriorPasswordsToCheckCount(), priorPasswords.length);
-          for ( int i = 0; i < maxCount; i++ ) {
-            if ( Password.verify(potentialPassword, priorPasswords[priorPasswords.length - (1 + i) ].getPassword()) ) {
-              throw new RuntimeException("Password must be different from previous " + this.getPriorPasswordsToCheckCount() + " passwords");
-            }
-          }
-        }
+        // // check password history
+        // if ( this.getPriorPasswordsToCheckCount() > 0 && user != null ) {
+        //   PriorPassword[] priorPasswords = user.getPasswordHistory();
+        //   int maxCount = Math.min((int) this.getPriorPasswordsToCheckCount(), priorPasswords.length);
+        //   for ( int i = 0; i < maxCount; i++ ) {
+        //     if ( Password.verify(potentialPassword, priorPasswords[priorPasswords.length - (1 + i) ].getPassword()) ) {
+        //       throw new RuntimeException("Password must be different from previous " + this.getPriorPasswordsToCheckCount() + " passwords");
+        //     }
+        //   }
+        // }
 
         return;
       `
