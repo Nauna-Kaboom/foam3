@@ -20,7 +20,9 @@
   requires: [
     'foam.log.LogLevel',
     'foam.nanos.auth.User',
-    'foam.u2.dialog.NotificationMessage'
+    'foam.u2.dialog.NotificationMessage',
+    'foam.u2.dialog.Popup',
+    'foam.u2.view.LoginView',
   ],
 
   properties: [
@@ -62,6 +64,7 @@
             type: this.LogLevel.INFO,
             transient: true
           }));
+          this.ctrl.add(this.Popup.create({ backgroundColor: 'transparent' }).tag({ class: this.LoginView, mode_: 'SignIn' }));
           X.closeDialog();
         }).catch((err) => {
           this.ctrl.add(this.NotificationMessage.create({

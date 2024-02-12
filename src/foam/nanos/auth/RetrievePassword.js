@@ -13,11 +13,7 @@ foam.CLASS({
   imports: [
     'ctrl',
     'closeDialog?',
-    'loginView?',
-    'resetPasswordService',
     'resetPasswordToken',
-    'stack',
-    'translationService'
   ],
 
   requires: [
