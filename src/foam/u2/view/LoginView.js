@@ -434,6 +434,7 @@ foam.CLASS({
       }
     },
     function onKeyPressed(e) {
+      e.preventDefault();
       this.data.login();
     }
   ]
