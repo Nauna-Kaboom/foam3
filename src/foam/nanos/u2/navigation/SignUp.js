@@ -213,7 +213,6 @@ foam.CLASS({
           await this.auth.login(x, this.userName, this.desiredPassword);
           ctrl.loginSuccess = true;
           this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
-          this.setTimeout(() => this.remove(), 1000);
           window.location.reload();
           if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
         } catch(err) {

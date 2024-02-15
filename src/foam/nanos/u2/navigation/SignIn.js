@@ -161,7 +161,7 @@ foam.CLASS({
     {
       name: 'verifyEmail',
       code: async function(x, email, username) {
-      this.ctrl.groupLoadingHandled = true;
+        this.ctrl.groupLoadingHandled = true;
         this.onDetach(this.emailVerificationService.sub('emailVerified', this.emailVerifiedListener));
         let view = {
             class: 'foam.nanos.auth.email.VerificationCodeView',
@@ -220,9 +220,8 @@ foam.CLASS({
         .then( _ => {
           ctrl.loginSuccess = true;
           this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
-          this.setTimeout(() => this.remove(), 1000);
-            window.location.reload();
-            if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
+          window.location.reload();
+          if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
         }).catch( err => {
           this.loginFailed = true;
           let e = err && err.data ? err.data.exception : err;
