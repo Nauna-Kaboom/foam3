@@ -49,10 +49,12 @@ foam.CLASS({
         }
 
         Theme theme = (Theme) ((Themes) x.get("themes")).findTheme(x);
-        DAO userDAO = ((DAO) getX().get("localUserDAO")).inX(x);
+        // inX(x) suggests the clients permissions to check if another user has
+        // the same value for property - however it would suck if users
+        // have access to check other user properties...
+        DAO userDAO = ((DAO) getX().get("localUserDAO"));
         return
-          (
-            userDAO
+          ( userDAO
             .find(AND(
               EQ("email".equals(targetProperty) ? User.EMAIL : User.USER_NAME, value),
               EQ(User.TYPE, "User"),
