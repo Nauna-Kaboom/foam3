@@ -428,6 +428,7 @@ foam.CLASS({
             clearSession_();
             disable();
           } else {
+            logger.error("Failed email send", e);
             emailMessage.setStatus(Status.FAILED);
           }
         } catch ( MessagingException e ) {
