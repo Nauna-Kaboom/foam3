@@ -123,11 +123,11 @@ foam.CLASS({
 
   methods: [
     function render() {
-      const self = this;
+      const self = this; // strangly removing self - renders Title and Instructions on bottom without the background
+      this.onDetach(this.document.addEventListener('keydown', this.onKeyPressed));
       this.addClass()
-        .start().style({"background-color":"white"})//this.popup ? this.StatusPageBorder : '', { showBack: false })
+        .start().style({"background-color":"white"})
           .start()
-            //.enableClass(self.myClass('popup'), this.popup$)
             .addClass(this.myClass('flex'))
             .callIf(this.data.TITLE, function() {
               this.start().addClass(self.myClass('title'), 'h400').add(self.data.TITLE).end();
@@ -158,6 +158,15 @@ foam.CLASS({
         } else {
           X.pushMenu('', true);
         }
+      }
+    }
+  ],
+  listeners: [
+    function onKeyPressed(e) {
+      var key = e.key || e.keyCode;
+      if ( key === 'Enter' || key === 13 ) {
+        e.preventDefault();
+        this.data.mainAction(this.__subContext__);
       }
     }
   ]

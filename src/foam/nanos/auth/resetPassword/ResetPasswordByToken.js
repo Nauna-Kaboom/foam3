@@ -39,7 +39,7 @@
 
   actions: [
     {
-      name: 'resetPassword',
+      name: 'mainAction',
       label: 'Confirm',
       buttonStyle: 'PRIMARY',
       section: 'resetPasswordSection',

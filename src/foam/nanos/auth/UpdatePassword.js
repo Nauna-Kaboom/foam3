@@ -141,7 +141,8 @@ foam.CLASS({
 
   actions: [
     {
-      name: 'updatePassword',
+      name: 'mainAction',
+      label: 'Update Password',
       section: 'resetPasswordSection',
       buttonStyle: 'PRIMARY',
       isEnabled: function(errors_) {

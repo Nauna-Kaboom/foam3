@@ -99,7 +99,7 @@ foam.CLASS({
 
   actions: [
     {
-      name: 'sendEmail',
+      name: 'mainAction',
       label: 'Submit',
       buttonStyle: 'PRIMARY',
       section: 'resetPasswordSection',
