@@ -55,6 +55,7 @@
       width: 75%;
       padding: 0 15px;
       text-align: center;
+      margin: 0;
     }
     ^ .foam-u2-detail-SectionView .foam-u2-detail-SectionView-actionDiv {
       justify-content: center;
@@ -80,14 +81,8 @@
     }
    /* mobile */
    @media (min-width: /*%DISPLAYWIDTH.MD%*/ 786px ) {
-    ^subTitle {
-      width: 50%;
-    }
   }
   @media (min-width: /*%DISPLAYWIDTH.LG%*/ 960px ) {
-    ^subTitle {
-      width: 25%;
-    }
   }
   `,
 
@@ -106,10 +101,17 @@
 
   methods: [
     function render() {
+      var spl = this.data.INSTRUCTION.split('\n');
+      var ee = this.E();
       this
         .addClass(this.myClass(), this.myClass('flex')).style({ 'border': `2px ridge ${(this.theme.primary4 || '#edd50b')}`})
         .start('h1').addClass(this.myClass('title')).add(this.data.TITLE).end()
-        .start('p').addClass(this.myClass('subTitle')).add(this.data.INSTRUCTION).end()
+        .add(this.slot( (data)  => {
+          return ee.style({ 'display': 'contents'})
+            .forEach( spl, i => {
+              return ee.start('p').addClass(this.myClass('subTitle')).add(i).end();
+            });
+        }))
         .start(this.SectionView, { data$: this.data$, sectionName: 'verificationCodeSection', showTitle: false })
         .addClass(this.myClass('sectionView')).end()
         .startContext({ data: this.data })

@@ -35,7 +35,7 @@ foam.CLASS({
     { name: 'SUCCESS_MSG', message: 'Email verified.' },
     { name: 'ERROR_MSG', message: 'Email verification failed.' },
     { name: 'TITLE', message: 'Let\'s Verify Your Email Address' },
-    { name: 'INSTRUCTION', message: 'We have sent a verification code to your email. Please enter the code below to confirm that this account belongs to you.' },
+    { name: 'INSTRUCTION', message: 'An email with the code was sent.\n May take up to 5 min, and please kindly consider checking your spam folder.' },
     { name: 'VERIFICATION_EMAIL_TITLE', message: 'Verification Email Sent'},
     { name: 'RESEND_ERROR_MSG', message: 'There was an issue with resending your verification email.' },
     { name: 'VERIFICATION_EMAIL', message: 'Email sent to' },
