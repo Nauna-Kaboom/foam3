@@ -27,7 +27,7 @@ foam.ENUM({
         Display for the regular end of smartphone devices
         Min-width @ 320px, max-width @ 576px, and an 6 column grid
       `,
-      minWidth: 320,
+      minWidth: 380,
       cols: 6
     },
     {
@@ -36,7 +36,7 @@ foam.ENUM({
         The column width for the larger end of smartphone devices and landscape smartphone screens:
         Min-width @ 576px, max-width @ 768px and a 12 column grid
       `,
-      minWidth: 576,
+      minWidth: 450,
       cols: 12
     },
     {

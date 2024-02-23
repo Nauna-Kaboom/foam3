@@ -178,7 +178,11 @@ foam.CLASS({
                 }
               );
             } else {
-              e.start('img').attr('src', self.dropdownIcon$).end();
+              if ( !! self.dropdownIcon?.class ) {
+                e.tag(self.dropdownIcon);
+              } else {
+                e.start('img').attr('src', self.dropdownIcon$).end();
+              }
             }
           }
           return e;
