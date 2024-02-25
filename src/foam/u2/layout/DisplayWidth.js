@@ -19,7 +19,8 @@ foam.ENUM({
         Min-width @ 0px, max-width @ 320px and an 4 column grid
       `,
       minWidth: 0,
-      cols: 4
+      cols: 4,
+      mainCol: 1
     },
     {
       name: 'XS',
@@ -28,7 +29,8 @@ foam.ENUM({
         Min-width @ 320px, max-width @ 576px, and an 6 column grid
       `,
       minWidth: 380,
-      cols: 6
+      cols: 6,
+      mainCol: 1
     },
     {
       name: 'SM',
@@ -37,7 +39,8 @@ foam.ENUM({
         Min-width @ 576px, max-width @ 768px and a 12 column grid
       `,
       minWidth: 450,
-      cols: 12
+      cols: 12,
+      mainCol: 1
     },
     {
       name: 'MD',
@@ -46,7 +49,8 @@ foam.ENUM({
         Min-width @ 768px, max-width @ 960px and a 12 column grid
       `,
       minWidth: 768,
-      cols: 12
+      cols: 12,
+      mainCol: 2
     },
     {
       name: 'LG',
@@ -55,7 +59,8 @@ foam.ENUM({
         Min-width @ 960px, max-width @ 1280px and a 12 column grid
       `,
       minWidth: 960,
-      cols: 12
+      cols: 12,
+      mainCol: 3
     },
     {
       name: 'XL',
@@ -64,7 +69,8 @@ foam.ENUM({
         Min-width @ 1280px, max-width @ 1440px and a 12 column grid
       `,
       minWidth: 1280,
-      cols: 12
+      cols: 12,
+      mainCol: 5
     }
   ],
 
@@ -72,6 +78,10 @@ foam.ENUM({
     {
       class: 'Int',
       name: 'cols'
+    },
+    {
+      class: 'Int',
+      name: 'mainCol'
     },
     {
       class: 'Int',
