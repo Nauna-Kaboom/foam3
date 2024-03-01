@@ -83,7 +83,7 @@
       justify-content: space-between;
       width: 100%;
       gap: 0.2rem;
-      flex-direction: column-reverse;
+      flex-direction: row;
     }
     ^propHolder > :first-child{
       display: flex;
