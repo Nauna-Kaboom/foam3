@@ -175,9 +175,9 @@ foam.CLASS({
       icon: 'images/ic-cancelblack.svg',
       label: '',
       keyboardShortcuts: [ 27 /* Escape */ ],
-      code: function() {
+      code: function(x) {
         this.closing = true;
-        if ( this.onClose ) this.onClose();
+        if ( this.onClose ) this.onClose(x);
 
         // Delay removal by 32ms (two animation frames) so the action.closeModal
         // topic has a chance to be published
