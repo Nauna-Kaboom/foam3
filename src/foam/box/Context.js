@@ -130,12 +130,14 @@ return __context__.lookup("foam.swift.net.SocketService")!.create(args: [
     },
     {
       class: 'Boolean',
-      name: 'unsafe',
-      value: true
+      name: 'unsafe'
     },
     {
       class: 'StringArray',
-      name: 'classWhitelist'
+      name: 'classWhitelist',
+      factory: function() {
+        return ['ideas.UI.Controller', 'foam.box.Message', 'foam.box.SubBoxMessage', 'foam.box.RPCReturnMessage', 'foam.dao.ArraySink', 'notifications.UserNotification', 'foam.box.RPCMessage','foam.mlang.sink.Count'];
+      }
     },
     {
       name: 'creationContext',
