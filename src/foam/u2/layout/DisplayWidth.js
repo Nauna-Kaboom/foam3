@@ -28,7 +28,7 @@ foam.ENUM({
         Display for the regular end of smartphone devices
         Min-width @ 320px, max-width @ 576px, and an 6 column grid
       `,
-      minWidth: 380,
+      minWidth: 370,
       cols: 6,
       mainCol: 1
     },
