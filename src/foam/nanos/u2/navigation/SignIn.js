@@ -222,6 +222,7 @@ foam.CLASS({
           this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
           window.location.reload();
           if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
+          console.debug(this.subject.user.id);
         }).catch( err => {
           this.loginFailed = true;
           let e = err && err.data ? err.data.exception : err;
