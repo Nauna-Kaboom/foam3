@@ -495,6 +495,7 @@ foam.CLASS({
               this.openWizard(cap, false);
             else
               this.window.location.reload();
+              (this.window || window).Android?.onReload();
         })
     },
     async function openWizard(cap, showToast) {

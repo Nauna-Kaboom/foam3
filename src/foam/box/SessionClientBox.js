@@ -66,6 +66,7 @@ foam.CLASS({
             this.loginSuccess = false;
             alert(this.REFRESH_MSG);
             (this.window || window).location.reload();
+            (this.window || window).Android?.onReload();
             return;
           }
 

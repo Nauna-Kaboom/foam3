@@ -36,6 +36,7 @@ foam.CLASS({
         localStorage.removeItem('defaultSession');
         this.window.location.hash = '';
         this.window.location.reload();
+        this.window.Android?.onReload();
       });
     }
   ]
