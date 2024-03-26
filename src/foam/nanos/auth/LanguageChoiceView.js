@@ -81,7 +81,6 @@ foam.CLASS({
             user.language = c.id;
             await self.userDAO.put(user);
             location.reload();
-            window.Android?.onReload();
             localStorage.setItem('localeLanguage', c.toString());
           }
         });

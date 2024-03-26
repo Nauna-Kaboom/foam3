@@ -221,7 +221,6 @@ foam.CLASS({
           ctrl.loginSuccess = true;
           this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
           window.location.reload();
-          window.Android?.onReload();
           if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
         }).catch( err => {
           this.loginFailed = true;

@@ -214,7 +214,6 @@ foam.CLASS({
           ctrl.loginSuccess = true;
           this.notify('Successfully logged in', '', this.LogLevel.INFO, true);
           window.location.reload();
-          window.Android?.onReload();
           if ( this.__subContext__.closeDialog ) this.__subContext__.closeDialog();
         } catch(err) {
           this.notify(this.ERROR_MSG_LOGIN, '', this.LogLevel.ERROR, true);
@@ -239,7 +238,6 @@ foam.CLASS({
           // thus thier user.emailVerified should be true and they can simply login from here.
           this.window.history.replaceState(null, null, this.window.location.origin);
           location.reload();
-          (this.window || window).Android?.onReload();
         } else {
           // login function in signup sets the subject to the signed up user without logging in
           // here we save the new user info to be used later in emailverification
