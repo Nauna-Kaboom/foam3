@@ -49,6 +49,7 @@ foam.CLASS({
       top: 0;
       width: 100%;
       z-index: 1000;
+      overflow: scroll;
     }
     ^X {
       position: absolute !important;

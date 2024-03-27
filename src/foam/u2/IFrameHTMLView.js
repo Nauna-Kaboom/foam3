@@ -19,6 +19,15 @@ foam.CLASS({
     ^resize {
       resize: both;
     }
+    ^usedAsDocInPopUp{
+      width: 97vw;
+      height: 97vh;
+    }
+    ^usedAsDocInPopUp-inner{
+      width: 97vw;
+      height: 97vh;
+      padding: 0 !important;
+    }
   `,
 
   properties: [
@@ -26,6 +35,10 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'isLink'
+    },
+    {
+      class: 'Boolean',
+      name: 'usedAsDocInPopUp'
     }
   ],
 
@@ -36,13 +49,16 @@ foam.CLASS({
       var att = {};
       if ( this.isLink ) att = { src: this.data, target: "_parent" };
       else att = { srcdoc: this.data }
-      this.start('iframe')
-        .attrs(att)
-        .enableClass(this.myClass('resize'), this.resizable$)
-        .callIf(this.isLink, _ => {
-          this.on('error', _ => console.log('error'))
-        })
-        .on('load', evt => this.resizeIFrame(evt))
+      this.start().enableClass(this.myClass('usedAsDocInPopUp'), this.usedAsDocInPopUp$)
+        .start('iframe')
+          .attrs(att)
+          .enableClass(this.myClass('usedAsDocInPopUp-inner'), this.usedAsDocInPopUp$)
+          .enableClass(this.myClass('resize'), this.resizable$)
+          .callIf(this.isLink, _ => {
+            this.on('error', _ => console.log('error'))
+          })
+          .on('load', evt => this.resizeIFrame(evt))
+        .end()
       .end();
     },
 

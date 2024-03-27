@@ -100,7 +100,7 @@ foam.CLASS({
   }
   ^center-footer {
     text-align: center;
-    margin-top: 60px;
+    margin-top: 35px;
   }
   ^ .align-end {
     text-align: end;

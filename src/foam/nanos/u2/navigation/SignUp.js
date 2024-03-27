@@ -181,8 +181,17 @@ foam.CLASS({
       class: 'URL',
       name: 'acceptDocc',
       label: '',
-      view: { class: 'foam.nanos.dig.LinkView', linkValue: 'Terms and Conditions' },
-      value: 'https://docs.google.com/document/d/e/2PACX-1vRqDvsbNbaI7fFyg19lPvmQwAaLVQR1yNH46jbIbRlW8QkTTMwtbnVn3IEBWUkBRGEhlNDe9d0jlrYK/pub?embedded=true',
+      view: function(_, x) {
+        let c = 'https://docs.google.com/document/d/e/2PACX-1vRqDvsbNbaI7fFyg19lPvmQwAaLVQR1yNH46jbIbRlW8QkTTMwtbnVn3IEBWUkBRGEhlNDe9d0jlrYK/pub';
+        return x.E().start()
+        .style({ 'cursor': 'pointer', 'color': 'blue', 'text-decoration': 'underline' })
+          .add('Terms and Conditions')
+          .on('click', () => {
+            x.ctrl.add(x.ctrl.Popup.create({ backgroundColor: 'white' }, x)
+            .tag({ class: 'foam.u2.IFrameHTMLView', isLink: true, data: c, usedAsDocInPopUp: true }))
+          })
+        .end();
+      },
     },
     {
       class: 'Boolean',
