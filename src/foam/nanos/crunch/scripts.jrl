@@ -1,7 +1,6 @@
 p({
   "class": "foam.nanos.script.Script",
   "id": "Generate Review Capabilities",
-  "status": 2,
   "code": """
     import foam.dao.ArraySink;
     import foam.dao.DAO;
