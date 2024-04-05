@@ -119,7 +119,7 @@ foam.CLASS({
       name: 'ttl',
       label: 'TTL',
       documentation: 'The "time to live" of the session. The amount of time in milliseconds that the session should be kept alive after its last use before being destroyed. Must be a positive value or zero.',
-      value: 28800000, // 1000 * 60 * 60 * 8 = number of milliseconds in 8 hours
+      value: 1209600000, // 1000 * 60 * 60 * 24 * 14 = number of milliseconds in 14 days
       includeInDigest: true,
       tableWidth: 70,
       validationPredicates: [
