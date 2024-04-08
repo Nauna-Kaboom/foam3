@@ -151,13 +151,13 @@ public class LiveScriptBundler
 
   private synchronized void doRebuildJavascript() {
     try {
-      log_("START", "Building javascript... (JS)");
+      // log_("START", "Building javascript... (JS)");
 
       Process        p  = new ProcessBuilder("node", JS_BUILD_PATH).start();
       BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
       String         line;
       while ( (line = br.readLine()) != null ) {
-        log_("JS", "js> " + line);
+        // log_("JS", "js> " + line);
       }
 
       StringBuilder sb = new StringBuilder();
@@ -165,7 +165,7 @@ public class LiveScriptBundler
         sb.append(new String(Files.readAllBytes(Paths.get(path))));
       }
       javascriptBuffer_ = sb.toString();
-      log_("DONE", "JS");
+      //log_("DONE", "JS");
     } catch (IOException e) {
       log_("ERROR", e.getMessage());
     }
@@ -177,7 +177,7 @@ public class LiveScriptBundler
     String[] command = (String[]) ArrayUtils.add(args, 0, JS_BUILD_PATH );
     
     try {
-      log_("START", "Building javascript with updated flags... (JS)");
+      //log_("START", "Building javascript with updated flags... (JS)");
 
       Process        p  = new ProcessBuilder(command).start();
       BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
