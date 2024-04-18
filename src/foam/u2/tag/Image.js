@@ -76,6 +76,10 @@ foam.CLASS({
       expression: function(onCk) {
         return !! onCk;
       }
+    },
+    {
+      class: 'String',
+      name: 'title'
     }
   ],
 
@@ -97,6 +101,7 @@ foam.CLASS({
         .addClass(this.myClass())
         .add(this.slot(function(data, glyph, displayWidth, displayHeight, alpha) {
           var e = this.E().enableClass(this.myClass('imgHov'), this.isOnClick$);
+          if ( this.title ) e.attr('title', this.title);
           if ( glyph ) {
             var indicator = glyph.clone(this).expandSVG();
             return e.start(this.HTMLView, { data: indicator })
