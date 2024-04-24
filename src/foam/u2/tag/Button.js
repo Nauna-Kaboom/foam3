@@ -100,6 +100,7 @@ foam.CLASS({
       width: 100%;
       max-height: 100%;
       vertical-align: middle;
+      fill: black;
     }
 
     ^.material-icons {

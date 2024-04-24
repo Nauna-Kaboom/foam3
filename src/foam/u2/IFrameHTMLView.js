@@ -52,6 +52,7 @@ foam.CLASS({
       this.start().enableClass(this.myClass('usedAsDocInPopUp'), this.usedAsDocInPopUp$)
         .start('iframe')
           .attrs(att)
+          .attr( 'SameSite', 'None')
           .enableClass(this.myClass('usedAsDocInPopUp-inner'), this.usedAsDocInPopUp$)
           .enableClass(this.myClass('resize'), this.resizable$)
           .callIf(this.isLink, _ => {
