@@ -58,22 +58,15 @@ foam.CLASS({
   ],
   css: `
     ^:hover:not(:disabled):not(:active):not(.selected) {
-      background-color: $NavButtonBackgroundColor$hover;
-      color: $NavButtonBackgroundColor$hover$foreground;
       border-radius: 50%;
     }
     ^:hover:not(:disabled):not(:active):not(.selected) svg {
-      fill: $NavButtonBackgroundColor$hover$foreground;
-    }
-    ^:active, ^.selected {
-      background-color: $NavButtonSelectedBackgroundColor;
-      color:  $NavButtonSelectedLabelColor;
+      fill: /*%WARNING4%*/;
     }
     ^:active svg,^.selected svg {
-      fill: $NavSelectedIconColor;
+      fill: /*%DESTRUCTIVE1%*/;
     }
     ^{
-      color: $NavButtonBackgroundColor$foreground;
       border-radius: $buttonRadius;
     }
     ^ svg {

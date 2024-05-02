@@ -34,6 +34,7 @@ foam.CLASS({
           border-left: none;
           border-right: none;
           border-top: none;
+          background-color: /*%WARNING3%*/ white;
         }
       `
     }

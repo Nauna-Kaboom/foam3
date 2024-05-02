@@ -92,6 +92,15 @@
       gap: 0.4rem;
       width: 100%;
     }
+    ^helper-icon {
+      cursor: pointer;
+      float: right;
+      padding-left: 12px;
+      filter: /*%GREY1%*/;
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+    }
   `,
 
   properties: [

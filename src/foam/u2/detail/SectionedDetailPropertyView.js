@@ -26,6 +26,7 @@ foam.CLASS({
       cursor: pointer;
       float: right;
       padding-left: 12px;
+      filter: /*%GREY1%*/;
       user-select: none;
       -moz-user-select: none;
       -webkit-user-select: none;

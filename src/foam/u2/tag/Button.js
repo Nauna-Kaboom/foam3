@@ -36,7 +36,7 @@ foam.CLASS({
     },
     {
       class: 'foam.u2.ColorToken',
-      name: 'buttonSecondaryColor',
+      name: 'buttonSecondaryColor', // /*%WARNING3%*/
       value: '$white',
       onLight: '$grey600',
       disabledModifier: -10,
@@ -69,7 +69,7 @@ foam.CLASS({
     }
 
     ^:focus-visible {
-      outline: 1px solid $primary700;
+      outline: 1px solid /*%PRIMARY4%*/ red;
     }
 
     ^iconAfter {
@@ -100,7 +100,7 @@ foam.CLASS({
       width: 100%;
       max-height: 100%;
       vertical-align: middle;
-      fill: black;
+      fill: /*%SECONDARY5%*/ black;
     }
 
     ^.material-icons {
@@ -116,141 +116,141 @@ foam.CLASS({
 
     /* Primary */
     ^primary{
-      background-color: $buttonPrimaryColor;
+      background-color: /*%PRIMARY4%*/ red;
       box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
-      color: $buttonPrimaryColor$foreground;
+      color: /*%SECONDARY2%*/ white;
     }
 
     ^primary svg {
-      fill: $buttonPrimaryColor$foreground;
+      fill: /*%SECONDARY2%*/ white;
     }
 
     ^primary:hover:not(:disabled) {
-      background-color: $buttonPrimaryColor$hover;
+      background-color: /*%APPROVAL1%*/ red;
     }
 
     ^primary:active:not(:disabled) {
-      background-color: $buttonPrimaryColor$active;
-      border-color: $buttonPrimaryColor$hover;
+      background-color: /*%SECONDARY1%*/ red;
+      border-color: /*%APPROVAL1%*/ red;
     }
 
     ^primary:disabled {
-      background-color: $buttonPrimaryColor$disabled;
-      color: $buttonPrimaryColor$disabled$foreground;
+      background-color: /*%WARNING5%*/ red;
+      color: /*%SECONDARY5%*/ black;
     }
 
     /* Primary destructive */
 
     ^primary-destructive,^primary-destructive svg {
-      background-color: $destructive400;
-      color: $white;
-      fill: $white;
+      background-color: /*%PRIMARY4%*/ red;
+      color: /*%SECONDARY2%*/ white;
+      fill: /*%SECONDARY2%*/ white;
     }
 
     ^primary-destructive:hover:not(:disabled) {
-      background-color: $destructive500;
+      background-color: /*%PRIMARY4%*/ red;
     }
 
     ^primary-destructive:active:not(:disabled) {
-      background-color: $red500;
-      border: 1px solid $red700;
+      background-color: /*%PRIMARY4%*/ red;
+      border: 1px solid /*%SECONDARY1%*/ red;
       box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.06);
     }
 
     ^primary-destructive:disabled {
-      background-color: $destructive50;
+      background-color: /*%WARNING5%*/ red;
     }
 
 
     /* Secondary */
 
     ^secondary{
-      background-color: $buttonSecondaryColor;
-      border: 1px solid $buttonSecondaryBorderColor;
-      color: $buttonSecondaryColor$foreground;
+      background-color: /*%PRIMARY4%*/ white;
+      border: 1px solid /*%WARNING3%*/ gray;
+      color:  /*%DESTRUCTIVE1%*/ black;
     }
 
-    ^secondary svg { fill: $buttonSecondaryColor$foreground; }
+    ^secondary svg { fill: /*%DESTRUCTIVE1%*/ black; }
 
     ^secondary:hover:not(:disabled):not(:active) {
-      background-color: $buttonSecondaryColor$hover;
-      color: $buttonSecondaryColor$hover$foreground;
+      background-color: /*%WARNING4%*/ white;
+      color: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^secondary:hover:not(:disabled):not(:active) svg {
-      fill: $buttonSecondaryColor$hover$foreground;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^secondary:active:not(:disabled) {
-      color: $buttonPrimaryColor;
-      background-color: $buttonSecondaryColor$hover;
-      border: 1px solid $buttonPrimaryColor;
+      color: /*%PRIMARY4%*/ red;
+      background-color: /*%SECONDARY2%*/ white;
+      border: 1px solid /*%PRIMARY4%*/ red;
     }
 
     ^secondary:disabled{
-      background-color: $buttonSecondaryColor$disabled;
-      border-color: $buttonSecondaryColor$disabled;
-      color: $buttonSecondaryColor$active;
+      background-color: /*%WARNING4%*/ gray;
+      border-color: /*%WARNING4%*/ gray;
+      color: /*%WARNING4%*/ grey;
     }
 
-    ^secondary:disabled svg { fill: $buttonSecondaryColor$disabled; }
+    ^secondary:disabled svg { fill: /*%WARNING4%*/ gray; }
 
     /* Secondary destructive */
 
     ^secondary-destructive{
-      background-color: $white;
-      border: 1px solid $destructive500;
-      color: $destructive400;
+      background-color: /*%PRIMARY4%*/ red;
+      border: 1px solid /*%WARNING3%*/ grey;
+      color: /*%DESTRUCTIVE1%*/ white;
     }
 
-    ^secondary-destructive svg { fill: $destructive500; }
+    ^secondary-destructive svg { fill: /*%PRIMARY4%*/ red; }
 
     ^secondary-destructive:hover:not(:disabled) {
-      background-color: $buttonSecondaryColor$hover;
+      background-color: /*%WARNING3%*/ grey;
+      border: 1px solid /*%PRIMARY4%*/ red;
     }
 
     ^secondary-destructive:active:not(:disabled) {
-      background-color: $buttonSecondaryColor$hover;
-      border-color: $destructive500;
+      background-color: /*%SECONDARY2%*/ white;
+      border-color: /*%PRIMARY4%*/ red;
     }
 
     ^secondary-destructive:disabled {
-      background-color: $buttonSecondaryColor$hover;
-      border-color: $destructive100;
-      color: $destructive100;
+      background-color: /*%SECONDARY2%*/ white;
+      border-color: /*%WARNING5%*/ red;
+      color: /*%WARNING5%*/ red;
     }
 
-    ^secondary-destructive:disabled svg { fill: $destructive50; }
+    ^secondary-destructive:disabled svg { fill: /*%WARNING5%*/ red; }
 
     /* Tertiary */
 
     ^tertiary{
       background: none;
-      border: 1px solid transparent;
-      color: $buttonSecondaryColor$foreground;
+      color: /*%SECONDARY2%*/ black;
     }
 
-    ^tertiary svg { fill: $buttonSecondaryColor$foreground; }
+    ^tertiary svg { fill: /*%SECONDARY2%*/ black; }
 
     ^tertiary:hover:not(:disabled) {
-      background-color: $buttonSecondaryColor$hover;
+      background-color: /*%SECONDARY5%*/ white;
     }
 
     ^tertiary:active:not(:disabled) {
-      background-color: $buttonSecondaryColor$hover;
-      color: $buttonPrimaryColor;
+      background-color: /*%SECONDARY5%*/ white;
+      color: /*%PRIMARY4%*/ red;
     }
 
     ^tertiary:active:not(:disabled) svg {
-      fill: $buttonPrimaryColor;
+      fill: /*%PRIMARY4%*/ red;
     }
 
     ^tertiary:disabled {
-      color: $buttonSecondaryColor$active;
+      color: /*%WARNING4%*/ grey;
     }
 
     ^tertiary:disabled svg {
-      fill: $buttonSecondaryColor$active;
+      fill: /*%WARNING4%*/ grey;
     }
 
     /* Tertiary destructive */
@@ -258,49 +258,49 @@ foam.CLASS({
     ^tertiary-destructive{
       background-color: transparent;
       border-color: transparent;
-      color: $destructive400;
+      color: /*%PRIMARY4%*/ red;
     }
 
-    ^tertiary-destructive svg { fill: $destructive400; }
+    ^tertiary-destructive svg { fill: /*%PRIMARY4%*/ red; }
 
     ^tertiary-destructive:hover:not(:disabled):not(:active) {
-      background-color: $buttonSecondaryColor$hover;
+      background-color: /*%SECONDARY2%*/ white;
     }
 
     ^tertiary-destructive:active:not(:disabled) {
-      background-color: $buttonSecondaryColor$hover;
-      color: $red400;
+      background-color: /*%SECONDARY2%*/ white;
+      color: /*%PRIMARY4%*/ red;
     }
 
     ^tertiary-destructive:active:not(:disabled) svg {
-      fill: $red400;
+      fill: /*%PRIMARY4%*/ red;
     }
 
     ^tertiary-destructive:disabled {
-      color: $buttonSecondaryColor$disabled;
+      color: /*%WARNING4%*/ grey;
     }
 
     ^tertiary-destructive:diabled svg{
-      fill: $buttonSecondaryColor$disabled;
+      fill: /*%WARNING4%*/ grey;
     }
 
     /* Link */
 
     ^link,^link svg {
       background: none;
-      color: $buttonSecondaryColor$foreground;
-      fill: $buttonSecondaryColor$foreground;
+      color: /*%DESTRUCTIVE1%*/ black;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^link:hover:not(:disabled):not(:active),^link:hover:not(:disabled):not(:active) svg {
       text-decoration: underline;
-      color: $buttonSecondaryColor$active$foreground;
-      fill: $buttonSecondaryColor$active$foreground;
+      color: /*%WARNING4%*/ red;
+      fill: /*%WARNING4%*/ red;
     }
 
     ^link:active:not(:disabled),^link:active:not(:disabled) svg {
-      color: $buttonPrimaryColor;
-      fill: $buttonPrimaryColor;
+      color: /*%PRIMARY4%*/ red;
+      fill: /*%PRIMARY4%*/ red;
       text-decoration: underline;
     }
 
@@ -309,26 +309,26 @@ foam.CLASS({
     ^text{
       background: none;
       border: 1px solid transparent;
-      color: $buttonPrimaryColor;
+      color: /*%PRIMARY4%*/ red;
     }
 
-    ^text svg { fill: $buttonPrimaryColor; }
+    ^text svg { fill: /*%PRIMARY4%*/ red; }
 
     ^text:hover:not(:disabled) {
-      background-color: $buttonPrimaryLightColor;
+      background-color: /*%PRIMARY4%*/ red;
     }
 
     ^text:active:not(:disabled) {
-      background-color: $buttonPrimaryLightColor;
-      border-color: $buttonPrimaryColor;
+      background-color: /*%PRIMARY4%*/ red;
+      border-color: /*%PRIMARY4%*/ red;
     }
 
     ^text:disabled {
-      color: $buttonSecondaryColor$active;
+      color: /*%WARNING4%*/ grey;
     }
 
     ^text:disabled svg {
-      fill: $buttonSecondaryColor$active;
+      fill: /*%WARNING4%*/ grey;
     }
 
     /* Sizes */
@@ -349,6 +349,7 @@ foam.CLASS({
     ^iconOnly{
       padding: 8px;
       max-height: inherit;
+      filter: /*%GREY1%*/;
     }
 
     ^link^small,
@@ -366,9 +367,11 @@ foam.CLASS({
       max-height: 100%;
       max-width: 100%;
       object-fit: contain;
+      filter: /*%GREY1%*/;
     }
     ^svgIcon svg {
       height: 100%;
+      filter: /*%GREY1%*/;
     }
 
     /* SVGs outside themeGlyphs may have their own heights and widths,
@@ -416,14 +419,14 @@ foam.CLASS({
       justify-content: center;
     }
     ^primary ^loading svg, ^primary:disabled > ^loading svg {
-      fill: $buttonPrimaryColor$foreground;
+      fill: /*%SECONDARY2%*/ white;
     }
     ^secondary ^loading svg, ^tertiary ^loading svg,  ^link ^loading svg,
     ^secondary:disabled ^loading svg, ^tertiary:disabled ^loading svg,  ^link:disabled ^loading svg {
-      fill: $buttonSecondaryColor$foreground;
+      fill: /*%SECONDARY5%*/ black;
     }
     ^text > ^loading svg, ^text:disabled > ^loading svg {
-      fill: $buttonPrimaryColor;
+      fill: /*%PRIMARY4%*/ red;
     }
   `,
 

@@ -22,20 +22,20 @@ foam.CLASS({
       name: 'code',
       value: `
         ^ {
+          background-color: /*%WARNING3%*/ white;
+          color: /*%DESTRUCTIVE1%*/ black;
           min-width: 64px;
           font-size: 1.4rem;
           padding-left: $inputHorizontalPadding;
           padding-right: $inputHorizontalPadding;
           border: 1px solid;
           border-radius: $inputBorderRadius;
-          color: $black;
-          background-color:$white;
-          border-color: $grey400;
+          border-color: /*%WARNING4%*/ grey;
           width: 100%;
         }
 
         ^:hover {
-          border-color: $grey500;
+          border-color: /*%WARNING4%*/ grey;
         }
 
         ^:hover::placeholder,

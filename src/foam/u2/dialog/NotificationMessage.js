@@ -51,8 +51,8 @@ foam.CLASS({
       align-items: center;
       animation-name: fade;
       animation-duration: 10s;
-      background: $white;
-      border: 1px solid $grey300;
+      background-color: /*%WARNING3%*/ white;
+      border: 1px solid /*%WARNING4%*/ $grey300;
       border-radius: 3px;
       box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
       box-sizing: border-box;
@@ -88,6 +88,7 @@ foam.CLASS({
       flex-direction: column;
     }
     ^title{
+      color: /*%DESTRUCTIVE1%*/ #858585;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
@@ -97,7 +98,7 @@ foam.CLASS({
       white-space: normal;
     }
     ^description {
-      color: $grey500;
+      color: /*%DESTRUCTIVE1%*/ #858585;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
@@ -171,10 +172,10 @@ foam.CLASS({
           console.error('notification: ' + this.message);
           indicator = {
             size: 32,
-            backgroundColor: this.theme.destructive3,
-            borderColor: this.theme.destructive3,
+            backgroundColor:' orange',
+            borderColor: 'orange',
             icon: this.theme.glyphs.exclamation.getDataUrl({
-              fill: this.theme.white
+              fill: 'white'
             })
           };
         } else if ( this.type == this.LogLevel.WARN ) {
@@ -187,10 +188,10 @@ foam.CLASS({
           console.info('notification: ' + this.message);
           indicator = {
             size: 32,
-            backgroundColor: this.theme.approval4,
-            borderColor: this.theme.approval4,
+            backgroundColor: 'black',
+            borderColor: 'black',
             icon: this.theme.glyphs.checkmark.getDataUrl({
-              fill: this.theme.white
+              fill: 'white'
             })
           };
         }

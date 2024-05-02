@@ -147,6 +147,7 @@ foam.CLASS({
 
     ^iconContainer {
       margin-left: auto;
+      filter: /*%GREY1%*/;
     }
   `,
 

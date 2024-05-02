@@ -37,6 +37,7 @@ foam.CLASS({
     }
 
     ^styled{
+      filter: /*%GREY1%*/;
       background-color: $white;
       border: 1px solid $grey300;
       box-sizing: border-box;

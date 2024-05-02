@@ -30,6 +30,8 @@ foam.CLASS({
   css: `
     ^ {
       height: 100%;
+      color: /*%DESTRUCTIVE1%*/ black;
+      background-color: /*%WARNING3%*/ #fff;
     }
     ^flex {
       display: flex;
@@ -57,6 +59,8 @@ foam.CLASS({
     ^subTitle {
       padding: 0 15px;
       text-align: center;
+      color: black;
+      filter: /*%GREY1%*/;
     }
     // ^ .foam-u2-detail-SectionView .foam-u2-detail-SectionView-actionDiv {
     //   justify-content: center;
@@ -126,7 +130,7 @@ foam.CLASS({
       const self = this; // strangly removing self - renders Title and Instructions on bottom without the background
       this.onDetach(this.document.addEventListener('keydown', this.onKeyPressed));
       this.addClass()
-        .start().style({"background-color":"white"})
+        .start()
           .start()
             .addClass(this.myClass('flex'))
             .callIf(this.data.TITLE, function() {
