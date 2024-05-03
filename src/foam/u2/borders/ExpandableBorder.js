@@ -24,6 +24,7 @@
     }
     ^container{
       background: /*%WARNING3%*/ white;
+      color: /*%DESTRUCTIVE1%*/ black;
       border-radius: 4px;
       border: 1px solid /*%WARNING4%*/ grey;
       padding: 24px;

@@ -100,7 +100,7 @@ foam.CLASS({
       width: 100%;
       max-height: 100%;
       vertical-align: middle;
-      fill: /*%SECONDARY5%*/ black;
+      fill:/*%DESTRUCTIVE1%*/ black;
     }
 
     ^.material-icons {
@@ -118,11 +118,11 @@ foam.CLASS({
     ^primary{
       background-color: /*%PRIMARY4%*/ red;
       box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
-      color: /*%SECONDARY2%*/ white;
+      color: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^primary svg {
-      fill: /*%SECONDARY2%*/ white;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^primary:hover:not(:disabled) {
@@ -227,13 +227,13 @@ foam.CLASS({
 
     ^tertiary{
       background: none;
-      color: /*%SECONDARY2%*/ black;
+      color: /*%DESTRUCTIVE1%*/ black;
     }
 
-    ^tertiary svg { fill: /*%SECONDARY2%*/ black; }
+    ^tertiary svg { fill: /*%DESTRUCTIVE1%*/ black; }
 
     ^tertiary:hover:not(:disabled) {
-      background-color: /*%SECONDARY5%*/ white;
+      background-color: /*%PRIMARY4%*/ red;
     }
 
     ^tertiary:active:not(:disabled) {
@@ -349,7 +349,6 @@ foam.CLASS({
     ^iconOnly{
       padding: 8px;
       max-height: inherit;
-      filter: /*%GREY1%*/;
     }
 
     ^link^small,
@@ -367,11 +366,9 @@ foam.CLASS({
       max-height: 100%;
       max-width: 100%;
       object-fit: contain;
-      filter: /*%GREY1%*/;
     }
     ^svgIcon svg {
       height: 100%;
-      filter: /*%GREY1%*/;
     }
 
     /* SVGs outside themeGlyphs may have their own heights and widths,
@@ -423,7 +420,7 @@ foam.CLASS({
     }
     ^secondary ^loading svg, ^tertiary ^loading svg,  ^link ^loading svg,
     ^secondary:disabled ^loading svg, ^tertiary:disabled ^loading svg,  ^link:disabled ^loading svg {
-      fill: /*%SECONDARY5%*/ black;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
     ^text > ^loading svg, ^text:disabled > ^loading svg {
       fill: /*%PRIMARY4%*/ red;

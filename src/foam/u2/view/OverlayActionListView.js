@@ -85,8 +85,7 @@ foam.CLASS({
     }
 
     ^button-container button {
-      border: 1px solid transparent;
-      background-color: $white;
+      background-color: /*%WARNING3%*/ white;
       justify-content: space-between;
       text-align: left;
       white-space: nowrap;
@@ -147,7 +146,6 @@ foam.CLASS({
 
     ^iconContainer {
       margin-left: auto;
-      filter: /*%GREY1%*/;
     }
   `,
 

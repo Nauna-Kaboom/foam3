@@ -173,8 +173,8 @@ foam.CLASS({
   actions: [
     {
       name: 'closeModal',
-      icon: 'images/ic-cancelblack.svg',
-      label: '',
+      // icon: 'images/ic-cancelblack.svg',
+      label: 'X',
       keyboardShortcuts: [ 27 /* Escape */ ],
       code: function(x) {
         this.closing = true;

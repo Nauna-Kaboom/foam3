@@ -251,7 +251,7 @@ foam.CLASS({
     {
       name: 'removeNotification',
       themeIcon: 'close',
-      icon: 'images/ic-cancelblack.svg',
+      label: 'X',
       code: function() { this.remove(); }
     }
   ]

@@ -70,7 +70,7 @@ foam.CLASS({
       border-radius: $buttonRadius;
     }
     ^ svg {
-      fill: $NavButtonBackgroundColor$foreground;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
   `
 });
