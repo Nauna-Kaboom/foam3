@@ -24,7 +24,7 @@ foam.CLASS({
       height: 97vh;
     }
     ^usedAsDocInPopUp-inner{
-      width: 97vw;
+      width: calc(97vw - 30px);
       height: 97vh;
       padding: 0 !important;
     }
