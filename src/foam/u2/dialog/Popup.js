@@ -52,6 +52,7 @@ foam.CLASS({
       overflow: scroll;
     }
     ^X {
+      width: 20px;
       position: absolute !important;
       top: min(10%, 16px);
       right: min(10%, 16px);
