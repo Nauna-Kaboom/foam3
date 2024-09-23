@@ -69,7 +69,8 @@ foam.CLASS({
     },
     {
       name: 'colours',
-      title: 'Colours'
+      title: 'Colours',
+      order: 1
     },
     {
       name: 'images',
