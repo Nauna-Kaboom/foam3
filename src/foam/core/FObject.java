@@ -497,7 +497,7 @@ public interface FObject
   }
 
   default void validate(foam.core.X x) {
-    CompoundException compoundException = new CompoundException("Failed validation: " + getClassInfo().getId());;
+    CompoundException compoundException = new CompoundException("Failed validation: " + getClassInfo().getId());
     List<PropertyInfo> props = getClassInfo().getAxiomsByClass(PropertyInfo.class);
     for ( PropertyInfo prop : props ) {
       try {
