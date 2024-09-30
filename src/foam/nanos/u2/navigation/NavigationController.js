@@ -68,7 +68,7 @@ foam.CLASS({
       align-content: center;
       justify-content: center;
       box-shadow: inset 0 1px 20px 2px black;
-      background: #ffe700d6;
+      background: /*%PRIMARY3%*/ #ffe700d6;
     }
 
     ^sidebar^sideNav{
@@ -207,11 +207,7 @@ foam.CLASS({
         }
       },
     function maybeCloseNav() {
-      if (this.displayWidth.ordinal <= this.DisplayWidth.MD.ordinal) {
-        this.isMenuOpen = false
-      } else if ( this.displayWidth.ordinal >= this.DisplayWidth.MD.ordinal && this.prefersMenuOpen === true) {
-        this.isMenuOpen = true
-      } 
+      this.isMenuOpen = false
     },
     function adjustTopBarHeight() {
       if ( ! this.headerSlot_ ) return;
