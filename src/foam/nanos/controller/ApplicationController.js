@@ -322,13 +322,7 @@ foam.CLASS({
     },
     {
       class: 'Boolean',
-      name: 'isMenuOpen',
-      postSet: function(o, n) {
-        if ( o == n ) return;
-        if ( n ) {
-          this.isTOGOpen = false;
-        }
-      },
+      name: 'isMenuOpen'
     },
     {
       class: 'Boolean',
