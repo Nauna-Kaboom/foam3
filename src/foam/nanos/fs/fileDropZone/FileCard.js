@@ -62,7 +62,7 @@ foam.CLASS({
     }
 
     ^name {
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
       cursor: pointer;
       overflow: hidden;
       text-align: left;

@@ -23,7 +23,7 @@
   values: [
     {
       name: 'DEFAULT',
-      color: '$primary400',
+      color: '/*%PRIMARY3%*/',
       glyph: 'checkmark'
     },
     {

@@ -26,7 +26,7 @@ foam.CLASS({
     {
       class: 'foam.u2.ColorToken',
       name: 'checkboxColor',
-      value: '$primary400'
+      value: '/*%PRIMARY3%*/'
     }
   ],
 

@@ -43,7 +43,6 @@
     ^ {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
       justify-content: center;
       gap: 0.4rem;
       width: 100%;
@@ -70,7 +69,7 @@
       */
       font-size: 1.2rem;
       min-height: 1.25em;
-      justify-content: flex-start;
+      justify-content: flex-end;
       gap: 0.2rem;
     }
     ^errorText svg {

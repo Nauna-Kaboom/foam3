@@ -34,7 +34,7 @@ foam.CLASS({
           return '$grey100';
         }
         if ( isSelected ) {
-          return '$primary400';
+          return '/*%PRIMARY3%*/';
         }
         return '$grey500';
       }

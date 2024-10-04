@@ -28,9 +28,9 @@ foam.CLASS({
     }
 
     ^ [type=radio]:checked ~ label {
-      border-bottom: solid 3px $primary400;
+      border-bottom: solid 3px /*%PRIMARY3%*/;
       font-weight: bold;
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
     }
 
     ^ label {

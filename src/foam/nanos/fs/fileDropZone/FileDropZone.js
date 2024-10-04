@@ -46,7 +46,7 @@ foam.CLASS({
     }
     ^:focus {
       background: $primary50;
-      border: 2px dashed $primary400;
+      border: 2px dashed /*%PRIMARY3%*/;
     }
     ^instruction-container.selection {
       margin-bottom: 16px;
@@ -59,7 +59,7 @@ foam.CLASS({
       z-index: -1;
     }
     ^link, ^link:hover {
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
     }
     ^input:focus + ^instruction-container > ^browse-container > ^link{
       border: 1px solid;
@@ -89,7 +89,7 @@ foam.CLASS({
     }
     ^dragged{
       background: $primary50;
-      border: 2px dashed $primary400;
+      border: 2px dashed /*%PRIMARY3%*/;
     }
   `,
 

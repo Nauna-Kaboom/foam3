@@ -36,14 +36,14 @@ foam.CLASS({
     ^resetButton {
       float: right;
       background: none;
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
     }
     ^resetButton:hover:not(:disabled) {
       text-decoration: underline;
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
     }
     ^resetButton:focus {
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
     }
     ^resetButton:disabled {
       color: $grey500;

@@ -16,7 +16,7 @@ foam.CLASS({
   cssTokens: [
     {
       name: 'indicatorColor',
-      value: '$primary400'
+      value: '/*%PRIMARY3%*/'
     }
   ],
 
@@ -74,7 +74,7 @@ foam.CLASS({
         .start()
           .style({ width: foam.core.Int.isInstance(this.size) ? this.size+'px' : this.size })
           .start('svg')
-            .attrs({ width: '100%', viewBox: '0 0 24 24', 'transform-origin': 'center', preserveAspectRatio: 'xMidYMid meet', fill: foam.CSS.returnTokenValue('$primary400', this.cls_, this.__subContext__) })
+            .attrs({ width: '100%', viewBox: '0 0 24 24', 'transform-origin': 'center', preserveAspectRatio: 'xMidYMid meet', fill: foam.CSS.returnTokenValue('/*%PRIMARY3%*/', this.cls_, this.__subContext__) })
             .start('g')
               .style({
                 'transform-origin': 'center',

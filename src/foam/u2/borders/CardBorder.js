@@ -13,8 +13,8 @@ foam.CLASS({
     ^ {
       min-height: 60px;
 
-      background-color: /*%WARNING3%*/ $white;
-      border: solid 1px /*%WARNING4%*/ $grey300;
+      background-color: /*%PRIMARY5%*/ $white;
+      border: solid 1px /*%SECONDARY2%*/ $grey300;
       border-radius: 5px;
 
       padding: 16px;

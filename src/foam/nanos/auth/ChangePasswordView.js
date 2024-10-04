@@ -31,7 +31,7 @@ foam.CLASS({
     ^ {
       height: 100%;
       color: /*%DESTRUCTIVE1%*/ black;
-      background-color: /*%WARNING3%*/ #fff;
+      background-color: /*%PRIMARY5%*/ #fff;
     }
     ^flex {
       display: flex;

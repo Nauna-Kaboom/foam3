@@ -18,7 +18,7 @@
 foam.CLASS({
   package: 'foam.u2.tag',
   name: 'TextArea',
-  extends: 'foam.u2.View',
+  extends: 'foam.u2.tag.Input',
 
   axioms: [
     { class: 'foam.u2.TextInputCSS' },
@@ -34,7 +34,7 @@ foam.CLASS({
           border-left: none;
           border-right: none;
           border-top: none;
-          background-color: /*%WARNING3%*/ white;
+          background-color: /*%PRIMARY5%*/ white;
         }
       `
     }

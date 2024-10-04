@@ -24,13 +24,9 @@ foam.CLASS({
 
   cssTokens: [
     {
-      name: 'buttonRadius',
-      value: '18px'
-    },
-    {
       class: 'foam.u2.ColorToken',
       name: 'buttonPrimaryColor',
-      value: '$primary400',
+      value: '/*%PRIMARY3%*/',
       disabledModifier: 90,
       onLight: '$grey50'
     },
@@ -57,7 +53,7 @@ foam.CLASS({
       font: inherit;
       align-items: center;
       border: 1px solid transparent;
-      border-radius: $buttonRadius;
+      border-radius: $inputBorderRadius;
       box-sizing: border-box;
       display: inline-flex;
       gap: 8px;
@@ -116,9 +112,10 @@ foam.CLASS({
 
     /* Primary */
     ^primary{
-      background-color: /*%PRIMARY4%*/ red;
-      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
-      color: /*%DESTRUCTIVE1%*/ black;
+      background-color: /*%PRIMARY3%*/ #59c4f6;
+      box-shadow: inset 0px 0px 4px 0px /*%PRIMARY4%*/ #425250;
+      color: /*%SECONDARY1%*/ #ffffff;
+      text-shadow: 0px 0px 2px black;
     }
 
     ^primary svg {
@@ -126,12 +123,12 @@ foam.CLASS({
     }
 
     ^primary:hover:not(:disabled) {
-      background-color: /*%APPROVAL1%*/ red;
+      background-color: /*%PRIMARY4%*/ red;
     }
 
     ^primary:active:not(:disabled) {
-      background-color: /*%SECONDARY1%*/ red;
-      border-color: /*%APPROVAL1%*/ red;
+      background-color: /*%PRIMARY4%*/ red;
+      border-color: /*%SECONDARY2%*/ red;
     }
 
     ^primary:disabled {
@@ -165,16 +162,15 @@ foam.CLASS({
     /* Secondary */
 
     ^secondary{
-      background-color: /*%PRIMARY4%*/ white;
-      border: 1px solid /*%WARNING3%*/ gray;
-      color:  /*%DESTRUCTIVE1%*/ black;
+      background-color: /*%PRIMARY3%*/ #59c4f6;
+      color: /*%SECONDARY1%*/ #ffffff;
+      text-shadow: 0px 0px 1px black;
     }
 
     ^secondary svg { fill: /*%DESTRUCTIVE1%*/ black; }
 
     ^secondary:hover:not(:disabled):not(:active) {
-      background-color: /*%WARNING4%*/ white;
-      color: /*%DESTRUCTIVE1%*/ black;
+      background-color: /*%PRIMARY4%*/ red;
     }
 
     ^secondary:hover:not(:disabled):not(:active) svg {
@@ -182,9 +178,8 @@ foam.CLASS({
     }
 
     ^secondary:active:not(:disabled) {
-      color: /*%PRIMARY4%*/ red;
-      background-color: /*%SECONDARY2%*/ white;
-      border: 1px solid /*%PRIMARY4%*/ red;
+      background-color: /*%PRIMARY4%*/ red;
+      border-color: /*%SECONDARY2%*/ red;
     }
 
     ^secondary:disabled{
@@ -288,19 +283,19 @@ foam.CLASS({
 
     ^link,^link svg {
       background: none;
-      color: /*%DESTRUCTIVE1%*/ black;
-      fill: /*%DESTRUCTIVE1%*/ black;
+      color: /*%PRIMARY2%*/ black;
+      fill: /*%PRIMARY2%*/ black;
     }
 
     ^link:hover:not(:disabled):not(:active),^link:hover:not(:disabled):not(:active) svg {
       text-decoration: underline;
-      color: /*%WARNING4%*/ red;
-      fill: /*%WARNING4%*/ red;
+      color: /*%PRIMARY3%*/ red;
+      fill: /*%PRIMARY3%*/ red;
     }
 
     ^link:active:not(:disabled),^link:active:not(:disabled) svg {
-      color: /*%PRIMARY4%*/ red;
-      fill: /*%PRIMARY4%*/ red;
+      color: /*%SECONDARY2%*/ red;
+      fill: /*%SECONDARY2%*/ red;
       text-decoration: underline;
     }
 
@@ -349,13 +344,6 @@ foam.CLASS({
     ^iconOnly{
       padding: 8px;
       max-height: inherit;
-    }
-
-    ^link^small,
-    ^link^medium,
-    ^link^large {
-      padding-left: 0;
-      padding-right: 0;
     }
 
     ^link > .foam-u2-HTMLView{
@@ -546,7 +534,7 @@ foam.CLASS({
 
       if ( this.label ) {
         if ( foam.String.isInstance(this.label) ) {
-          if ( this.buttonStyle == 'LINK' || this.buttonStyle == 'UNSTYLED' ) {
+          if ( this.buttonStyle == 'UNSTYLED' ) {
             this.start().addClass('p').add(this.label$).end();
           } else {
             this.start().addClass('h600').add(this.label$).end();

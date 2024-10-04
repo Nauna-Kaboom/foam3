@@ -89,7 +89,7 @@ foam.CLASS({
       color: #c82e2e;
     }
     ^ .foam-nanos-menu-SubMenuView-inner > div:hover {
-      background-color: $primary400;
+      background-color: /*%PRIMARY3%*/;
       cursor: pointer;
     }
     ^ .foam-nanos-menu-SubMenuView-inner::before {

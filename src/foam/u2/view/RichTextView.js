@@ -56,7 +56,7 @@ foam.CLASS({
     }
     ^dragged{
       background: $primary50;
-      border: 2px dashed $primary400;
+      border: 2px dashed /*%PRIMARY3%*/;
     }
     ^dragged::after{
       content: "Drop Here";

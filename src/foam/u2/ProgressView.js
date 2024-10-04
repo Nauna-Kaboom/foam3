@@ -23,7 +23,7 @@ foam.CLASS({
   cssTokens: [
     {
       name: 'progressColor',
-      value: '$primary400'
+      value: '/*%PRIMARY3%*/'
     },
     {
       name: 'trackColor',

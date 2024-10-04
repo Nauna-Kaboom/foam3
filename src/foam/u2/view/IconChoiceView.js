@@ -39,7 +39,7 @@ foam.CLASS({
       align-items: center;
       background: none;
       border-radius: 4px;
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
 
       display: flex;
       justify-content: center;
@@ -47,7 +47,7 @@ foam.CLASS({
     }
 
     ^label svg path {
-      fill: $primary400;
+      fill: /*%PRIMARY3%*/;
     }
 
     ^label:hover {
@@ -61,7 +61,7 @@ foam.CLASS({
     }
 
     ^label^disabled-icon {
-      background: $primary400;
+      background: /*%PRIMARY3%*/;
       color: $white;
       fill: $white;
       font-weight: 600;

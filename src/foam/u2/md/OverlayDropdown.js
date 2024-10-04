@@ -37,8 +37,8 @@ foam.CLASS({
     }
 
     ^styled{
-      background-color: /*%WARNING3%*/ white;
-      border: 1px solid /*%WARNING4%*/ grey;
+      background-color: /*%PRIMARY5%*/ white;
+      border: 1px solid /*%SECONDARY2%*/ grey;
       color: /*%DESTRUCTIVE1%*/ black;
       box-sizing: border-box;
       box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);

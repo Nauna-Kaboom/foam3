@@ -110,12 +110,12 @@ foam.CLASS({
     }
 
     ^filter-button-active{
-      color: $primary400;
+      color: /*%PRIMARY3%*/;
       background: $grey100;
     }
 
     ^filter-button-active svg {
-      fill: $primary400;
+      fill: /*%PRIMARY3%*/;
       transform: rotate(180deg);
     }
 

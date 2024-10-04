@@ -50,6 +50,57 @@ foam.CLASS({
       margin-left: 2ch;
       padding-left: 1ch;
     }
+    /* HEADERS */
+    .t1 {
+      padding: 1vh 0;
+      font-weight: bold;
+      word-break: break-word;
+      font-size: 12vw;
+      text-align: center;
+      text-shadow: 1px 3px 0 #969696, 1px 3px 5px black;
+      color: /*%SECONDARY1%*/ white;
+    }
+    .t2 {
+      padding: 1vh 0;
+      font-weight: bold;
+      word-break: break-word;
+      font-size: 5vw;
+      text-align: center;
+      text-shadow: 1px 3px 0 /*%PRIMARY4%*/ #969696, 1px 3px 5px black;
+      background-color: /*%PRIMARY5%*/ grey;
+      color: /*%SECONDARY1%*/ white;
+    }
+    .t3 {
+      padding: 1vh 0;
+      font-weight: bold;
+      word-break: break-word;
+      font-size: 5vw;
+      text-align: center;
+      color: /*%PRIMARY4%*/ #890103;
+      text-shadow: 1px 1px 3px /*%PRIMARY3%*/ #d4d676;
+    } 
+    .t4 {
+      padding: 1vh 0;
+      font-weight: bold;
+      word-break: break-word;
+      font-size: 4vw;
+      text-align: center;
+      color: white;
+      text-shadow: 1px 3px 0 #0b0b0b;
+      background-color: /*%PRIMARY5%*/;
+      padding: 1vh;
+    }
+    .t5 {
+      padding: 1vh 0;
+      font-weight: bold;
+      color: white;
+      word-break: break-word;
+      font-size: 4vw;
+      text-align: center;
+      text-shadow: 1px 3px 0 #969696, 1px 3px 5px black;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
 
     /* TYPOGRAPHY */ 
     .h100{

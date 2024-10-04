@@ -23,10 +23,10 @@
       max-height: 500px;
     }
     ^container{
-      background: /*%WARNING3%*/ white;
+      background: /*%PRIMARY5%*/ white;
       color: /*%DESTRUCTIVE1%*/ black;
       border-radius: 4px;
-      border: 1px solid /*%WARNING4%*/ grey;
+      border: 1px solid /*%SECONDARY2%*/ grey;
       padding: 24px;
     }
     ^ h6{

@@ -21,8 +21,8 @@ foam.CLASS({
     cursor: pointer;
   }
   ^selected {
-    background-color: $primary400;
-    border-color: $primary400;
+    background-color: /*%PRIMARY3%*/;
+    border-color: /*%PRIMARY3%*/;
     color: $white;
     line-height: 1.5;
   }

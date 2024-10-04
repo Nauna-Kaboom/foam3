@@ -67,8 +67,7 @@ foam.CLASS({
       display: flex;
       align-content: center;
       justify-content: center;
-      box-shadow: inset 0 1px 20px 2px black;
-      background: /*%PRIMARY3%*/ #ffe700d6;
+      background: /*%PRIMARY1%*/ #ffe700d6;
     }
 
     ^sidebar^sideNav{

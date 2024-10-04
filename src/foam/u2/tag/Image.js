@@ -38,6 +38,9 @@ foam.CLASS({
     ^imgHov {
       cursor: pointer;
     }
+    ^bord {
+      border-radius: $inputBorderRadius;
+    }
   `,
 
   constants: {
@@ -121,7 +124,7 @@ foam.CLASS({
             return e;
           }
           if ( ! data) return null;
-          return e.start('img')
+          return e.start('img').addClass(this.myClass('bord'))
               .on('click', () => this.onCk())
               .attrs({ src: data, role: this.role })
               .style({

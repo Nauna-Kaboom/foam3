@@ -35,6 +35,12 @@ foam.CLASS({
       documentation: 'Function to determine if button is enabled.',
       value: null
     },
+    {
+      class: 'Enum',
+      of: 'foam.u2.ButtonStyle',
+      name: 'buttonStyle',
+      value: 'LINK'
+    },
   ],
 
   methods: [

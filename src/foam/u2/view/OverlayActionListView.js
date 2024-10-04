@@ -85,7 +85,7 @@ foam.CLASS({
     }
 
     ^button-container button {
-      background-color: /*%WARNING3%*/ white;
+      background-color: /*%PRIMARY5%*/ white;
       justify-content: space-between;
       text-align: left;
       white-space: nowrap;

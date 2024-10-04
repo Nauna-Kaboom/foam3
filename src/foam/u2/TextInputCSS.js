@@ -22,7 +22,7 @@ foam.CLASS({
       name: 'code',
       value: `
         ^ {
-          background-color: /*%WARNING3%*/ white;
+          background-color: /*%PRIMARY5%*/ white;
           color: /*%DESTRUCTIVE1%*/ black;
           min-width: 64px;
           font-size: 1.4rem;
@@ -30,12 +30,12 @@ foam.CLASS({
           padding-right: $inputHorizontalPadding;
           border: 1px solid;
           border-radius: $inputBorderRadius;
-          border-color: /*%WARNING4%*/ grey;
+          border-color: /*%SECONDARY2%*/ grey;
           width: 100%;
         }
 
         ^:hover {
-          border-color: /*%WARNING4%*/ grey;
+          border-color: /*%SECONDARY2%*/ grey;
         }
 
         ^:hover::placeholder,
@@ -46,7 +46,7 @@ foam.CLASS({
 
         ^:focus {
           outline: none;
-          border-color: $primary400;
+          border-color: /*%PRIMARY3%*/;
         }
 
         ^:disabled {
