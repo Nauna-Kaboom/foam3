@@ -62,7 +62,7 @@ foam.CLASS({
     }
 
     ^name {
-      color: /*%PRIMARY3%*/;
+      color: /*%SECONDARY2%*/;
       cursor: pointer;
       overflow: hidden;
       text-align: left;
@@ -71,7 +71,7 @@ foam.CLASS({
     }
 
     ^name:hover {
-      color: $primary700;
+      color: /*%PRIMARY4%*/;
     }
 
     ^ .foam-u2-ActionView {

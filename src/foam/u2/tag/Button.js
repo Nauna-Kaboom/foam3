@@ -112,23 +112,20 @@ foam.CLASS({
 
     /* Primary */
     ^primary{
-      background-color: /*%PRIMARY3%*/ #59c4f6;
-      box-shadow: inset 0px 0px 4px 0px /*%PRIMARY4%*/ #425250;
+      background-color: /*%PRIMARY4%*/ #59c4f6;
       color: /*%SECONDARY1%*/ #ffffff;
-      text-shadow: 0px 0px 2px black;
+      text-shadow: 0px 0px 2px grey;
     }
-
     ^primary svg {
       fill: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^primary:hover:not(:disabled) {
-      background-color: /*%PRIMARY4%*/ red;
+      box-shadow: 0px 0px 4px 1px black;
     }
 
     ^primary:active:not(:disabled) {
-      background-color: /*%PRIMARY4%*/ red;
-      border-color: /*%SECONDARY2%*/ red;
+      box-shadow: inset 0px 0px 4px 0px /*%SECONDARY2%*/ #425250;
     }
 
     ^primary:disabled {

@@ -345,7 +345,7 @@ foam.CLASS({
                       .add(self.data.FOOTER_TXT)
                     .end()
                     .start('span')
-                      .addClass(self.myClass('secondart-action-css'))
+                      // .addClass(self.myClass('secondart-action-css'))
                       .add(self.data.FOOTER)
                     .end()
                   .end()

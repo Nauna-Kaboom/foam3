@@ -58,7 +58,6 @@ foam.CLASS({
   ],
   css: `
     ^:hover:not(:disabled):not(:active):not(.selected) {
-      border-radius: 50%;
     }
     ^:hover:not(:disabled):not(:active):not(.selected) svg {
       fill: /*%WARNING4%*/;

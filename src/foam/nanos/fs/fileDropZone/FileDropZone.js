@@ -45,8 +45,8 @@ foam.CLASS({
       width: 100%;
     }
     ^:focus {
-      background: $primary50;
-      border: 2px dashed /*%PRIMARY3%*/;
+      box-shadow: 0px 0px 9px 0px black;
+      border: 2px dashed #425250;
     }
     ^instruction-container.selection {
       margin-bottom: 16px;
@@ -57,13 +57,15 @@ foam.CLASS({
       opacity: 0;
       position: absolute;
       z-index: -1;
+      width: 100vw;
+      height: 100vh;
     }
     ^link, ^link:hover {
-      color: /*%PRIMARY3%*/;
+      color: /*%SECONDARY2%*/;
     }
     ^input:focus + ^instruction-container > ^browse-container > ^link{
-      border: 1px solid;
-      border-color: $primary700;
+      box-shadow: 0px 0px 9px 0px black;
+      border: 2px dashed #425250;
     }
     ^caption-container {
       display: flex;
@@ -88,8 +90,7 @@ foam.CLASS({
       gap: 8px;
     }
     ^dragged{
-      background: $primary50;
-      border: 2px dashed /*%PRIMARY3%*/;
+      box-shadow: 0px 0px 9px 0px black;
     }
   `,
 
