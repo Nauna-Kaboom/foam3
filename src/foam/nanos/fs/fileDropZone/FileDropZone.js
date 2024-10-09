@@ -35,7 +35,7 @@ foam.CLASS({
       align-items: center;
       box-sizing: border-box;
       border: 2px dashed $grey400;
-      border-radius: 4px;
+      border-radius: $inputBorderRadius;
       display: flex;
       flex-direction: column;
       gap: 8px;

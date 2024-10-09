@@ -30,10 +30,7 @@ foam.CLASS({
           height: auto;
           padding-top: /*$inputVerticalPadding*/ 8px;
           padding-bottom: /*$inputVerticalPadding*/ 8px;
-          border-radius: 2px;
-          border-left: none;
-          border-right: none;
-          border-top: none;
+          border-radius: $inputBorderRadius;
           background-color: /*%PRIMARY5%*/ white;
         }
       `

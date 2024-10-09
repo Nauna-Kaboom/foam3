@@ -218,23 +218,22 @@ foam.CLASS({
     /* Tertiary */
 
     ^tertiary{
-      background: none;
-      color: /*%DESTRUCTIVE1%*/ black;
+      background-color: /*%PRIMARY1%*/;
+      color: /*%PRIMARY2%*/ black;
     }
 
-    ^tertiary svg { fill: /*%DESTRUCTIVE1%*/ black; }
+    ^tertiary svg { fill: /*%PRIMARY2%*/ black; }
 
     ^tertiary:hover:not(:disabled) {
-      background-color: /*%PRIMARY4%*/ red;
+      box-shadow: 0px 0px 4px 1px black;
     }
 
     ^tertiary:active:not(:disabled) {
-      background-color: /*%SECONDARY5%*/ white;
-      color: /*%PRIMARY4%*/ red;
+      box-shadow: inset 0px 0px 4px 0px /*%SECONDARY2%*/ #425250;
     }
 
     ^tertiary:active:not(:disabled) svg {
-      fill: /*%PRIMARY4%*/ red;
+      fill: /*%PRIMARY2%*/ black;
     }
 
     ^tertiary:disabled {
