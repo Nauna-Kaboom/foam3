@@ -584,6 +584,11 @@ foam.CLASS({
       writePermissionRequired: true
     },
     {
+      name: 'leftRightSpace',
+      class: 'String',
+      value: '0'
+    },
+    {
       class: 'foam.core.FObjectProperty',
       name: 'appConfig',
       of: 'foam.nanos.app.AppConfig',

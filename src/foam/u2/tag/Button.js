@@ -533,7 +533,7 @@ foam.CLASS({
           if ( this.buttonStyle == 'UNSTYLED' ) {
             this.start().addClass('p').add(this.label$).end();
           } else {
-            this.start().addClass('h600').add(this.label$).end();
+            this.start().addClass('h400').add(this.label$).end();
           }
         } else if ( foam.Object.isInstance(this.label) && ! this.label.then ) {
           this.tag(this.label);

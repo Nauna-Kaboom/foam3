@@ -26,7 +26,7 @@
       background: /*%PRIMARY5%*/ white;
       color: /*%DESTRUCTIVE1%*/ black;
       border-radius: 4px;
-      border: 1px solid /*%SECONDARY2%*/ grey;
+      border: 1px solid /*%SECONDARY3%*/ grey;
       padding: 24px;
     }
     ^ h6{

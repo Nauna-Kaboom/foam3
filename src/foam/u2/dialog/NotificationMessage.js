@@ -52,7 +52,7 @@ foam.CLASS({
       animation-name: fade;
       animation-duration: 10s;
       background-color: /*%PRIMARY5%*/ white;
-      border: 1px solid /*%SECONDARY2%*/ $grey300;
+      border: 1px solid /*%SECONDARY3%*/ $grey300;
       border-radius: 3px;
       box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
       box-sizing: border-box;
