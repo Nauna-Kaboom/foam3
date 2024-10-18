@@ -806,6 +806,10 @@ foam.CLASS({
       if ( typeof menu == 'string' && ! menu.includes('/') )
         menu = realMenu;
       this.buildingStack = false;
+      
+      // was pushing view to the current x,y position of current page - so to reset scroll to top 0,0
+      document.getElementsByClassName('foam-u2-stack-DesktopStackView')[0].scrollTo(0,0);
+
       return menu && menu.launch && menu.launch(this.__subContext__);
     },
 
