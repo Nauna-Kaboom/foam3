@@ -42,7 +42,8 @@ foam.CLASS({
       position: fixed;
       /* TODO: reduce max width when notification messages are updated */
       max-width: calc(min(100vw, 48rem) - 3.2rem);
-      min-width: calc(max(30vw, 30rem) - 3.2rem);
+      min-width: 150px;
+      max-width: 80vw;
       right: 1.6rem;
       top: 2.4rem;
       z-index: 15000;
@@ -56,12 +57,12 @@ foam.CLASS({
       border-radius: 3px;
       box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
       box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
       margin: auto;
       min-height: 64px;
       padding: 12px 16px;
       width: 100%;
+      display: inline-flex;
+      flex-wrap: nowrap;
     }
     @keyframes fade {
       0% { opacity: 0; transform: translateX(300px);}
@@ -72,42 +73,29 @@ foam.CLASS({
     ^outer-content{
       align-items: center;
       display: flex;
-      margin-right: 1em;
+      flex-wrap: wrap;
       width: 100%;
-      gap: 1.2rem;
     }
     ^status-icon {
+      width: fit-content;
       align-items: center;
       height: 32px;
       justify-content: center;
       flex: 0 0 3.2rem;
+      display: content;
     }
     ^content {
       display: flex;
-      overflow: hidden;
       flex-direction: column;
     }
     ^title{
       color: /*%DESTRUCTIVE1%*/ #858585;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: break-word;
-      white-space: normal;
     }
     ^description {
       color: /*%DESTRUCTIVE1%*/ #858585;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: break-word;
-      white-space: normal;
     }
     ^close-icon {
+      display: contents;
       position: absolute;
       right: 0.5em;
       top: 0.5em;
@@ -122,6 +110,16 @@ foam.CLASS({
         max-width: calc(min(75vw, 48rem) - 3.2rem);
         min-width: calc(max(30vw, 30rem) - 3.2rem);
         right: 3.2rem;
+      }
+    }
+    @media only screen and (max-width: 150px) {
+      ^ {
+        right: -1;
+      }
+    }
+    @media only screen and (min-width: 250px) {
+      ^outer-content{
+        flex-wrap: nowrap;
       }
     }
   `,
@@ -241,9 +239,9 @@ foam.CLASS({
           .endContext()
         .end();
 
-      setTimeout(() => {
-        this.remove();
-      }, 9900);
+      // setTimeout(() => {
+      //   this.remove();
+      // }, 9900);
     }
   ],
 
