@@ -239,9 +239,9 @@ foam.CLASS({
           .endContext()
         .end();
 
-      // setTimeout(() => {
-      //   this.remove();
-      // }, 9900);
+      setTimeout(() => {
+        this.remove();
+      }, 9900);
     }
   ],
 
