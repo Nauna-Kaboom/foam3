@@ -59,6 +59,10 @@ foam.CLASS({
     ^ input[type='radio']:focus + label > ^radio-outer > .radio {
       filter: drop-shadow( 0px 0px 1px rgba(0, 0, 0, .5));
     }
+    ^radio-lab {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
   `,
 
   properties: [
@@ -130,6 +134,7 @@ foam.CLASS({
               add(self.RadioButton.create({ isSelected$: isChecked, isDisabled$: self.isDisabled$ })).
             end().
             start('span').
+              addClass(self.myClass('radio-lab')).
               add(c[1]).
             end().
           end();
