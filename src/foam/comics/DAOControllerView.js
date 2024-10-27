@@ -42,6 +42,7 @@ foam.CLASS({
     ^ {
       margin: 24px auto 0 auto;
       padding: 0 32px;
+      max-width: 100vw;
     }
 
     ^top-row {
