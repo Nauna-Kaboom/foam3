@@ -146,6 +146,8 @@
     function launch_(X, e) {
       // Create a sub-context with per-menu X.register()-ations.
       var subX = X.createSubContext({});
+      // was pushing view to the current x,y position of current page - so to reset scroll to top 0,0
+      document.getElementsByClassName('foam-u2-stack-DesktopStackView')[0].scrollTo(0,0);
       for ( var i = 0 ; i < this.registrations.length ; i++ ) {
         var r = this.registrations[i];
         subX.register(X.lookup(r.className), r.targetName);
