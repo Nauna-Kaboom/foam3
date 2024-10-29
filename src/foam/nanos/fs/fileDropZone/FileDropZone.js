@@ -210,20 +210,12 @@ foam.CLASS({
         .enableClass(this.myClass('dragged'), this.isDragged_$)
         .start()
           .addClass(this.myClass('browse-container'))
-          .enableClass(this.myClass('browse-container-row'), this.hasFiles$)
+          .addClass(this.myClass('browse-container-row'))
           .start().addClass('p-semiBold').add(this.title || this.LABEL_DEFAULT_TITLE).end()
-            .start().addClass('p').add(this.LABEL_OR).end()
-            .add(this.slot(function(hasFiles) {
-              return this.E().start(this.BROWSE, {
-                label: self.LABEL_BROWSE,
-                buttonStyle: hasFiles ? 'LINK' : 'SECONDARY'
-              })
-                .enableClass(this.myClass('link'), self.hasFiles$)
-                .attrs({
-                  for: 'file-upload'
-                })
-              .end();
-            }))
+          .start().addClass('p').add(this.LABEL_OR).end()
+          .start(this.BROWSE, { label: this.LABEL_BROWSE, buttonStyle: 'SECONDARY' })
+            .attrs({ for: 'file-upload' })
+          .end()
         .end()
         .start().addClass(this.myClass('caption-container'))
         .show(this.slot(function(showHelp, files) { return showHelp && files.length < 1 }))
