@@ -27,7 +27,7 @@
       color: /*%DESTRUCTIVE1%*/ black;
       border-radius: 4px;
       border: 1px solid /*%SECONDARY3%*/ grey;
-      padding: 24px;
+      padding: 12px;
     }
     ^ h6{
       font-size: 1.4rem;

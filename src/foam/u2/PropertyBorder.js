@@ -35,7 +35,7 @@
   exports: [ 'data as objData' ],
 
   messages: [
-    { name: 'HELP',       message: 'Help' },
+    { name: 'HELP',       message: 'Info' },
     { name: 'LEARN_MORE', message: 'Click to learn more' }
   ],
 
@@ -43,7 +43,6 @@
     ^ {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       gap: 0.4rem;
       width: 100%;
     }
@@ -69,7 +68,7 @@
       */
       font-size: 1.2rem;
       min-height: 1.25em;
-      justify-content: flex-end;
+      justify-content: flex-start;
       gap: 0.2rem;
     }
     ^errorText svg {
