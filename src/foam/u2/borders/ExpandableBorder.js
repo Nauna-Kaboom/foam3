@@ -27,13 +27,12 @@
       color: /*%DESTRUCTIVE1%*/ black;
       border-radius: 4px;
       border: 1px solid /*%WARNING4%*/ grey;
-      padding: 24px;
+      padding: 12px;
     }
     ^ h6{
       font-size: 1.4rem;
       font-weight: 600;
       margin: 0px;
-      padding-bottom: 12px;
     }
   `,
 
