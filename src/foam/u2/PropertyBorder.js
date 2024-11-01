@@ -68,7 +68,7 @@
       */
       font-size: 1.2rem;
       min-height: 1.25em;
-      justify-content: flex-start;
+      justify-content: flex-end;
       gap: 0.2rem;
     }
     ^errorText svg {
