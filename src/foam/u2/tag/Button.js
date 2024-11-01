@@ -121,7 +121,7 @@ foam.CLASS({
     }
 
     ^primary:hover:not(:disabled) {
-      box-shadow: 0px 0px 4px 1px black;
+      box-shadow: 0px 0px 4px 1px /*%SECONDARY5%*/;
     }
 
     ^primary:active:not(:disabled) {
