@@ -15,15 +15,47 @@ const CORE_POM = path_.join(__dirname, '../src/foam/nanos/pom');
 const FOOBAR_POM = path_.join(__dirname, '../src/foam/foobar/pom');
 const TOOL_DIR = __dirname;
 
+// Update: Parse the `-p` argument for setting the port
 var [argv, X, flags] = require('./processArgs.js')(
   '',
   {
     version: '', license: '', pom: 'pom',
     buildDebug: false,
-    task: 'CleanBuild'
+    task: 'CleanBuild',
+    port: ''  // Adding port as an option
   },
   { debug: true, java: false, web: true }
 );
+
+// Check if a port argument is provided
+const portArgIndex = process.argv.indexOf('-p');
+const port = portArgIndex !== -1 ? process.argv[portArgIndex + 1] : null;
+
+if (port) {
+  // Paths to the files that need to be updated
+  const portsFilePath = path_.join(process.cwd(), 'application/src/ports.jrl');
+  const servicesFilePath = path_.join(process.cwd(), 'application/src/services.jrl');
+
+  // Update ports.jrl with the new port configuration
+  const portsContent = `p({
+  "class":"foam.net.Port",
+  "id":"http",
+  "number":${port}
+})`;
+
+  fs_.writeFileSync(portsFilePath, portsContent, 'utf8');
+  console.log(`Updated ${portsFilePath} with port ${port}`);
+
+  // Update the 7th line in services.jrl with the new port
+  let servicesContent = fs_.readFileSync(servicesFilePath, 'utf8').split('\n');
+  if (servicesContent.length >= 7) {
+    servicesContent[6] = `port: ${port},`;  // Line indices are zero-based
+    fs_.writeFileSync(servicesFilePath, servicesContent.join('\n'), 'utf8');
+    console.log(`Updated line 7 of ${servicesFilePath} with port ${port}`);
+  } else {
+    console.error(`Error: ${servicesFilePath} has less than 7 lines.`);
+  }
+}
 
 // FOOBAR only loads FOAM's POM file, so we don't refer to X.pom here
 foam.require(FOAM_POM);
@@ -98,4 +130,3 @@ const mainWithSimpleErrors = async function mainWithSimpleErrors () {
 }
 
 X.buildDebug ? main() : mainWithSimpleErrors();
-
