@@ -138,6 +138,12 @@ foam.CLASS({
       writePermissionRequired: true
     },
     {
+      class: 'String',
+      name: 'headDescription',
+      section: 'infoSection',
+      writePermissionRequired: true
+    },
+    {
       class: 'StringArray',
       name: 'domains',
       factory: function() {
