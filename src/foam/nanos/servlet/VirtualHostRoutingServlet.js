@@ -104,9 +104,9 @@ foam.CLASS({
       out.print(theme.getAppName());
       out.println("</title>");
 
-      out.print("<description>");
+      out.print("<meta name=\\"description\\" content=\\"");
       out.print(theme.getHeadDescription())
-      out.print("</description>");
+      out.print("\\">");
 
       // custom favicon
       if ( headConfig != null && headConfig.containsKey("customFavIcon") ) {
