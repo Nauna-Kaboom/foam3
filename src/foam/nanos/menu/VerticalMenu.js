@@ -51,10 +51,10 @@ foam.CLASS({
   }
 
   ^ {
-    background: $menuBackground;
+    background: /*%PRIMARY1%*/ white;
     border-right: $borderSize;
     box-shadow: $boxShadowSize;
-    color: $grey500;
+    color: /*%PRIMARY2%*/ black;
     display: flex;
     flex-direction: column;
     height: 100%;
