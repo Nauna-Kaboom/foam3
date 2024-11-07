@@ -72,6 +72,9 @@ foam.CLASS({
           text-align: left;
           width: 100%;
         }
+        ^select-level:hover {
+          color: /*%PRIMARY3%*/ blue;
+        }
     
         ^select-level > * {
           white-space: nowrap;
