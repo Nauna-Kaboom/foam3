@@ -239,6 +239,7 @@ foam.CLASS({
       label: 'Create an Account',
       section: 'footerSection',
       buttonStyle: 'SECONDARY',
+      availablePermissions: [ "enable-login-user-create" ],
       size: 'large',
       isAvailable: function(showAction) { return showAction; },
       code: function(X) {

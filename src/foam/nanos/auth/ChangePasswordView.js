@@ -30,8 +30,8 @@ foam.CLASS({
   css: `
     ^ {
       height: 100%;
-      color: /*%DESTRUCTIVE1%*/ black;
-      background-color: /*%PRIMARY5%*/ #fff;
+      color: black;
+      background-color: #fff;
     }
     ^flex {
       display: flex;
@@ -57,6 +57,7 @@ foam.CLASS({
       width: 75%;
     }
     ^subTitle {
+      font-weight: 600;
       padding: 0 15px;
       text-align: center;
       color: black;

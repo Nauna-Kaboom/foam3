@@ -52,6 +52,8 @@ foam.CLASS({
       overflow: auto;
     }
     ^X {
+      color: black;
+      background-color: #fff;
       width: 20px;
       position: absolute !important;
       top: min(10%, 16px);
@@ -60,7 +62,7 @@ foam.CLASS({
       cursor: pointer;
       transition: all ease-in 0.1s;
       padding: 0 !important;
-      border-radius: 50% !important;
+      border-radius: $inputBorderRadius !important;
     }
     ^X:hover{
       transform: scale(1.1)
@@ -75,7 +77,8 @@ foam.CLASS({
       top: 0;
     }
     ^inner {
-      border: 2px ridge /*%PRIMARY4%*/ red;
+      border: 2px ridge /*%SECONDARY3%*/ red;
+      background-color: #000;
       height: auto;
       width: auto;
       display: flex;

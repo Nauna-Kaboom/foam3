@@ -51,6 +51,11 @@ foam.CLASS({
   ],
 
   css: `
+  ^ {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   ^.foam-u2-ActionView {
     width: 100%;
   }
@@ -100,14 +105,14 @@ foam.CLASS({
   }
   ^center-footer {
     text-align: center;
-    margin-top: 35px;
+    margin-left: 30%;
+    width: 100%;
   }
   ^ .align-end {
     text-align: end;
   }
 
   ^center-footer > ^signupLink {
-    margin-bottom: 2rem;
   }
 
   /* TOP-TOP BAR NAV to go with backLink_ */
@@ -175,17 +180,28 @@ foam.CLASS({
   }
   ^card-container {
     padding: 20px;
+    margin: 0 0 12vh 0;
     box-shadow: inset 0px -2px 4px 1px black;
     background: white;
     border-radius: $inputBorderRadius;
+    color: black;
+    border: 2px ridge /*%SECONDARY3%*/ red;
   }
   ^ .prim-action {
     text-align: center;
   }
   ^secondart-action-css {
-    border: 2px solid red;
+    border: 2px solid /*%SECONDARY3%*/ red;
     border-radius: 30px;
     padding: 9px 0;
+  }
+  ^xx {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
   }
   `,
 
@@ -301,7 +317,7 @@ foam.CLASS({
       let logo = self.imgPath || (this.theme.largeLogo ? this.theme.largeLogo : this.theme.logo);
 
       // CREATE DATA VIEW
-      var right = this.E().addClass(this.myClass('card-container')).style({ 'border': `2px ridge ${(this.theme.primary4 || '#edd50b')}`})
+      var right = this.E().addClass(this.myClass('card-container'))
       // Header on-top of rendering data
         .start()
           .add(
@@ -320,40 +336,45 @@ foam.CLASS({
         .callIf(self.displayWidth, function() { this.onDetach(self.displayWidth$.sub(self.resize)); })
         .start()
           .startContext({ data: this }).tag(this.DATA).endContext()
+        .end()
+        .start().addClass(this.myClass('xx'))
           .start()
+            .addClass('prim-action')
+            .show(this.defaultLogin$)
+            .tag(this.data.LOGIN)
+          .end()
+          .start()
+            .add(
+              this.slot(async function(data$showAction) {
+                let x = ctrl.__subContext__;
+                if ( ! await x.auth.check(x, 'enable-login-user-create') ) return;
+                return self.E().callIf(data$showAction, function() {
+                  this
+                    .start()
+                      .startContext({ data: self.data })
+                      .addClass(self.myClass('center-footer'))
+                      // first footer
+                      .start()
+                        .addClass(self.myClass('signupLink'))
+                        .start('span')
+                          .addClass('text-with-pad')
+                          .add(self.data.FOOTER_TXT)
+                        .end()
+                        .start('span')
+                          // .addClass(self.myClass('secondart-action-css'))
+                          .add(self.data.FOOTER)
+                        .end()
+                      .end()
+                      .endContext()
+                    .end();
+                })
+              })
+            ).end()
+          .end()
+        .start()
             .addClass('align-end')
             .tag(this.data.SUB_FOOTER)
           .end()
-        .end()
-        .start()
-          .addClass('prim-action')
-          .show(this.defaultLogin$)
-          .tag(this.data.LOGIN)
-        .end()
-        .add(
-          this.slot(function(data$showAction) {
-            return self.E().callIf(data$showAction, function() {
-              this
-                .start()
-                  .startContext({ data: self.data })
-                  .addClass(self.myClass('center-footer'))
-                  // first footer
-                  .start()
-                    .addClass(self.myClass('signupLink'))
-                    .start('span')
-                      .addClass('text-with-pad')
-                      .add(self.data.FOOTER_TXT)
-                    .end()
-                    .start('span')
-                      // .addClass(self.myClass('secondart-action-css'))
-                      .add(self.data.FOOTER)
-                    .end()
-                  .end()
-                  .endContext()
-                .end();
-            })
-          })
-        )
         
 
       // CREATE SPLIT VIEW

@@ -129,8 +129,8 @@ foam.CLASS({
     }
 
     ^primary:disabled {
-      background-color: /*%WARNING5%*/ red;
-      color: /*%SECONDARY5%*/ black;
+      background-color: grey;
+      color: darkgray;
     }
 
     /* Primary destructive */
