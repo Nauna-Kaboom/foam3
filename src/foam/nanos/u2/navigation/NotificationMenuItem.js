@@ -66,6 +66,7 @@ foam.CLASS({
       max-height: 100%;
       max-width: 100%;
       object-fit: contain;
+      filter: /*%GREY1%*/;
     }
     ^svgIcon svg {
       aspect-ratio: 1;

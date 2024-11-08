@@ -34,7 +34,7 @@ foam.CLASS({
   css: `
     ^ {
       align-items: center;
-      background-color: $topNavBackground;
+      background-color: /*%PRIMARY1%*/ white;
       border-bottom: $borderSize;
       display: flex;
       min-height: 64px;
@@ -42,6 +42,7 @@ foam.CLASS({
       padding: 8px 16px;
       position: sticky;
       width: 100%;
+      color:  /*%PRIMARY2%*/ black;
     }
     ^components-container {
       flex: 1;

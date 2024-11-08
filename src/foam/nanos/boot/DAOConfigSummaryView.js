@@ -132,7 +132,7 @@ foam.CLASS({
       width: 220px;
     }
     ^dao {
-      color: $grey500;
+      color: /*%PRIMARY2%*/ black;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -144,13 +144,17 @@ foam.CLASS({
       vertical-align: baseline;
     }
     ^header {
-      background: $grey700;
-      color:$white;
+      background-color: /*%PRIMARY3%*/ black;
+      color: /*%SECONDARY1%*/ white;
       font-weight: 800;
     }
     /* TODO: scope this better so it doesn't affect nested AltViews also */
     .foam-u2-view-AltView .property-selectedView {
       margin-left: 32px;
+    }
+    ^asx {
+      color: /*%PRIMARY2%*/ black;
+      height: 56px;
     }
   `,
 
@@ -222,7 +226,7 @@ foam.CLASS({
 
       this.addClass().
       start().
-        style({ 'height': '56px'}).
+        addClass(this.myClass('asx')).
         start().
           style({ 'font-size': '2.6rem', 'width': 'fit-content', 'float': 'left', 'padding-top': '10px' }).
           add('Data Management').

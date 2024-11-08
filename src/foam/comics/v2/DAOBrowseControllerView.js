@@ -60,6 +60,7 @@ foam.CLASS({
     }
 
     ^header-container {
+      color: /*%PRIMARY2%*/ black;
       padding-bottom: 32px;
       align-items: center;
     }
