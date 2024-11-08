@@ -87,6 +87,7 @@ foam.CLASS({
     ^content {
       display: flex;
       flex-direction: column;
+      margin-right: 12px;
     }
     ^title{
       color: /*%DESTRUCTIVE1%*/ #858585;
