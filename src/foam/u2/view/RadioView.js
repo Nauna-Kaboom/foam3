@@ -62,6 +62,7 @@ foam.CLASS({
     ^radio-lab {
       white-space: pre-wrap;
       word-wrap: break-word;
+      color: /*%PRIMARY2%*/ black;
     }
   `,
 

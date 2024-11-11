@@ -35,6 +35,7 @@ foam.CLASS({
     ^account-name {
       font-size: 3.6rem;
       font-weight: 600;
+      color: /*%PRIMARY2%*/ black;
     }
 
     ^create-view-container {

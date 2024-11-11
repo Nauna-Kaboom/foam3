@@ -25,6 +25,7 @@ foam.CLASS({
   ^slash{
     padding: 8px;
     vertical-align: middle;
+    color: /*%PRIMARY2%*/ black;
   }
   ^breadCrumb > * {
     overflow: hidden;
