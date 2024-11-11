@@ -112,6 +112,7 @@ foam.CLASS({
     ^filter-button-active{
       color: /*%PRIMARY3%*/;
       background: $grey100;
+      text-shadow: none;
     }
 
     ^filter-button-active svg {

@@ -34,7 +34,7 @@ foam.CLASS({
   css: `
     ^ {
       align-items: center;
-      background-color: /*%PRIMARY1%*/ white;
+      background-color: /*%DESTRUCTIVE3%*/ white;
       border-bottom: $borderSize;
       display: flex;
       min-height: 64px;
