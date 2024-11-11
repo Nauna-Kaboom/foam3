@@ -47,6 +47,7 @@
     }
     ^full-height{
       height: 100%;
+      max-width: 95vw;
     }
     ^table-wrapper {
       flex: 1;
