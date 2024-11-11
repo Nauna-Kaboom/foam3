@@ -141,7 +141,7 @@ foam.CLASS({
 
     ^dropdown svg {
       font-size: 0.6rem;
-      fill: currentcolor;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^iconContainer {

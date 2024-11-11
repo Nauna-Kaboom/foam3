@@ -23,7 +23,7 @@ foam.CLASS({
       value: `
         ^ {
           background-color: /*%PRIMARY5%*/ white;
-          color: /*%DESTRUCTIVE1%*/ black;
+          color: /*%DESTRUCTIVE2%*/ black;
           min-width: 64px;
           font-size: 1.4rem;
           padding-left: $inputHorizontalPadding;

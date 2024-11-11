@@ -90,10 +90,10 @@ foam.CLASS({
       margin-right: 12px;
     }
     ^title{
-      color: /*%DESTRUCTIVE1%*/ #858585;
+      color: /*%DESTRUCTIVE2%*/ #858585;
     }
     ^description {
-      color: /*%DESTRUCTIVE1%*/ #858585;
+      color: /*%DESTRUCTIVE2%*/ #858585;
     }
     ^close-icon {
       display: contents;

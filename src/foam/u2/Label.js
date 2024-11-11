@@ -26,12 +26,11 @@ foam.CLASS({
       max-height: 100%;
       max-width: 100%;
       object-fit: contain;
-      filter: /*%GREY1%*/;
     }
     ^svgIcon svg {
       height: 1.15em;
       width: 1.15em;
-      fill: currentColor;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
     ^svgIcon svg {
       font-size: initial;
@@ -43,7 +42,7 @@ foam.CLASS({
       display: flex;
       align-items: center;
       justify-content: center;
-      filter: /*%GREY1%*/;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
     ^imgSVGIcon svg {
       height: initial;
