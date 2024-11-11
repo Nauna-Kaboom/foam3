@@ -13,12 +13,12 @@ foam.CLASS({
 
   imports: ['theme'],
 
-  cssTokens: [
-    {
-      name: 'indicatorColor',
-      value: '/*%PRIMARY3%*/'
-    }
-  ],
+  // cssTokens: [
+  //   {
+  //     name: 'indicatorColor',
+  //     value: '/*%PRIMARY3%*/'
+  //   }
+  // ],
 
   css: `
     ^{

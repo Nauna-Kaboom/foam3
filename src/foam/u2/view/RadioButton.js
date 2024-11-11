@@ -27,18 +27,18 @@ foam.CLASS({
 
   properties: [
     [ 'nodeName', 'svg' ],
-    {
-      name: 'selectedColor',
-      expression: function(isSelected, isDisabled) {
-        if ( isDisabled ) {
-          return '$grey100';
-        }
-        if ( isSelected ) {
-          return '/*%PRIMARY3%*/';
-        }
-        return '$grey500';
-      }
-    },
+    // {
+    //   name: 'selectedColor',
+    //   expression: function(isSelected, isDisabled) {
+    //     if ( isDisabled ) {
+    //       return '$grey100';
+    //     }
+    //     if ( isSelected ) {
+    //       return '$grey100';
+    //     }
+    //     return '$grey500';
+    //   }
+    // },
     {
       name: 'isDisabled',
       class: 'Boolean'
@@ -52,17 +52,17 @@ foam.CLASS({
   methods: [
     function render() {
       const e = foam.css.TokenUtilsBuilder.create({}, this);
-      let colorSlot = this.slot(function(selectedColor, theme) { return e.TOKEN(selectedColor).f(this) });
+     //  let colorSlot = this.slot(function(selectedColor, theme) { return e.TOKEN(selectedColor).f(this) });
       this
         .addClass('radio')
         .attrs({ width: 20, height: 20 })
         .start('circle')
-          .attrs({ cx: 10, cy: 10, r: 8, 'stroke': colorSlot, 'stroke-width': 2, 'transform-origin': '0 0', fill: 'none' })
+          .attrs({ cx: 10, cy: 10, r: 8, 'stroke': this.theme?.primary3, 'stroke-width': 2, 'transform-origin': '0 0', fill: 'none' })
         .end()
         .start('circle')
           .addClass(this.myClass('innerCircle'))
           .enableClass('selected', this.isSelected$)
-          .attrs({ cx: 10, cy: 10, r: 0, fill: colorSlot })
+          .attrs({ cx: 10, cy: 10, r: 0, fill: this.theme?.primary3 })
         .end();
     }
   ]

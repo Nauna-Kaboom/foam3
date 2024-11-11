@@ -26,7 +26,7 @@ foam.CLASS({
     {
       class: 'foam.u2.ColorToken',
       name: 'buttonPrimaryColor',
-      value: '/*%PRIMARY3%*/',
+      value: '$black',
       disabledModifier: 90,
       onLight: '$grey50'
     },
@@ -192,7 +192,7 @@ foam.CLASS({
     ^secondary-destructive{
       background-color: /*%PRIMARY4%*/ red;
       border: 1px solid /*%WARNING3%*/ grey;
-      color: /*%DESTRUCTIVE1%*/ white;
+      color: /*%DESTRUCTIVE1%*/ black;
     }
 
     ^secondary-destructive svg { fill: /*%PRIMARY4%*/ red; }
@@ -350,7 +350,7 @@ foam.CLASS({
       max-height: 100%;
       max-width: 100%;
       object-fit: contain;
-      filter: /*%GREY1%*/;
+      fill: /*%DESTRUCTIVE1%*/ black;
     }
     ^svgIcon svg {
       height: 100%;
