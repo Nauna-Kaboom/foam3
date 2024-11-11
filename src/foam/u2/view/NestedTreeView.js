@@ -18,6 +18,7 @@ foam.CLASS({
         ^select-level {
           justify-content: flex-start;
           gap: 8px;
+          color: /*%PRIMARY2%*/ black;
         }
       `,
 

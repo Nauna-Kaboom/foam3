@@ -71,6 +71,7 @@ foam.CLASS({
           padding-right: 8px;
           text-align: left;
           width: 100%;
+          color: /*%PRIMARY2%*/ black;
         }
         ^select-level:hover {
           color: /*%PRIMARY3%*/ blue;
