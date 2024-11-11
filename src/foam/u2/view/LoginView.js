@@ -163,6 +163,9 @@ foam.CLASS({
   ^ .foam-u2-borders-SplitScreenGridBorder-grid {
     grid-gap: 0;
   }
+  ^ .foam-u2-ActionView-link {
+    color: black;
+  }
   @media (min-width: /*%DISPLAYWIDTH.LG%*/ 960px ) {
     .topBar-logo-Back {
       display: flex;
