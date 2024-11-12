@@ -23,7 +23,8 @@ foam.CLASS({
 
   css: `
     ^ {
-      padding: 32px
+      padding: $inputHorizontalPadding 4vmin;
+      max-width: 96vw;
     }
 
     ^ .foam-u2-ActionView-back {

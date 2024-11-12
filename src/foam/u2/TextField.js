@@ -30,7 +30,6 @@ foam.CLASS({
     }
 
     ^:read-only:not(:disabled) {
-      border: none;
       background: rgba(0,0,0,0);
     }
   `,

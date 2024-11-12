@@ -24,17 +24,20 @@ foam.CLASS({
 
   css: `
     .foam-u2-PropertyView-label {
-      color: #444;
+      color: /*%SECONDARY1%*/ white;
       display: block;
       float: left;
       font-size: 1.5rem;
       padding: 4px 32px 4px 6px;
       text-align: left;
       vertical-align: top;
-      white-space: nowrap;
+      width: 100%;
+      font-weight: 600;
+      text-decoration-line: underline;
     }
     .foam-u2-PropertyView-view {
       padding: 2px 8px 2px 6px;
+      color: /*%SECONDARY1%*/ white;
     }
     .foam-u2-PropertyView-units  {
       color: #444;

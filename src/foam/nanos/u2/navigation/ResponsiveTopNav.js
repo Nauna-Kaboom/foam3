@@ -22,12 +22,16 @@ foam.CLASS({
 
   cssTokens: [
     {
+      name:'inputBorderRadius',
+      value: '8px',
+    },
+    {
       name: 'topNavBackground',
       value: '$foam.nanos.menu.VerticalMenu.menuBackground'
     },
     {
       name: 'borderSize',
-      value: '2px solid rgba(0, 0, 0, 0.06)'
+      value: '3px solid rgba(0, 0, 0, 0.06)'
     }
   ],
 

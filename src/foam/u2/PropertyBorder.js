@@ -76,6 +76,7 @@
       height: 1rem;
     }
     ^propHolder {
+      word-break: break-all;
       display: flex;
       align-items: center;
       justify-content: space-between;

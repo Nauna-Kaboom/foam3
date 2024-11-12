@@ -116,9 +116,13 @@ foam.CLASS({
     /* Temporary fix until we refactor DetailView to not use a table. */
     ^ {
       display: block;
-      margin: auto;
-      width: 100%;
-      background-color: $white;
+      margin: 2vmin;
+      max-width: 98vw;
+      overflow: scroll;
+      padding: $inputHorizontalPadding 4vmin;
+      border-radius: $inputBorderRadius 5px;
+      background-color: /*%PRIMARY4%*/ #345f5b;
+      color: /*%SECONDARY1%*/ white;
     }
 
     ^toolbar {
@@ -164,7 +168,7 @@ foam.CLASS({
       var hasTabs = false;
 
       if ( this.title ) {
-        self.start().addClass(self.myClass('title')).add(self.title$).end();
+        self.start('h1').add(self.title$).end();
       }
 
       this.add(this.slot(function(of, properties, actions) {
