@@ -26,6 +26,7 @@ foam.CLASS({
     }
     ^container {
       margin: 2px 8px 2px 0;
+      max-width: 50%;
     }
     ^container:last-child {
       margin-right: 0;

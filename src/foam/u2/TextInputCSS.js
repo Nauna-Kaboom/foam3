@@ -30,6 +30,7 @@ foam.CLASS({
           padding-right: $inputHorizontalPadding;
           border-radius: $inputBorderRadius;
           border-color: /*%SECONDARY3%*/ grey;
+          width: 100%;
         }
 
         ^:hover {
