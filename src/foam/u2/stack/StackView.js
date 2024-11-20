@@ -25,7 +25,11 @@ foam.CLASS({
     'foam.u2.stack.Stack'
   ],
 
-  imports: [ 'ctrl' ],
+  imports: [ 
+    'ctrl',
+    'scrollDown',
+    'scrollUp'
+ ],
 
   exports: [ 'data as stack' ],
 
@@ -38,17 +42,42 @@ foam.CLASS({
       class: 'Boolean',
       name: 'showActions',
       value: true
+    },
+    {
+      class: 'Int',
+      name: 'lastScrollY'
     }
   ],
 
   css: '%CUSTOMCSS%',
-
+  listeners: [
+    {
+      name: 'onScroll_a',
+      code: function(e) {
+        const currentScrollY = e.srcElement.childNodes[0].getBoundingClientRect().y;
+        if ( currentScrollY < this.lastScrollY ) {
+          if ( ! this.scrollDown ) {
+            this.scrollDown = true;
+            this.scrollUp = false;
+          }
+        } else if ( currentScrollY > this.lastScrollY ) {
+          if ( ! this.scrollUp ) {
+            this.scrollDown = false;
+            this.scrollUp = true;
+          }
+          
+        }
+        this.lastScrollY = currentScrollY; // Update the last scroll position
+        // console.log(`this.scrollDown = ${this.scrollDown}; this.scrollUp = ${this.scrollUp};`);
+      }
+    },
+  ],
   methods: [
     // TODO: Why is this init() instead of render()? Investigate and maybe fix.
     function init() {
       this.addClass();
       this.addClass('foam-u2-stack-StackView');
-
+      this.on('scroll', this.onScroll_a);
       if ( this.showActions ) {
         this.start('actions')
           .add(this.data.cls_.getAxiomsByClass(foam.core.Action))
