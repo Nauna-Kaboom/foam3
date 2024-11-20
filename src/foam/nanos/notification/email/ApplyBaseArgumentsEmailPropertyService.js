@@ -98,6 +98,11 @@ foam.CLASS({
         // Temporary color until token support is added for email
         // templateArgs.put("theme", theme);
 
+        templateArgs.put("primary1", theme.getPrimary1());
+        templateArgs.put("primary2", theme.getPrimary2());
+        templateArgs.put("primary3", theme.getPrimary3());
+
+
         // personal support user
         User psUser = supportConfig.findPersonalSupportUser(getX());
         templateArgs.put("personalSupportPhone", psUser == null ? "" : psUser.getPhoneNumber());
