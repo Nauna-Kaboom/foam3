@@ -5,8 +5,14 @@
  */
 
 (function() {
-  var scripts = '';
+  var scripts = [];
+  var FILES = [];
   var foam = globalThis.foam = Object.assign({
+    setFlags: {}, // set of flags set in URL args or in POMs, used to ensure only first one is used
+    defaultStage: 0,
+    stages: {},
+    FILES: FILES,
+    CUR_FILES: FILES,
     isServer: false,
     defaultFlags: {
       dev:   true,
@@ -15,7 +21,7 @@
       js:    true,
       node:  false,
       swift: false,
-      web:   true  // Needed because flinks code uses but needs to be compiled to java
+      web:   true
     },
     setupFlags: function() {
       var flags        = globalThis.foam.flags;
@@ -24,6 +30,21 @@
       for ( var key in defaultFlags )
         if ( ! flags.hasOwnProperty(key) )
           flags[key] = defaultFlags[key];
+
+      if ( ! globalThis.document ) return;
+
+      // Allow flags to be set in loading script tag.
+      // Ex.: <script language="javascript" src="../../../foam.js" flags="u3,-debug"></script>
+      var sflags = document.currentScript.getAttribute('flags');
+      if ( sflags ) {
+        sflags.split(',').forEach(f => {
+          if ( f.startsWith('-') ) {
+            flags[f.substring(1)] = false;
+          } else {
+            flags[f] = true;
+          }
+        });
+      }
     },
     setup: function() {
       foam.setupFlags();
@@ -31,19 +52,37 @@
       // set flags by url parameters
       var urlParams = new URLSearchParams(window.location.search);
       for ( var pair of urlParams.entries() ) {
-        globalThis.foam.flags[pair[0]] = (pair[1] == 'true');
+        globalThis.foam.flags[pair[0]]    = (pair[1] == 'true');
+        // Prevents from being overritten in POM's, URL takes precedence
+        globalThis.foam.setFlags[pair[0]] = true;
       }
 
-      var path = document.currentScript && document.currentScript.src;
+      var src  = document.currentScript && document.currentScript.src;
+      var path = src && new URL(src).pathname || '';
 
-      path = path && path.length > 3 && path.substring(0, path.lastIndexOf('src/')+4) || '';
+      [path, globalThis.FOAM_BIN] = /^\/foam-bin(.)*\.js$/.test(path)
+        ? ['/', path]
+        : [path.substring(0, path.lastIndexOf('/foam.js') + 1)];
+
       if ( ! globalThis.FOAM_ROOT ) globalThis.FOAM_ROOT = path;
 
       foam.cwd = path;
       foam.main();
     },
     main: function() {
-      foam.require(document.currentScript.getAttribute("project") || 'pom', false, true);
+      // main() only runs when this foam.js file is added to an html page via
+      // <script> tag. The <script> tag may contain project attribute to specify
+      // which pom files to be loaded on startup.
+      //
+      // If the project pom is provided then pom.js files relative to the html
+      // file will be loaded otherwise it will by default load pom.js that
+      // resided in the same directory as the foam.js file.
+      var poms = (document.currentScript.getAttribute("project") || globalThis.FOAM_ROOT + 'pom').split(',');
+
+      foam.cwd = '';
+      poms.forEach(pom => {
+        foam.require(pom, false, true);
+      });
     },
     checkFlags: function(flags) {
       if ( ! flags ) return true;
@@ -62,25 +101,84 @@
       }
       return false;
     },
-    require: function(fn, batch, isProject) {
+    require: function(fn /* filename */, batch, isProject) {
+      if ( ! window.scriptsQueue ) {
+        window.scriptsQueue = Promise.resolve();
+      }
       if ( fn ) {
         fn = foam.cwd + fn;
         if ( ! isProject && foam.seen(fn) ) return;
-        scripts += '<script type="text/javascript" src="' + fn + '.js"></script>\n';
+        scripts.push(`${fn}.js`);
       }
       if ( ! batch || isProject ) {
-        document.writeln(scripts);
-        scripts = '';
+        var current = document.getElementsByTagName('body').item(0);
+        var queue = window.scriptsQueue;
+        scripts.forEach((scriptSrc) => {
+          queue = queue.then(() => {
+            return new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.setAttribute('type', 'text/javascript');
+              script.setAttribute('src', scriptSrc);
+    
+              // Resolve when script loads successfully
+              script.onload = resolve;
+    
+              // Reject if there is an error loading the script
+              script.onerror = () => {
+                console.error(`Failed to load script: ${scriptSrc}`);
+                reject();
+              };
+    
+              current.appendChild(script);
+            });
+          });
+        });
+    
+        // Clear the scripts array after all are queued
+        scripts = [];
+        window.scriptsQueue = queue;
       }
-    },
+    },    
+    // require: function(fn /* filename */, batch, isProject) {
+    //   if ( fn ) {
+    //     fn = foam.cwd + fn;
+    //     if ( ! isProject && foam.seen(fn) ) return;
+    //     scripts.push(`${fn}.js`);
+    //   }
+    //   if ( ! batch || isProject ) {
+    //     var current = document.getElementsByTagName('body').item(0);
+    //     for ( let i = 0 ; i < scripts.length ; i++ ) {
+    //       var s = document.createElement('script');
+    //       s.setAttribute('type', 'text/javascript');
+    //       s.setAttribute('async', '');
+    //       s.setAttribute('src', scripts[i]);
+    //       current.appendChild(s);
+    //     }
+    //     scripts = [];
+    //   }
+    // },
+    // require: function(fn, batch, isProject) {
+    //   if ( fn ) {
+    //     fn = foam.cwd + fn;
+    //     if ( ! isProject && foam.seen(fn) ) return;
+    //     scripts += '<script type="text/javascript" src="' + fn + '.js"></script>\n';
+    //     console.log(`Required - fn - scripts: %s`, scripts);
+    //   }
+    //   if ( ! batch || isProject ) {
+    //     document.writeln(scripts);
+    //     console.log(`Required - doc.write - scripts: %s , doc: %o`, scripts, document);
+    //     scripts = '';
+    //   }
+    // },
     loadJSLibs: function(libs) {
       libs && libs.forEach(f => {
-        var s = '<script type="text/javascript" src="' + f.name + '"';
-        if ( f.defer ) s += ' defer';
-        if ( f.async ) s += ' async';
-        s += '></script>\n';
-
-        document.writeln(s);
+        var head = document.getElementsByTagName('head').item(0);
+        var s    = document.createElement('script');
+        s.setAttribute('type', 'text/javascript');
+        s.setAttribute('src', f.name);
+        if ( f.defer ) s.setAttribute('defer', '');
+        if ( f.async ) s.setAttribute('async', '');
+        head.appendChild(s);
       });
     },
     flags:       {},
@@ -122,7 +220,8 @@
         return root;
       }
     },
-    language: typeof navigator === 'undefined' ? 'en' : navigator.language,
+    locale:   typeof navigator === 'undefined' || typeof navigator.language === 'undefined' ? 'en' : navigator.language,
+    language: typeof navigator === 'undefined' || typeof navigator.language === 'undefined' ? 'en' : navigator.language.substring(0, 2),
     next$UID: (function() {
       /* Return a unique id. */
       var id = 1;
@@ -145,16 +244,16 @@
     },
     poms: [],
     POM: function(pom) {
+      var FILES = foam.CUR_FILES = [];
+      foam.FILES.push(FILES);
       if ( globalThis.document ) {
-        var src = document.currentScript.src;
-        var i = src.lastIndexOf('/');
+        var src  = document.currentScript.src;
+        var i    = src.lastIndexOf('/');
         foam.cwd = src.substring(0, i+1);
       }
-      foam.poms.push({
-        path: foam.sourceFile,
-        location: foam.cwd,
-        pom: pom
-      });
+      pom.location = foam.cwd;
+      pom.path     = foam.sourceFile;
+      foam.poms.push(pom);
       function loadFiles(files, isProjects) {
         files && files.forEach(f => {
           var name = f.name;
@@ -165,8 +264,39 @@
           if ( f.predicate && ! f.predicate() ) return;
 
           foam.currentFlags = f.flags || [];
+          if ( ! isProjects ) {
+//            console.log('*** FILES', name);
+            foam.CUR_FILES.push(name);
+          }
           foam.require(name, ! isProjects, isProjects);
         });
+      }
+
+      if ( pom.defaultStage != undefined ) {
+        foam.defaultStage = pom.defaultStage;
+      }
+
+      if ( pom.setFlags ) {
+        for ( var key in pom.setFlags ) {
+          if ( foam.setFlags[key] ) {
+            console.log('Not overriding flag:', key);
+          } else {
+            console.log('Setting flag:', key,'=', pom.setFlags[key]);
+            foam.flags[key]    = pom.setFlags[key];
+            // Indicate that this flag has been set so it can't be reset in
+            // a future POM.
+            foam.setFlags[key] = true;
+          }
+        }
+      }
+
+      if ( pom.stages ) {
+        for ( var stage in pom.stages ) {
+          pom.stages[stage].forEach(f => {
+            var path = foam.cwd + '/' + f + ".js";
+            foam.stages[path] = stage;
+          });
+        }
       }
 
       // TODO: requireModule vs requireFile -> require
