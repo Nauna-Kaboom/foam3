@@ -92,7 +92,7 @@ foam.CLASS({
       ],
       javaCode: `
       HashMap    headConfig          = (HashMap)   theme.getHeadConfig();
-      AppConfig  appConfig           = (AppConfig) x.get("appConfig");
+      AppConfig  appConfig           = (AppConfig) theme.getAppConfig();
       String     queryString         = ((HttpServletRequest)request).getQueryString();
       Boolean    customFavIconFailed = false;
       Boolean    customScriptsFailed = false;
@@ -148,20 +148,15 @@ foam.CLASS({
       }
 
       // Setup a preloader to the app if headConfig.containsKey("loader") 
-      Boolean closeLoader = false;
-      // AppConfig appConfig = theme.getAppConfig();
       if ( headConfig != null && headConfig.containsKey("loader") ) {
         try {
-          
           String loader = (String) headConfig.get("loader");
-          loader = loader.replaceAll("URL_", appConfig.getUrl());
-          out.println("\\n"+loader+"\\n");
-          closeLoader = true;
+          out.println(loader.replaceAll("URL_", appConfig.getUrl()));
+          out.println("<script> var loader = document.getElementById(\\"preloader\\"); window.addEventListener(\\"load\\", function() { loader.style.display = \\"none\\"; }) </script>");
         } catch ( Exception e ) {
           logger.error(e);
         }
       }
-      if ( closeLoader ) out.println("<script> var loader = document.getElementById(\\"preloader\\"); window.addEventListener(\\"load\\", function() { loader.style.display = \\"none\\"; }) </script>");
 
       // default scripts
       if ( headConfig == null || ! headConfig.containsKey("customScripts") || customScriptsFailed ) {
