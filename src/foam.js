@@ -112,6 +112,7 @@
       }
       if ( ! batch || isProject ) {
         var current = document.getElementsByTagName('body').item(0);
+        if ( ! current ) current = document.getElementsByTagName('head').item(0);
         var queue = window.scriptsQueue;
         scripts.forEach((scriptSrc) => {
           queue = queue.then(() => {
