@@ -13,11 +13,8 @@ foam.POM({
     { name: "../crunch/AssociatedEntity",                                                 flags: "js|java" },
     { name: "../crunch/Capability",                                                       flags: "js|java" },
     { name: "../theme/Theme",                                                                flags: "js|java" },
-
     { name: "../theme/Themes",                                                               flags: "js|java" },
-    
     { name: "ServiceProvider",                                                       flags: "js|java" },
-    
     { name: "LifecycleState",                                                        flags: "js|java" },
     { name: "Authorizable",                                                          flags: "js|java" },
     { name: "Authorizer",                                                            flags: "js|java" },

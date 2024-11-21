@@ -106,6 +106,8 @@ foam.CLASS({
     'requestLogin',
     'returnExpandedCSS',
     'routeTo',
+    'scrollDown',
+    'scrollUp',
     'sessionID',
     'sessionTimer',
     'showFooter',
@@ -201,6 +203,15 @@ foam.CLASS({
   `,
 
   properties: [
+    {
+      name: 'scrollDown',
+      class: 'Boolean'
+    },
+    {
+      name: 'scrollUp',
+      class: 'Boolean',
+      value: true
+    },
     {
       class: 'foam.core.FObjectProperty',
       of: 'foam.core.Latch',

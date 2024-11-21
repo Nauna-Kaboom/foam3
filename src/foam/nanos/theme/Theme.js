@@ -590,6 +590,11 @@ foam.CLASS({
       writePermissionRequired: true
     },
     {
+      name: 'inputBorderRadius',
+      class: 'String',
+      value: '5px'
+    },
+    {
       name: 'leftRightSpace',
       class: 'String',
       value: '0'
