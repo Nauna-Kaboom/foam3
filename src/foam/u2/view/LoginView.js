@@ -105,7 +105,6 @@ foam.CLASS({
   }
   ^center-footer {
     text-align: center;
-    margin-left: 30%;
     width: 100%;
   }
   ^ .align-end {
@@ -201,8 +200,8 @@ foam.CLASS({
   ^xx {
     display: inline-flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: baseline;
     width: 100%;
   }

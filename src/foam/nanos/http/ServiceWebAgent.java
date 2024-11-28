@@ -17,7 +17,6 @@ import foam.lib.json.JSONParser;
 import foam.lib.parse.*;
 import foam.nanos.app.AppConfig;
 import foam.nanos.jetty.HttpServer;
-import foam.nanos.jetty.HttpServer;
 import foam.nanos.logger.Logger;
 import foam.nanos.servlet.VirtualHostRoutingServlet;
 import javax.servlet.http.HttpServletRequest;

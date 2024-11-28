@@ -112,7 +112,10 @@
       }
       if ( ! batch || isProject ) {
         var current = document.getElementsByTagName('body').item(0);
-        if ( ! current ) current = document.getElementsByTagName('head').item(0);
+        if ( ! current ) {
+          current = document.getElementsByTagName('head').item(0);
+          console.log('body not available moving current element to head');
+        }
         var queue = window.scriptsQueue;
         scripts.forEach((scriptSrc) => {
           queue = queue.then(() => {

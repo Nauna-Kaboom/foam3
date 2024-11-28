@@ -33,6 +33,7 @@ foam.CLASS({
     'foam.nanos.notification.NotificationSetting',
     'foam.nanos.session.Session',
     'foam.nanos.theme.Theme',
+    'foam.nanos.theme.Themes',
     'foam.util.SafetyUtil',
     'java.util.Arrays',
     'java.util.HashMap',
@@ -713,7 +714,11 @@ foam.CLASS({
       javaThrows: ['AuthorizationException'],
       javaCode: `
         AuthService auth = (AuthService) x.get("auth");
-
+        if ( SafetyUtil.isEmpty(this.getGroup()) ) {
+          Theme theme = ((Themes) x.get("themes")).findTheme(x);
+          this.setGroup(theme.getRegistrationGroup());
+        }
+        
         // Prevent privilege escalation by only allowing a user's group to be
         // set to one that the user doing the put has permission to update.
         if ( ! auth.check(x, "group.update." + this.getGroup()) ) {

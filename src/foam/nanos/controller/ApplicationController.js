@@ -517,8 +517,6 @@ foam.CLASS({
         let ret = await self.initMenu();
         if ( ret ) return; // if menu returned, can ignore below... and just role with the flow
 
-        await self.fetchSubject();
-
         if ( self.client != client ) {
           console.log('Stale Client in ApplicationController, waiting for update.');
           await self.client.promise;
@@ -531,7 +529,6 @@ foam.CLASS({
 
         // Fetch the group only once the user has logged in. That's why we await
         // the line above before executing this one.
-        await self.fetchTheme();
         if ( ! self.groupLoadingHandled ) await self.onUserAgentAndGroupLoaded();
       });
             // Enable session timer.
@@ -545,11 +542,10 @@ foam.CLASS({
     async function initMenu() {
       var menu;
 
-      // TODO Interim solution to pushing unauthenticated menu while applicationcontroller refactor is still WIP
       if ( this.route ) {
         menu = await this.__subContext__.menuDAO.find(this.route);
       }
-      // Check route again so that default theme menu doesnt override an auth menu the user is trying to go to
+
       if ( ! this.route && ! menu && this.theme.unauthenticatedDefaultMenu ) {
         menu = await this.__subContext__.menuDAO.find(this.theme.unauthenticatedDefaultMenu)
       }
@@ -595,27 +591,8 @@ foam.CLASS({
       window.addEventListener('resize', this.updateDisplayWidth);
       this.updateDisplayWidth();
 
-
-
-//      this.__subSubContext__.notificationDAO.where(
-//        this.EQ(this.Notification.USER_ID, userNotificationQueryId)
-//      ).on.put.sub((sub, on, put, obj) => {
-//        if ( obj.toastState == this.ToastState.REQUESTED ) {
-//          this.add(this.NotificationMessage.create({
-//            message: obj.toastMessage,
-//            type: obj.severity,
-//            description: obj.toastSubMessage
-//          }));
-//          var clonedNotification = obj.clone();
-//          clonedNotification.toastState = this.ToastState.DISPLAYED;
-//          this.__subSubContext__.notificationDAO.put(clonedNotification);
-//        }
-//      });
-
       this.clientPromise.then(() => {
         this.fetchTheme().then(() => {
-          // Work around to ensure wrapCSS is exported into context before
-          // calling AppStyles which needs theme replacement
           self.AppStyles.create();
           self.addMacroLayout();
         });
@@ -629,7 +606,6 @@ foam.CLASS({
       this.__subContext__.__proto__ = this.client.__subContext__;
       // TODO: find a better way to resub on client reloads
       this.onDetach(this.__subContext__.cssTokenOverrideService?.cacheUpdated.sub(this.reloadStyles));
-      this.subject = await this.client.auth.getCurrentSubject(null);
     },
 
     function installLanguage() {
@@ -694,18 +670,20 @@ foam.CLASS({
       }
     },
 
-    async function fetchSubject(promptLogin = true) {
+    async function fetchSubject() {
       /** Get current user, else show login. */
       try {
         this.initSubject = true;
-        var result = await this.client.auth.getCurrentSubject(null);
-        if ( result && result.user ) await this.reloadClient();
+        this.subject = await this.client.auth.getCurrentSubject(null);
+        if ( this.subject && this.subject.user ) await this.reloadClient();
 
-        promptLogin = promptLogin && await this.client.auth.check(this, 'auth.promptlogin');
-        var authResult =  await this.client.auth.check(this, '*');
-        if ( ! result || ! result.user ) throw new Error();
+        if ( ! this.subject || ! this.subject.user ) throw new Error();
       } catch (err) {
-        if ( ! promptLogin || authResult ) return;
+        try {
+          if ( await this.client.auth.check(this, '*') ) return;
+        } catch (e) {
+          console.log(`${e}`);
+        }
         this.languageInstalled.resolve();
         await this.requestLogin();
         return await this.fetchSubject();
@@ -803,7 +781,10 @@ foam.CLASS({
           return;
         }
         menu = await this.findFirstMenuIHavePermissionFor(dao);
-        let newId = (menu && menu.id) || '';
+        let newId = (menu && menu.id);
+        if ( ! newId ) {
+          await this.requestLogin();
+        }
         this.pushMenu(newId, opt_forceReload);
         return;
       }
@@ -920,7 +901,6 @@ foam.CLASS({
       let check = await this.checkGeneralCapability();
       if ( ! check ) return;
 
-      await this.fetchTheme();
       this.initLayout.resolve();
       var hash = this.window.location.hash;
       if ( hash ) hash = hash.substring(1);
