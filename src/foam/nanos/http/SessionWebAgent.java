@@ -56,9 +56,9 @@ public class SessionWebAgent
 
       // display a warning if querystring contains sessionId
       // TODO: whitelist 'services' that we allow/expect sessionId,
-      // such as file requests
+      // such as file requests - which is httpFileService (legacy not sure) and httpBlobService which is what anna apps are using
       if ( req.getQueryString().contains("sessionId") ) {
-        if ( ! req.getRequestURI().contains("httpFileService") ) {
+        if ( ! req.getRequestURI().contains("httpFileService") && ! req.getRequestURI().contains("httpBlobService") ) {
           logger.warning(
             "\033[31;1m" +
             req.getRequestURI() +

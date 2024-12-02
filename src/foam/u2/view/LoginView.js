@@ -182,7 +182,6 @@ foam.CLASS({
   }
   ^card-container {
     padding: 20px;
-    margin: 0 0 12vh 0;
     box-shadow: inset 0px -2px 4px 1px black;
     background: white;
     border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;

@@ -17,7 +17,8 @@ foam.CLASS({
     'loginSuccess',
     'menuDAO',
     'pushMenu?',
-    'theme'
+    'theme',
+    'subject'
   ],
 
   cssTokens: [
@@ -101,7 +102,7 @@ foam.CLASS({
       var self = this;
       this.checkNotificationAccess();
       this
-        .show(this.loginSuccess$)
+        .show(this.loginSuccess$.map(m=> m&&this.subject.user.loginEnabled))
         .addClass(this.myClass())
         .start().addClass(this.myClass('components-container'))
           // Menu Open/Close

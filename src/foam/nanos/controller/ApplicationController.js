@@ -901,7 +901,6 @@ foam.CLASS({
       let check = await this.checkGeneralCapability();
       if ( ! check ) return;
 
-      this.initLayout.resolve();
       var hash = this.window.location.hash;
       if ( hash ) hash = hash.substring(1);
       if ( hash && hash != 'null' /* How does it even get set to null? */ && hash != this.currentMenu?.id ) {
@@ -912,12 +911,10 @@ foam.CLASS({
       if ( ! location.hash.substring(1) ) { // todo...maybe
         this.stack.push(this.StackBlock.create({ class: 'foam.u2.View' }));
       }
-      if ( this.subject.user.lifecycleState == this.LifecycleState.ACTIVE ) {
-        this.loginSuccess = true;
-      } else {
-        return;
-      }
-      this.initLayout.resolve(); // todo: don't think this is necessary
+      var u = this.subject.user;
+      this.loginSuccess = u.lifecycleState == this.LifecycleState.ACTIVE;
+      
+      this.initLayout.resolve();
       
       if ( this.fromLogin ) {
         if ( ! this.window.location.hash.substring(1) ) this.pushDefaultMenu();
