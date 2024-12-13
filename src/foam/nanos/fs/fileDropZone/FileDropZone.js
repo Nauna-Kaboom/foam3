@@ -88,6 +88,7 @@ foam.CLASS({
       flex-direction: row;
       gap: 8px;
       flex-wrap: wrap;
+      color: /*%PRIMARY2%*/ black;
     }
     ^dragged{
       box-shadow: 0px 0px 9px 0px black;
