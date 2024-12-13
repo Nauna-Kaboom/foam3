@@ -53,7 +53,7 @@ foam.CLASS({
       font: inherit;
       align-items: center;
       border: 1px solid transparent;
-      border-radius: $inputBorderRadius;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
       box-sizing: border-box;
       display: inline-flex;
       gap: 8px;

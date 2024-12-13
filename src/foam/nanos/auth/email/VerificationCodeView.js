@@ -27,7 +27,7 @@
     width: 100vw;
     overflow-y: auto;
     display: flex;
-    border-radius: $inputBorderRadius;
+    border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
     box-shadow: inset 0px -2px 4px 1px black;
     flex-direction: column;
     flex-wrap: wrap;

@@ -287,7 +287,7 @@ foam.CLASS({
       of: 'foam.nanos.auth.LifecycleState',
       name: 'lifecycleState',
       section: 'basicInfo',
-      value: foam.nanos.auth.LifecycleState.PENDING,
+      value: 'PENDING',
       createVisibility: 'HIDDEN',
       updateVisibility: 'RO',
       readVisibility: 'RO',

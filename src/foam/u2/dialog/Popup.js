@@ -62,7 +62,7 @@ foam.CLASS({
       cursor: pointer;
       transition: all ease-in 0.1s;
       padding: 0 !important;
-      border-radius: $inputBorderRadius !important;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius !important;
     }
     ^X:hover{
       transform: scale(1.1)
@@ -85,7 +85,7 @@ foam.CLASS({
       justify-content: center;
       z-index: 3;
       position: relative;
-      border-radius: $inputBorderRadius;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
       box-shadow: 0 24px 24px 0 rgba(0, 0, 0, 0.12), 0 0 24px 0 rgba(0, 0, 0, 0.15);
       overflow: auto;
       /* The following line fixes a stacking problem in certain browsers. */

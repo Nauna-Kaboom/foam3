@@ -120,7 +120,7 @@ foam.CLASS({
       max-width: 98vw;
       overflow: scroll;
       padding: $inputHorizontalPadding 4vmin;
-      border-radius: $inputBorderRadius 5px;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius 5px;
       background-color: /*%PRIMARY4%*/ #345f5b;
       color: /*%SECONDARY1%*/ white;
     }

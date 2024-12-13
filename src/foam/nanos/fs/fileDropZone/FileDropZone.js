@@ -35,7 +35,7 @@ foam.CLASS({
       align-items: center;
       box-sizing: border-box;
       border: 2px dashed $grey400;
-      border-radius: $inputBorderRadius;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -88,6 +88,7 @@ foam.CLASS({
       flex-direction: row;
       gap: 8px;
       flex-wrap: wrap;
+      color: /*%PRIMARY2%*/ black;
     }
     ^dragged{
       box-shadow: 0px 0px 9px 0px black;

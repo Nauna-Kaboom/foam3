@@ -28,7 +28,7 @@ foam.CLASS({
           font-size: 1.4rem;
           padding-left: $inputHorizontalPadding;
           padding-right: $inputHorizontalPadding;
-          border-radius: $inputBorderRadius;
+          border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
           border-color: /*%SECONDARY3%*/ grey;
           width: 100%;
         }

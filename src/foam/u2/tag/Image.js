@@ -32,14 +32,14 @@ foam.CLASS({
     }
     ^imgHov:hover {
       background: $NavButtonBackgroundColor$hover;
-      border-radius: $inputBorderRadius;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
       box-shadow: 1px 1px 1px 0px #b1a5a5;
     }
     ^imgHov {
       cursor: pointer;
     }
     ^bord {
-      border-radius: $inputBorderRadius;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
     }
   `,
 

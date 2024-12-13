@@ -52,7 +52,7 @@ const main = async function() {
   foam.require(X.pom, false, true);
   const jrls = {};
   await asyncForEach(foam.poms, async(p) => {
-    if ( p.pom.journals ) {
+    if ( p.pom?.journals ) {
       p.pom.journals.forEach(async (j) => {
         if ( ! jrls[path_.basename(j)] ) jrls[path_.basename(j)] = '';
         jrls[path_.basename(j)] += fs_.readFileSync(path_.join(p.location, j+'.jrl')).toString();
