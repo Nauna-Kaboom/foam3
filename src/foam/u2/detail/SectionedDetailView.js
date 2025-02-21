@@ -83,7 +83,7 @@ foam.CLASS({
 
                 return self.GUnit.create({ columns: s.gridColumns })
                   .addClass(self.myClass('card-container'))
-                  .start('h2')
+                  .start()
                     .add(title$)
                     .show(title$)
                   .end()

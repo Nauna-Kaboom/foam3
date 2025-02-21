@@ -58,6 +58,7 @@ foam.CLASS({
           throw new Error(`attempted to delete protected path: ${absPath}`);
         }
       }
+      // **
       // await this.fs_.rm(absPath, {
       //   recursive: this.recursive,
       //   force: this.force,

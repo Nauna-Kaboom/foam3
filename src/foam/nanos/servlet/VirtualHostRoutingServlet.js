@@ -159,7 +159,7 @@ foam.CLASS({
       }
 
       // default scripts
-      if ( headConfig == null || ! headConfig.containsKey("customScripts") || customScriptsFailed ) {
+      // if ( headConfig == null || ! headConfig.containsKey("customScripts") || customScriptsFailed ) {
         if ( this.getIsResourceStorage() ) {
           // jar file deployment
           out.print("<script language=\\"javascript\\" src=\\"/foam-bin-");
@@ -175,7 +175,7 @@ foam.CLASS({
             out.println("\\"></script>");
           }
         }
-      }
+     // }
 
       // custom fonts
       if ( headConfig != null && headConfig.containsKey("customFonts") ) {
