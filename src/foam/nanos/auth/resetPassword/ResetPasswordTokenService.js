@@ -140,7 +140,7 @@ foam.CLASS({
 
         List data = ((ArraySink) sink).getArray();
         if ( data == null || data.size() == 0 ) {
-          throw new RuntimeException("Token not found");
+          throw new RuntimeException("Token Expired - Please Try Again");
         }
 
         // find user from token

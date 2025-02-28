@@ -66,8 +66,9 @@ foam.CLASS({
     }
 
     ^buttons{
+      display: inline-flex;
       gap: 0.5em;
-      align-items: flex-start;
+      align-items: center;
     }
 
     ^filters{

@@ -153,7 +153,7 @@ foam.CLASS({
         .then((result) => {
           this.reset_();
           this.notify(this.SUCCESS_MSG, '', this.LogLevel.INFO, true);
-          X.closeDialog();
+          if ( X.closeDialog ) X.closeDialog();
         })
         .catch((err) => {
           this.notify(err.message, '', this.LogLevel.ERROR, true);

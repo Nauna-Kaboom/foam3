@@ -37,16 +37,15 @@ foam.CLASS({
     ^ .property-dataType {
       margin-right: 24px;
     }
-    ^ .foam-u2-tag-Select {
-      width: 100%;
-      border-radius: 0;
-      padding: 6px 10px;
-      border: solid 1px rgba(164, 179, 184, 0.5);
-      background-color:$white;
-      outline: none;
-      background: #ffffff url('/images/dropdown-icon.svg') no-repeat 98% 50%;
-      -webkit-appearance: none;
-    }
+    // ^ .foam-u2-tag-Select {
+    //   width: 100%;
+    //   padding: 6px 10px;
+    //   border: solid 1px /*%PRIMARY3%*/ rgba(164, 179, 184, 0.5);
+    //   background-color: /*%PRIMARY5%*/ white;
+    //   outline: none;
+    //   background: /*%PRIMARY5%*/ white url('/images/dropdown-icon.svg') no-repeat 98% 50%;
+    //   -webkit-appearance: none;
+    // }
     ^ .foam-u2-ModalHeader {
       border-bottom: none;
     }
@@ -61,8 +60,8 @@ foam.CLASS({
       font-weight: normal;
       font-size: 1.1rem;
       line-height: 14px;
-      color: #000000;
-      margin: 10px 0px 0px 24px;
+      color: /*%PRIMARY2%*/ black;
+      margin: 10px 0px 5px 24px;
     }
     ^ .note {
       height: 150px;

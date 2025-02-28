@@ -21,8 +21,9 @@ foam.CLASS({
 
   css: `
     ^ {
-      border-radius: 3px;
-      background-color: #fff;
+      border-radius: /*%INPUTBORDERRADIUS%*/ /*$inputBorderRadius*/ 5px;
+      background-color: /*%PRIMARY1%*/ #3c3c3c;
+      color: /*%PRIMARY2%*/ black;
       /* Don't let the modal exceed the screen size, minus some margin. */
       max-width: calc(100vw - 48px);
       max-height: calc(100vh - 116px);

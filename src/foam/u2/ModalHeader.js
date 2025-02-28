@@ -35,7 +35,7 @@ foam.CLASS({
       font-weight: 600;
       font-size: 2.4rem;
       line-height: 28px;
-      color: #000000;
+      color: /*%PRIMARY2%*/ black;
       margin: 0;
       flex: none;
     }

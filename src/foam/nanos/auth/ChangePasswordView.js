@@ -29,9 +29,11 @@ foam.CLASS({
   ],
   css: `
     ^ {
-      height: 100%;
-      color: black;
-      background-color: #fff;
+      border: 2px ridge /*%SECONDARY3%*/ red;
+      background-color: /*%PRIMARY1%*/ white;
+      border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
+      box-shadow: 0 24px 24px 0 rgba(0, 0, 0, 0.12), 0 0 24px 0 rgba(0, 0, 0, 0.15);
+      color: /*%PRIMARY2%*/ black;
     }
     ^flex {
       display: flex;
@@ -60,7 +62,7 @@ foam.CLASS({
       font-weight: 600;
       padding: 0 15px;
       text-align: center;
-      color: black;
+      color: /*%PRIMARY2%*/ black;
       filter: /*%GREY1%*/;
     }
     // ^ .foam-u2-detail-SectionView .foam-u2-detail-SectionView-actionDiv {

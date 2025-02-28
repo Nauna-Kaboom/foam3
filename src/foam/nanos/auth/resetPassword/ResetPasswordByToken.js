@@ -64,8 +64,9 @@
             type: this.LogLevel.INFO,
             transient: true
           }));
-          this.ctrl.add(this.Popup.create({ backgroundColor: 'transparent' }).tag({ class: this.LoginView, mode_: 'SignIn' }));
-          X.closeDialog();
+          window.location.href =  window.location.href.split("?")[0];
+          // this.ctrl.add(this.Popup.create({ backgroundColor: 'transparent' }).tag({ class: this.LoginView, mode_: 'SignIn' }));
+          // X.closeDialog();
         }).catch((err) => {
           this.ctrl.add(this.NotificationMessage.create({
               err: err.data,

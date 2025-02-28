@@ -78,7 +78,7 @@ foam.CLASS({
     }
     ^inner {
       border: 2px ridge /*%SECONDARY3%*/ red;
-      background-color: #000;
+      background-color: /*%PRIMARY1%*/ white;
       height: auto;
       width: auto;
       display: flex;
