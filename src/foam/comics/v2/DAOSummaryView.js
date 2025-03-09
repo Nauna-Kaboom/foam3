@@ -45,6 +45,7 @@ foam.CLASS({
 
     ^view-container {
       margin: auto;
+      width: 90vw;
     }
   `,
 
