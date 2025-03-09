@@ -90,6 +90,7 @@ foam.CLASS({
       label: 'Country',
       shortName: 'country',
       of: 'foam.nanos.auth.Country',
+      value: 'CA',
       documentation: `A foreign key into the CountryDAO which represents the country.`,
       required: true,
       gridColumns: 6,
@@ -716,6 +717,7 @@ foam.CLASS({
     {
       class: 'Enum',
       name: 'propertyType',
+      hidden: true,
       of: 'foam.nanos.auth.PropertyType',
       documentation: 'Defines property type of address.'
     }

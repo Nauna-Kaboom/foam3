@@ -239,8 +239,8 @@ foam.LIB({
       var ret = foam.Function.setName(
         function(key) {
           foam.assert(
-              arguments.length === 1,
-              'Memoize1\'ed functions must take exactly one argument.');
+            arguments.length === 1,
+            'Memoize1\'ed functions must take exactly one argument.');
 
           var mKey =
               key === null      ? '___null___'      :
@@ -290,7 +290,7 @@ foam.LIB({
         // arg => ...
         match = str.match(/^(\(([^)]*)\)[^=]*|([^=]+))=>/) :
         // function (...args...) { ...body... }
-        match = str.match(/^(async )?function(\s+[_$\w]+|\s*)\((.*?)\)/);
+        match = str.match(/^(async )?function(\s+[_$\w]+|\s*)\s*\((.*?)\)/);
 
       if ( ! match ) {
         /* istanbul ignore next */
@@ -534,7 +534,7 @@ foam.LIB({
       var intArrayForHash   = new Int32Array(bufForHash);
 
       return function hashCode(n) {
-        if (Number.isInteger(n)) return n & n; // Truncate to 32 bits.
+        if ( Number.isInteger(n) ) return n & n; // Truncate to 32 bits.
 
         floatArrayForHash[0] = n;
         var hash = ((intArrayForHash[0] << 5) - intArrayForHash[0]) +
@@ -584,7 +584,7 @@ foam.LIB({
       name: 'constantize',
       code: foam.Function.memoize1(function(/* String */ str) {
         // switches from from camelCase to CAMEL_CASE
-        return str.replace(/([a-z])([^0-9a-z_])/g, '$1_$2').toUpperCase();
+        return str.replace(/([a-z])([^0-9a-z_])/g, '$1_$2').replace(/\s/g,'').toUpperCase();
       })
     },
     {
@@ -1023,6 +1023,24 @@ foam.LIB({
       return  ( timeFirst ? formattedTime + ' ' : '' )
             + formattedDate
             + ( ! timeFirst ? ' ' + formattedTime : '' );
+    },
+    /* Date pickers expect values to be set as as YYYY-MM-DDThh:mm
+    * Easiest way to do this without parsing it ourselves is to call toISOString but that method returns UTC timezone which
+    * and the input field is agnostic of timezones so this causes the incorrect time to be set
+    * getTimezoneOffset(): returns the offset in mins of a given date from UTC
+    * getTime(): returns millis since epoch of given date
+    * subtracting these two values gives us millis since epoch in UTC
+    * This can be parsed into a date and then converted to required string format
+    */
+    function toInputCompatibleDateTimeString(date) {
+      if ( ! ( date instanceof Date ) ) return null;
+      let offsetInMillis = date.getTimezoneOffset() * 60 * 1000;
+      let newValue = date.valueOf() - offsetInMillis;
+      date = new Date(newValue)
+      return date.toISOString().substring(0,16);
+    },
+    function toInputCompatibleDateString(date) {
+      return foam.Date.toInputCompatibleDateTimeString(date).substring(0, 10);
     }
   ]
 });
@@ -1150,20 +1168,6 @@ foam.LIB({
 
 (function() {
   var typeOf = foam.typeOf;
-  /*
-  var typeOf = mmethod({
-    Undefined: () => foam.Undefined,
-    Null:      () => foam.Null,
-    String:    () => foam.String,
-    Number:    () => foam.Number,
-    Boolean:   () => foam.Boolean,
-    Date:      () => foam.Date,
-    Function:  () => foam.Function,
-    FObject:   () => foam.FObject,
-    Array:     () => foam.Array,
-    Object:    () => foam.Object
-  });
-  */
 
   foam.LIB({
     name: 'foam.util',
@@ -1283,6 +1287,9 @@ foam.LIB({
   name: 'foam.uuid',
   methods: [
     function randomGUID() {
+      if ( crypto?.randomUUID ) return crypto.randomUUID();
+      // cypto.randomUUID only available under https
+      // provide a fallback for non-https development
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random() * 16 | 0;
         var v = c === 'x' ? r : ( r & 0x3 | 0x8 );

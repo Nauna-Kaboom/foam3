@@ -369,6 +369,7 @@ foam.CLASS({
         if ( this.onClickAddOn )
           this.onClickAddOn(this.data, this.hasChildren);
         this.toggleExpanded();
+        ctrl.isMenuOpen = ! ctrl.isMenuOpen;
       }
     },
     {
