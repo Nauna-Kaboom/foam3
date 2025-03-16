@@ -23,7 +23,7 @@ foam.POM({
     { name: "Country",                                                               flags: "js|java" },
     { name: "Region",                                                                flags: "js|java" },
     { name: "Address",                                                               flags: "js|java" },
-    { name: "PKAddress",                                                             flags: "js|java" },
+    // { name: "PKAddress",                                                             flags: "js|java" },
     { name: "AccessDeniedException",                                                 flags: "js|java" },
     { name: "AccountLockedException",                                                flags: "js|java" },
     { name: "AccountDisabledException",                                              flags: "js|java" },
