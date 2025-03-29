@@ -158,12 +158,13 @@ foam.CLASS({
           });
         });
       },
-      javaCode: `String path = this.tmp_ + File.separator + (name++);
-File file = x.get(Storage.class).get(path);
-if ( file.exists() ) {
-  return allocateTmp(x, name);
-}
-return file;`
+      javaCode: `
+        String path = this.tmp_ + File.separator + (name++);
+        File file = x.get(Storage.class).get(path);
+        if ( file.exists() ) {
+          return allocateTmp(x, name);
+        }
+        return file;`
     },
 
     {
@@ -239,34 +240,35 @@ return file;`
           });
         });
       },
-      javaCode: `if ( blob instanceof IdentifiedBlob ) {
-  return blob;
-}
+      javaCode: `
+        if ( blob instanceof IdentifiedBlob ) {
+          return blob;
+        }
 
-this.setup(x);
-long size = blob.getSize();
-File tmp = allocateTmp(x, 1);
+        this.setup(x);
+        long size = blob.getSize();
+        File tmp = allocateTmp(x, 1);
 
-try ( HashingOutputStream os = new HashingOutputStream(new FileOutputStream(tmp)) ) {
-  blob.read(os, 0, size);
-  os.close();
+        try ( HashingOutputStream os = new HashingOutputStream(new FileOutputStream(tmp)) ) {
+          blob.read(os, 0, size);
+          os.close();
 
-  String digest = new String(Hex.encodeHexString(os.digest()));
-  File dest = x.get(Storage.class).get(getDirectory() + File.separator + digest);
-  if ( ! tmp.renameTo(dest) ) {
-    // File already exists, so remove tmp version
-    try {
-      tmp.delete();
-    } catch (Throwable t) {}
-  }
-  IdentifiedBlob result = new IdentifiedBlob();
-  result.setId(digest);
-  result.setX(getX());
-  return result;
-} catch (Throwable t) {
-  return null;
-}
-`
+          String digest = new String(Hex.encodeHexString(os.digest()));
+          File dest = x.get(Storage.class).get(getDirectory() + File.separator + digest);
+          if ( ! tmp.renameTo(dest) ) {
+            // File already exists, so remove tmp version
+            try {
+              tmp.delete();
+            } catch (Throwable t) {}
+          }
+          IdentifiedBlob result = new IdentifiedBlob();
+          result.setId(digest);
+          result.setX(getX());
+          return result;
+        } catch (Throwable t) {
+          return null;
+        }
+        `
     },
     function filename(blob) {
       if ( ! foam.blob.IdentifiedBlob.isInstance(blob) ) return null;
@@ -306,25 +308,27 @@ try ( HashingOutputStream os = new HashingOutputStream(new FileOutputStream(tmp)
           });
         });
       },
-      javaCode: `try {
-  this.setup(x);
-  if ( ((String) id).indexOf(File.separatorChar) != -1 ) {
-    throw new RuntimeException("Invalid file name");
-  }
+      javaCode: `
+      try {
+        this.setup(x);
+        if ( ((String) id).indexOf(File.separatorChar) != -1 ) {
+          throw new RuntimeException("Invalid file name");
+        }
 
-  File file = x.get(Storage.class).get(getDirectory() + File.separator + id);
-  if ( ! file.exists() ) {
-    throw new RuntimeException("File does not exist");
-  }
+        File file = x.get(Storage.class).get(getDirectory() + File.separator + id);
+        if ( ! file.exists() ) {
+          throw new RuntimeException("File does not exist");
+        }
 
-  if ( ! file.canRead() ) {
-    throw new RuntimeException("Cannot read file");
-  }
+        if ( ! file.canRead() ) {
+          throw new RuntimeException("Cannot read file");
+        }
 
-  return new FileBlob(file);
-} catch (Throwable t) {
-  throw new RuntimeException(t);
-}`
+        return new FileBlob(file);
+      } catch (Throwable t) {
+        throw new RuntimeException(t);
+      }
+      `
     },
     {
       name: 'urlFor_',
