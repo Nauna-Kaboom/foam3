@@ -23,6 +23,9 @@ foam.CLASS({
       gap: 8px;
       flex-direction: column;
     }
+    .foam-u2-detail-VerticalDetailView {
+      margin: 50px;
+    }
   `,
 
   imports: ['auth'],
@@ -104,9 +107,10 @@ foam.CLASS({
     //     el.scrollTop = el.scrollHeight;
     //   }) 
     // },
-    function saveToDAO() {
+    function saveToDAO(data) {
       if ( this.feedback_ ) return;
       this.feedback_ = true;
+      if ( !! data ) this.workingData = data;
       this.dao.put(this.workingData).then(obj => {
         if ( ! obj ) console.log(obj);
         this.onSelect(obj);

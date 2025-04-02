@@ -24,7 +24,7 @@ foam.CLASS({
   ],
 
   imports: [
-    'translationService'
+    'translationService?'
   ],
 
   javaImports: [
@@ -168,9 +168,9 @@ foam.CLASS({
         // If the country hasn't been selected yet, don't show this error.
         if ( countryId == null ) return;
         if ( typeof regionId !== 'string' || regionId.length === 0 ) {
-          let regionError = this.translationService.getTranslation(foam.locale, `${countryId.toLowerCase()}.foam.nanos.auth.Address.REGION.error`);
+          let regionError = this.translationService?.getTranslation(foam.locale, `${countryId.toLowerCase()}.foam.nanos.auth.Address.REGION.error`);
           if ( ! regionError ) {
-            regionError = this.translationService.getTranslation(foam.locale, `*.foam.nanos.auth.Address.REGION.error`);
+            regionError = this.translationService?.getTranslation(foam.locale, `*.foam.nanos.auth.Address.REGION.error`);
           }
           return regionError ? regionError : this.REGION_REQUIRED;
         }
@@ -248,9 +248,9 @@ foam.CLASS({
           query: 'countryId!="CA"||postalCode~/^[ABCEGHJ-NPRSTVXY]\\d[ABCEGHJ-NPRSTV-Z][ -]?\\d[ABCEGHJ-NPRSTV-Z]\\d$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -260,9 +260,9 @@ foam.CLASS({
           query: 'countryId!="US"||postalCode~/^\\d{5}(?:[-\\s]\\d{4})?$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -273,9 +273,9 @@ foam.CLASS({
           query: 'countryId!="AT"||postalCode~/^\\d{4}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -286,9 +286,9 @@ foam.CLASS({
           query: 'countryId!="BE"||postalCode~/^(?:(?:[1-9])(?:\\d{3}))$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -299,9 +299,9 @@ foam.CLASS({
           query: 'countryId!="BR"||postalCode~/^\\d{5}-?\\d{3}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -314,9 +314,9 @@ foam.CLASS({
           query: 'countryId!="CN"||postalCode~/^\\d{6}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -327,9 +327,9 @@ foam.CLASS({
           query: 'countryId!="CY"||postalCode~/^\\d{4}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -340,9 +340,9 @@ foam.CLASS({
           query: 'countryId!="EE"||postalCode~/^\\d{5}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -353,9 +353,9 @@ foam.CLASS({
           query: 'countryId!="FI"||postalCode~/^\\d{5}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -366,9 +366,9 @@ foam.CLASS({
           query: 'countryId!="FR"||postalCode~/^(?:[0-8]\\d|9[0-8])\\d{3}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -379,9 +379,9 @@ foam.CLASS({
           query: 'countryId!="DE"||postalCode~/^\\d{5}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -392,9 +392,9 @@ foam.CLASS({
           query: 'countryId!="GB"||postalCode~/^(GIR[ ]?0AA|((AB|AL|B|BA|BB|BD|BH|BL|BN|BR|BS|BT|CA|CB|CF|CH|CM|CO|CR|CT|CV|CW|DA|DD|DE|DG|DH|DL|DN|DT|DY|E|EC|EH|EN|EX|FK|FY|G|GL|GY|GU|HA|HD|HG|HP|HR|HS|HU|HX|IG|IM|IP|IV|JE|KA|KT|KW|KY|L|LA|LD|LE|LL|LN|LS|LU|M|ME|MK|ML|N|NE|NG|NN|NP|NR|NW|OL|OX|PA|PE|PH|PL|PO|PR|RG|RH|RM|S|SA|SE|SG|SK|SL|SM|SN|SO|SP|SR|SS|ST|SW|SY|TA|TD|TF|TN|TQ|TR|TS|TW|UB|W|WA|WC|WD|WF|WN|WR|WS|WV|YO|ZE)(\\d[\\dA-Z]?[ ]?\\d[ABD-HJLN-UW-Z]{2}))|BFPO[ ]?\\d{1,4})$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -405,9 +405,9 @@ foam.CLASS({
           query: 'countryId!="GR"||postalCode~/^\\d{3}\\s{0,1}\\d{2}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -418,9 +418,9 @@ foam.CLASS({
           query: 'countryId!="IE"||postalCode~/[A-Za-z]\\d{2}\\s?[A-Za-z\\d]{4}/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -431,9 +431,9 @@ foam.CLASS({
           query: 'countryId!="IN"||postalCode~/^\\d{6}(?:[-\\s]\\d{4})?$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -444,9 +444,9 @@ foam.CLASS({
           query: 'countryId!="IT"||postalCode~/^\\d{5}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -457,9 +457,9 @@ foam.CLASS({
           query: 'countryId!="IL"||postalCode~/^\\d{7}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -470,9 +470,9 @@ foam.CLASS({
           query: 'countryId!="LV"||postalCode~/^(LV-)?\\d{4}$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -483,9 +483,9 @@ foam.CLASS({
           query: 'countryId!="LT"||postalCode~/^(LT-)?\\d{5}$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -496,9 +496,9 @@ foam.CLASS({
           query: 'countryId!="LU"||postalCode~/^\\d{4}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -509,9 +509,9 @@ foam.CLASS({
           query: 'countryId!="MT"||postalCode~/^[A-Z]{3}\\s?\\d{4}$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -522,9 +522,9 @@ foam.CLASS({
           query: 'countryId!="NL"||postalCode~/^(?:NL-)?(?:[1-9]\\d{3} ?(?:[A-EGHJ-NPRTVWXZ][A-EGHJ-NPRSTVWXZ]|S[BCEGHJ-NPRTVWXZ]))$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -535,9 +535,9 @@ foam.CLASS({
           query: 'countryId!="PT"||postalCode~/^\\d{4}[- ]{0,1}\\d{3}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -548,9 +548,9 @@ foam.CLASS({
           query: 'countryId!="SK"||postalCode~/^(SK-)?\\d{3}\\s?\\d{2}$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -561,9 +561,9 @@ foam.CLASS({
           query: 'countryId!="SI"||postalCode~/^(SI-)?\\d{4}$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -574,9 +574,9 @@ foam.CLASS({
           query: 'countryId!="ES"||postalCode~/^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -587,9 +587,9 @@ foam.CLASS({
           query: 'countryId!="SE"||postalCode~/^(s-|S-){0,1}[0-9]{3}\\s?[0-9]{2}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -600,9 +600,9 @@ foam.CLASS({
           query: 'countryId!="JM"||postalCode~/^(JM)[a-zA-Z]{3}\\d{2}$/i',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -613,9 +613,9 @@ foam.CLASS({
           query: 'countryId!="LB"||postalCode~/^(\\d{4}|\\d{8})$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -626,9 +626,9 @@ foam.CLASS({
           query: 'countryId!="MX"||postalCode~/^\\d{5}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -639,9 +639,9 @@ foam.CLASS({
           query: 'countryId!="MY"||postalCode~/^\\d{5}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -652,9 +652,9 @@ foam.CLASS({
           query: 'countryId!="TT"||postalCode~/^\\d{6}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -665,9 +665,9 @@ foam.CLASS({
           query: 'countryId!="ZA"||postalCode~/^\\d{4}$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -678,9 +678,9 @@ foam.CLASS({
           query: 'countryId!="PK"||postalCode~/^(\\s*|\\d{5})$/',
           errorMessage: 'INVALID_POSTAL_CODE',
           jsErr: function(X) {
-            let postalCodeError = X.translationService.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
+            let postalCodeError = X.translationService?.getTranslation(foam.locale, `${X.countryId.toLowerCase()}.foam.nanos.auth.Address.POSTAL_CODE.error`);
             if ( ! postalCodeError ) {
-              postalCodeError = X.translationService.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
+              postalCodeError = X.translationService?.getTranslation(foam.locale, '*.foam.nanos.auth.Address.POSTAL_CODE.error');
             }
             return postalCodeError ? postalCodeError : X.INVALID_POSTAL_CODE;
           }
@@ -697,8 +697,8 @@ foam.CLASS({
       class: 'String',
       name: 'postalCodeLabel',
       expression: function(countryId) {
-        let translatedPostalCodeLabel = this.translationService.getTranslation(foam.locale, `${countryId.toLowerCase()}.postalCode.label`);
-        return translatedPostalCodeLabel ? translatedPostalCodeLabel : this.translationService.getTranslation(foam.locale, 'postalCode.label');
+        let translatedPostalCodeLabel = this.translationService?.getTranslation(foam.locale, `${countryId.toLowerCase()}.postalCode.label`);
+        return translatedPostalCodeLabel ? translatedPostalCodeLabel : this.translationService?.getTranslation(foam.locale, 'postalCode.label');
       },
       hidden: true
     },

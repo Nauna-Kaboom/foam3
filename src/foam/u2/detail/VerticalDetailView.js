@@ -34,6 +34,10 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'centered',
+    },
+    {
+      class: 'String',
+      name: 'title'
     }
   ],
 
@@ -43,6 +47,7 @@ foam.CLASS({
       this.SUPER();
       this
         .addClass(this.myClass())
+        .start('h2').add(this.title).end()
         .add(this.slot(function(of, sections, data) {
           if ( ! data ) return;
           return self.E()
