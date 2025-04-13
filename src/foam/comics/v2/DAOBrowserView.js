@@ -28,7 +28,8 @@ foam.CLASS({
     'foam.u2.view.OverlayActionListView',
     'foam.u2.view.ScrollTableView',
     'foam.u2.view.SimpleSearch',
-    'foam.u2.view.TabChoiceView'
+    'foam.u2.view.TabChoiceView',
+    'foam.u2.ControllerMode'
   ],
 
   implements: [
@@ -284,23 +285,17 @@ foam.CLASS({
             var simpleSearch = foam.u2.ViewSpec.createView(self.SimpleSearch, {
               showCount: false,
               data$: self.searchPredicate$
-            }, this, self.__subSubContext__.createSubContext({
-              controllerMode: foam.u2.ControllerMode.EDIT
-            }));
+            }, this, self.__subSubContext__);
 
             var filterView = foam.u2.ViewSpec.createView(self.FilterView, {
               dao$: self.searchFilterDAO$,
               data$: self.searchPredicate$
-            }, this, self.__subContext__.createSubContext({
-              controllerMode: foam.u2.ControllerMode.EDIT
-            }));
+            }, this, self.__subContext__);
           } else {
             var filterView = foam.u2.ViewSpec.createView(self.FilterView, {
               dao$: self.searchFilterDAO$,
               data$: self.searchPredicate$
-            }, this, self.__subContext__.createSubContext({
-              controllerMode: foam.u2.ControllerMode.EDIT
-            }));
+            }, this, self.__subContext__);
           }
 
           this.onDetach(this.cannedPredicate$.sub(() => {
@@ -351,7 +346,8 @@ foam.CLASS({
                 this
                   .start(self.Cols).addClass(self.myClass('query-bar'))
                     .startContext({
-                      dao: self.searchFilterDAO
+                      dao: self.searchFilterDAO,
+                      controllerMode: self.ControllerMode.EDIT
                     })
                       .callIf(self.config.searchMode === self.SearchMode.SIMPLE, function() {
                         this.add(simpleSearch);
@@ -373,7 +369,7 @@ foam.CLASS({
                           var el = self.E();
                           var actions = el.addClass(self.myClass('buttons')).startContext({
                             data: self,
-                            controllerMode: foam.u2.ControllerMode.EDIT
+                            controllerMode: self.ControllerMode.EDIT
                           });
                           for ( action of visibleActions ) {
                             actions.start(action, buttonStyle).addClass(self.myClass('actions')).end();
@@ -391,10 +387,12 @@ foam.CLASS({
                   .end()
                   .start().tag(filterView.filtersContainer$).addClass(self.myClass('filters')).end();
               })
+              .startContext({ controllerMode: self.ControllerMode.VIEW })
               .start()
                 .add(summaryView)
                 .addClass(self.myClass('browse-view-container'))
               .end()
+              .endContext()
             .end();
         }));
     }

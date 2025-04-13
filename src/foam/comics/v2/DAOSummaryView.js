@@ -103,23 +103,24 @@ foam.CLASS({
     },
     {
       name: 'primary',
-      expression: function(config$of, data) {
-        var allActions = config$of.getAxiomsByClass(foam.core.Action);
-        var defaultAction = allActions.filter((a) => a.isDefault);
-        var acArray = defaultAction.length >= 1
-          ? defaultAction
-          : allActions.length >= 1
-            ? allActions
-            : null;
-        if ( acArray && acArray.length ) {
-          let res;
-          acArray.forEach(a => {
-            var aSlot = a.createIsAvailable$(this.__subContext__, data);
-            if (aSlot.get()) res = a;
-          });
-          return res;
-        }
-      }
+      // THIS was being duplicated by sectiview detailView shows actions as well - had 2 buttons of the same type.
+      // expression: function(config$of, data) {
+      //   var allActions = config$of.getAxiomsByClass(foam.core.Action);
+      //   var defaultAction = allActions.filter((a) => a.isDefault);
+      //   var acArray = defaultAction.length >= 1
+      //     ? defaultAction
+      //     : allActions.length >= 1
+      //       ? allActions
+      //       : null;
+      //   if ( acArray && acArray.length ) {
+      //     let res;
+      //     acArray.forEach(a => {
+      //       var aSlot = a.createIsAvailable$(this.__subContext__, data);
+      //       if (aSlot.get()) res = a;
+      //     });
+      //     return res;
+      //   }
+      // }
     },
     {
       class: 'foam.u2.ViewSpec',
@@ -363,11 +364,13 @@ foam.CLASS({
                   .endContext()
                 .end()
               .end()
+              .startContext( { controllerMode: self.controllerMode } )
               .start(config$viewBorder)
                 .start(viewView, { data: data, memento_$: self.memento_$ })
                   .addClass(self.myClass('view-container'))
                 .end()
               .end()
+              .endContext()
             .end();
         }));
       }

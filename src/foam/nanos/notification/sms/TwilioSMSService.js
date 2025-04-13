@@ -18,10 +18,11 @@ foam.CLASS({
     'com.twilio.rest.api.v2010.account.Message',
     'com.twilio.Twilio',
     'com.twilio.type.PhoneNumber',
-    'foam.nanos.logger.Logger',
+    'foam.dao.DAO',
+    'foam.nanos.logger.Loggers',
+    'foam.nanos.notification.sms.SMSMessage',
     'foam.nanos.notification.sms.SMSStatus',
     'foam.nanos.notification.sms.TwilioConfig',
-    'foam.nanos.om.OMLogger',
     'foam.util.SafetyUtil'
   ],
 
@@ -29,18 +30,15 @@ foam.CLASS({
     {
       name: 'send',
       javaCode: `
-        Logger logger = (Logger) x.get("logger");
-        OMLogger omLogger = (OMLogger) x.get("OMLogger");
         TwilioConfig twilioConfig = (TwilioConfig) x.get("twilioConfig");
         String phoneNumber = "";
         SMSStatus status;
-
+        DAO smsDao = (DAO)x.get("smsMessageDAO");
+        
         // check if twilio credentials are set
-        if ( SafetyUtil.isEmpty(twilioConfig.getAccountSid()) || 
-             SafetyUtil.isEmpty(twilioConfig.getAuthToken()) ) {
-               logger.error("Twilio accountSid or authToken were not found. Message was not sent.");
-               smsMessage.setStatus(SMSStatus.UNSENT);
-               return smsMessage;
+        if ( SafetyUtil.isEmpty(twilioConfig.getAccountSid()) || SafetyUtil.isEmpty(twilioConfig.getAuthToken()) ) {
+          Loggers.logger(x, this).error("Twilio accountSid or authToken were not found. Message was not sent.");
+          return smsMessage;
         }
 
         Twilio.init(twilioConfig.getAccountSid(), twilioConfig.getAuthToken());
@@ -52,28 +50,26 @@ foam.CLASS({
           status = SMSStatus.FAILED;
           status.setErrorMessage("Phone number not found, failed to send SMS.");
           smsMessage.setStatus(status);
-          return smsMessage;
+          return (SMSMessage) smsDao.put(smsMessage);
         }
 
         // check if message exists
         if ( ! SafetyUtil.isEmpty(smsMessage.getMessage()) ) {
           try {
-            omLogger.log(this.getClass().getSimpleName(), "message", "sending");
             Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber(twilioConfig.getPhoneNumber()),
-            smsMessage.getMessage()).create();
+              smsMessage.getMessage()).create();
             smsMessage.setStatus(SMSStatus.SENT);
-            omLogger.log(this.getClass().getSimpleName(), "message", "sent");
-            return smsMessage;
+            return (SMSMessage) smsDao.put(smsMessage);
           } catch (Exception e) {
             status = SMSStatus.FAILED;
             status.setErrorMessage(e.toString());
-            return smsMessage;
+            return (SMSMessage) smsDao.put(smsMessage);
           }
         } else {
           status = SMSStatus.FAILED;
           status.setErrorMessage("No message found, failed to send SMS.");
           smsMessage.setStatus(status);
-          return smsMessage;
+          return (SMSMessage) smsDao.put(smsMessage);
         }
       `
     }
