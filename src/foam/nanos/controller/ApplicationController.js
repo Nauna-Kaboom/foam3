@@ -572,67 +572,6 @@ foam.CLASS({
         }
       }
     },
-    function fontSizing(ww, fontB_, fontS_, fontT_) {
-      // body font needs to be uniform but titles need to fit containers
-      fontB_?.set(this.baseFontS_());
-      if ( ww < 100  ) {
-        fontT_?.set('0.9em');
-        fontS_?.set('0.7em');
-        return;
-      }
-      if ( ww < 120  ) {
-        fontT_?.set('1em');
-        fontS_?.set('0.8em');
-        return;
-      }
-      if ( ww < 140  ) {
-        fontT_?.set('1.2em');
-        fontS_?.set('1em');
-        return;
-      }
-      if ( ww < 180  ) {
-        fontT_?.set('1.4em');
-        fontS_?.set('1.2em');
-        return; 
-      }
-      if ( ww < 220  ) {
-        fontT_?.set('1.5em');
-        fontS_?.set('1.3em');
-        return;
-      }
-      if ( ww < 260  ) {
-        fontT_?.set('1.6em');
-        fontS_?.set('1.4em');
-        return;
-      }
-      if ( ww < 300  ) {
-        fontT_?.set('1.7em');
-        fontS_?.set('1.5em');
-        return;
-      }
-      if ( ww < 340  ) {
-        fontT_?.set('1.8em');
-        fontS_?.set('1.6em');
-        return;
-      }
-      if ( ww < 380  ) {
-        fontT_?.set('1.9em');
-        fontS_?.set('1.7em');
-        return;
-      }
-      if ( ww < 420  ) {
-        fontT_?.set('2em');
-        fontS_?.set('1.8em');
-        return;
-      }
-      if ( ww < 480  ) {
-        fontT_?.set('2.1em');
-        fontS_?.set('1.9em');
-        return;
-      }
-      fontT_?.set('2.5em');
-      fontS_?.set('2em');
-    },
     function onSessionTimeout() {
       if ( (this.subject && this.subject.user && this.subject.user.emailVerified) ||
             (this.subject && this.subject.realUser && this.subject.realUser.emailVerified) ) {
@@ -969,6 +908,68 @@ foam.CLASS({
   ],
 
   listeners: [
+
+    function fontSizing(ww, fontB_, fontS_, fontT_) {
+      // body font needs to be uniform but titles need to fit containers
+      fontB_?.set(this.baseFontS_());
+      if ( ww < 100  ) {
+        fontT_?.set('0.9em');
+        fontS_?.set('0.7em');
+        return;
+      }
+      if ( ww < 120  ) {
+        fontT_?.set('1em');
+        fontS_?.set('0.8em');
+        return;
+      }
+      if ( ww < 140  ) {
+        fontT_?.set('1.2em');
+        fontS_?.set('1em');
+        return;
+      }
+      if ( ww < 180  ) {
+        fontT_?.set('1.4em');
+        fontS_?.set('1.2em');
+        return; 
+      }
+      if ( ww < 220  ) {
+        fontT_?.set('1.5em');
+        fontS_?.set('1.3em');
+        return;
+      }
+      if ( ww < 260  ) {
+        fontT_?.set('1.6em');
+        fontS_?.set('1.4em');
+        return;
+      }
+      if ( ww < 300  ) {
+        fontT_?.set('1.7em');
+        fontS_?.set('1.5em');
+        return;
+      }
+      if ( ww < 340  ) {
+        fontT_?.set('1.8em');
+        fontS_?.set('1.6em');
+        return;
+      }
+      if ( ww < 380  ) {
+        fontT_?.set('1.9em');
+        fontS_?.set('1.7em');
+        return;
+      }
+      if ( ww < 420  ) {
+        fontT_?.set('2em');
+        fontS_?.set('1.8em');
+        return;
+      }
+      if ( ww < 480  ) {
+        fontT_?.set('2.1em');
+        fontS_?.set('1.9em');
+        return;
+      }
+      fontT_?.set('2.5em');
+      fontS_?.set('2em');
+    },
     async function onUserAgentAndGroupLoaded() {
       /**
        * Called whenever the group updates.

@@ -728,30 +728,42 @@ foam.CLASS({
       name: 'toSummary',
       type: 'String',
       code: function() {
-        var rtn = this.getShortAddress();
-        rtn += ', ';
-        rtn += this.city;
-        rtn += ', ';
-        rtn += this.regionId;
-        rtn += ', ';
-        rtn += this.countryId;
-        rtn += ', ';
-        rtn += this.postalCode;
-        return rtn === ', , , , ' ? '' : rtn;
+        var rtn = '';
+        var sha = this.getShortAddress();
+        if ( !! sha ) rtn = sha + ', ';
+        if ( !! this.city ) rtn += this.city + ', ';
+        if ( !! this.regionId ) rtn += this.regionId + ', ';
+        if ( !! this.countryId ) rtn += this.countryId + ', ';
+        if ( !! this.postalCode ) rtn += this.postalCode + ', ';
+        rtn = rtn.trim();
+        if ( rtn.charAt(rtn.length-1) == ',') rtn = rtn.substring(0, rtn.length-1)
+        return rtn;
       },
       javaCode: `
         StringBuilder sb = new StringBuilder();
-        sb.append(getShortAddress());
-        sb.append(", ");
-        sb.append(this.getCity());
-        sb.append(", ");
-        sb.append(getRegionId());
-        sb.append(", ");
-        sb.append(getCountryId());
-        sb.append(", ");
-        sb.append(getPostalCode());
+        if ( ! SafetyUtil.isEmpty(getShortAddress()) ) {
+          sb.append(getShortAddress());
+          sb.append(", ");
+        }
+        if ( ! SafetyUtil.isEmpty(this.getCity()) ) {
+          sb.append(this.getCity());
+          sb.append(", ");
+        }
+        if ( ! SafetyUtil.isEmpty(getRegionId()) ) {
+          sb.append(getRegionId());
+          sb.append(", ");
+        }
+        if ( ! SafetyUtil.isEmpty(getCountryId()) ) {
+          sb.append(getCountryId());
+          sb.append(", ");
+        }
+        
+        if ( ! SafetyUtil.isEmpty(getPostalCode()) ) {
+          sb.append(getPostalCode());
+        }
+        
         String rtn = sb.toString();
-        return rtn.equals(", , , , ") ? "" : rtn;
+        return rtn;
       `
     },
     {

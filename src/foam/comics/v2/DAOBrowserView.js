@@ -135,7 +135,8 @@ foam.CLASS({
     'ctrl',
     'displayWidth?',
     'exportDriverRegistryDAO',
-    'stack?'
+    'stack?',
+    'setControllerMode'
   ],
 
   exports: [
@@ -261,6 +262,7 @@ foam.CLASS({
       }
     },
     function render() {
+      this.setControllerMode('view');
       [ this.EXPORT, this.IMPORT, this.REFRESH_TABLE ].forEach(action => {
         if ( this.config.DAOActions.indexOf(action) === -1 )
           this.config.DAOActions.push(action);

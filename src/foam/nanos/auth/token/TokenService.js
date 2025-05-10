@@ -33,6 +33,7 @@ foam.INTERFACE({
       name: 'generateTokenWithParameters',
       async: true,
       type: 'Boolean',
+      javaThrows: ['RuntimeException'],
       swiftThrows: true,
       args: [
         {

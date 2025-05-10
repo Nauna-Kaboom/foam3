@@ -23,7 +23,9 @@ foam.CLASS({
       tableCellFormatter: function(value, obj, axiom) {
         this.__subSubContext__.userDAO
           .find(value)
-          .then(user => this.add(user ? user.legalName : `ID: ${value}`));
+          .then(user => this.add(user ? user.legalName : `ID: ${value}`)).catch((error) => {
+            this.add(value);
+          });
       }
     },
     {
@@ -36,7 +38,9 @@ foam.CLASS({
       tableCellFormatter: function(value, obj, axiom) {
         this.__subSubContext__.userDAO
           .find(value)
-          .then(user => this.add(user ? user.legalName : `ID: ${value}`));
+          .then(user => this.add(user ? user.legalName : `ID: ${value}`)).catch((error) => {
+            this.add(value);
+          });
       }
     }
   ]

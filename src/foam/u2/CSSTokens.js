@@ -15,7 +15,7 @@ foam.CLASS({
   */
   cssTokens: {
     // COLOUR
-    'blue50': '#ff0000', // #edd50b', //#D7E4FF',
+    'blue50': '#4877b4', // #edd50b', //#D7E4FF',
     'blue100': '#edd50b', //#96B8F9',
     'blue200': '#ff0000', //'#6795EE',
     'blue300': '#edd50b', //'#366EDC',
