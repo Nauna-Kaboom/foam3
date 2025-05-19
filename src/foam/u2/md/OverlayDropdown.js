@@ -143,27 +143,44 @@ foam.CLASS({
     },
 
     function setPosition(x, y) {
-      var screenWidth  = this.window.innerWidth;
-      var domRect      = this.parentEl.getBoundingClientRect();
-      var screenHeight = this.window.innerHeight;
-      var scrollY      = this.window.scrollY;
-      var parentCheck  = this.parentEdgePadding > -1;
-      if ( domRect.top - scrollY < screenHeight / 2 ) {
-        this.top = parentCheck ? domRect.bottom + this.parentEdgePadding : y; 
+      const parentRect = this.parentEl.getBoundingClientRect();
+      const dropdown = this.dropdownE_; // dropdownE_ assuming this references your actual dropdown DOM element
+      const dropdownRect = dropdown.getBoundingClientRect();
+    
+      const scrollY = window.scrollY;
+      const scrollX = window.scrollX;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+    
+      const fitsBelow = parentRect.bottom + dropdownRect.height <= screenHeight;
+      const fitsAbove = parentRect.top - dropdownRect.height >= 0;
+    
+      const fitsRight = parentRect.left + dropdownRect.width <= screenWidth;
+      const fitsLeft = parentRect.right - dropdownRect.width >= 0;
+    
+      // Vertical placement
+      if (fitsBelow) {
+        this.top = (parentRect.bottom + scrollY) + 'px';
         this.bottom = 'auto';
+      } else if (fitsAbove) {
+        this.top = 'auto';
+        this.bottom = (screenHeight - parentRect.top + scrollY) + 'px';
       } else {
-        this.top = 'auto'; 
-        this.bottom = parentCheck ? 
-          screenHeight - domRect.top + this.parentEdgePadding : screenHeight - y;
+        // fallback to below
+        this.top = (parentRect.bottom + scrollY) + 'px';
+        this.bottom = 'auto';
       }
-      if ( domRect.left > 3 * (screenWidth / 4) ) {
-        this.left = 'auto';
-        this.right = parentCheck ? screenWidth - domRect.right : screenWidth - x + 10;
-      } else if (domRect.left < 75) {
-        this.left = parentCheck ? domRect.left : x + 10;
+    
+      // Horizontal placement
+      if (fitsRight) {
+        this.left = (parentRect.left + scrollX) + 'px';
         this.right = 'auto';
+      } else if (fitsLeft) {
+        this.left = 'auto';
+        this.right = (screenWidth - parentRect.right + scrollX) + 'px';
       } else {
-        this.left = parentCheck ? domRect.left : x - 75;
+        // fallback to left aligned
+        this.left = (parentRect.left + scrollX) + 'px';
         this.right = 'auto';
       }
     },
