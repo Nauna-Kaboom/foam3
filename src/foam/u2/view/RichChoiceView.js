@@ -617,7 +617,7 @@ foam.CLASS({
 
     function onSelect(obj) {
       this.fullObject_ = obj;
-      this.data = obj[this.idProperty];
+      this.data = !obj ? undefined : obj[this.idProperty];
       this.isOpen_ = false;
       if ( this.onSelectfunc ) this.onSelectfunc();
     },
