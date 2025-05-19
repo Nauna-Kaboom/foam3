@@ -133,6 +133,7 @@ foam.CLASS({
       targetDAOKey: 'regionDAO',
       name: 'regionId',
       label: 'Region',
+      value: 'CA-ON',
       of: 'foam.nanos.auth.Region',
       documentation: `A foreign key into the RegionDAO which represents
         the region of the country.`,

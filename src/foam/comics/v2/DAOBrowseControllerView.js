@@ -54,7 +54,7 @@ foam.CLASS({
 
   css: `
   ^ {
-    width: 100vw;
+    width: 100%;
   }
     ^container {
       padding: 36px 16px 8px 16px;

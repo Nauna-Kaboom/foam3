@@ -41,9 +41,7 @@ foam.CLASS({
     ********************/
 
     ^ {
-      display: grid;
       height: 100%;
-      grid-template: auto 1fr / auto 1fr;
     }
 
 
@@ -61,12 +59,7 @@ foam.CLASS({
     }
 
     ^stack-view {
-      grid-column: 2 / 3;
-      overflow: auto;
-      transition: 0.2s ease;
-      display: flex;
-      align-content: center;
-      justify-content: center;
+      width: 100%;
       background: /*%PRIMARY1%*/ white;
     }
 
