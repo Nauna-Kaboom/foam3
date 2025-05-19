@@ -55,7 +55,8 @@ foam.CLASS({
     'currentMenu?',
     'memento',
     'stack',
-    'translationService'
+    'translationService',
+    'setControllerMode'
   ],
 
   exports: [
@@ -147,7 +148,7 @@ foam.CLASS({
     function render() {
       var self = this;
       this.SUPER();
-
+      this.setControllerMode('create');
       if ( this.memento )
         this.currentMemento_$ = this.memento.tail$;
 
@@ -175,7 +176,7 @@ foam.CLASS({
               .end()
               .start(config$viewBorder)
                 .start().addClass(this.myClass('create-view-container'))
-                  .tag(this.viewView, { data$: self.data$ })
+                  .tag(this.viewView, { data$: self.data$, controllerMode: this.controllerMode })
                 .end()
               .end();
         }));

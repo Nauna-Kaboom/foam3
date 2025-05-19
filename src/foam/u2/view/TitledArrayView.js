@@ -14,6 +14,9 @@ foam.CLASS({
   imports: ['theme'],
 
   css: `
+  ^ {
+    border: 11px ridge /*%PRIMARY4%*/;
+  }
     ^ .foam-u2-DetailView {
       border: 1px solid #ddd;
       margin-bottom: 8px;
@@ -27,6 +30,10 @@ foam.CLASS({
     {
       name: 'title',
       documentation: 'This property is used to populate the header for each individual array element'
+    },
+    {
+      name: 'colour',
+      class: 'String'
     }
   ],
 
@@ -36,7 +43,8 @@ foam.CLASS({
 
       this.onDetach(this.data$.sub(() => { if ( ! this.feedback_ ) this.data2_ = this.data; }));
       this.data2_ = this.data;
-      this.addClass();
+      if ( ! this.colour ) this.addClass();
+      else { this.style({ 'border': `11px ridge ${this.colour}`}) }
 
       this
         .add(this.slot(function(data2_, valueView) {

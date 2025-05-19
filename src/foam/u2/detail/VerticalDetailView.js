@@ -47,7 +47,7 @@ foam.CLASS({
       this.SUPER();
       this
         .addClass(this.myClass())
-        .start('h2').add(this.title).end()
+        .start('h2').show(this.title$).add(this.title).end()
         .add(this.slot(function(of, sections, data) {
           if ( ! data ) return;
           return self.E()

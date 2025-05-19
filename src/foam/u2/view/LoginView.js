@@ -55,6 +55,7 @@ foam.CLASS({
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100vh;
   }
   ^.foam-u2-ActionView {
     width: 100%;
@@ -72,7 +73,6 @@ foam.CLASS({
   .foam-u2-dialog-ApplicationPopup ^ .centerVertical {
     max-width: 100vw;
   }
-
   /* SET ABOVE DATA */
   ^.topBar-logo-Back {
     display: none;
@@ -185,7 +185,7 @@ foam.CLASS({
     padding: 20px;
     margin: 0 0 12vh 0;
     box-shadow: inset 0px -2px 4px 1px black;
-    background-color: /*%PRIMARY3%*/ #a6b4aa;
+    background-color: white;
     border-radius: /*%INPUTBORDERRADIUS%*/ $inputBorderRadius;
     color: black;
     border: 2px ridge /*%SECONDARY3%*/ red;

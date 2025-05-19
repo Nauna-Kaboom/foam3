@@ -14,9 +14,6 @@ foam.CLASS({
   ],
 
   css: `
-    ^row {
-      font-size: 1.2rem;
-    }
 
     ^rw {
       background: $white;

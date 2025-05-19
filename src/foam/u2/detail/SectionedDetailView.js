@@ -82,6 +82,7 @@ foam.CLASS({
                 s.title$;
 
                 return self.GUnit.create({ columns: s.gridColumns })
+                .startContext({ controllerMode: self.controllerMode })
                   .addClass(self.myClass('card-container'))
                   .start()
                     .add(title$)
@@ -94,7 +95,8 @@ foam.CLASS({
                       section: s,
                       showTitle: false
                     })
-                  .end();
+                  .end()
+                .endContext();
               });
               this.add(slot);
 
