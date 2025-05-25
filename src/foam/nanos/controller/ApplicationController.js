@@ -908,7 +908,24 @@ foam.CLASS({
   ],
 
   listeners: [
-
+    {
+      name: 'baseFontS_',
+      code: function() {
+        let w = window.innerWidth;
+        if ( w < 100  ) return '0.5em';
+        if ( w < 150  ) return '0.6em';
+        if ( w < 200  ) return '0.6em';
+        if ( w < 250  ) return '0.7em';
+        if ( w < 300  ) return '0.7em';
+        if ( w < 350  ) return '0.7em';
+        if ( w < 400  ) return '0.7em';
+        if ( w < 500  ) return '0.8em';
+        if ( w < 600  ) return '0.8em';
+        if ( w < 700  ) return '0.8em';
+        if ( w < 800  ) return '0.9em';
+        return '1em';
+      }
+    },
     function fontSizing(ww, fontB_, fontS_, fontT_) {
       // body font needs to be uniform but titles need to fit containers
       fontB_?.set(this.baseFontS_());

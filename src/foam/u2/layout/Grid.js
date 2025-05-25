@@ -77,6 +77,7 @@ foam.CLASS({
           var endCol = startCol + width;
 
           ret.style({
+            'margin': '8px',
             'grid-column': `${startCol} / ${endCol}`
           });
         });

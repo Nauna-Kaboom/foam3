@@ -28,7 +28,9 @@ foam.CLASS({
   ],
 
   javaImports: [
-    'foam.util.SafetyUtil'
+    'foam.core.X',
+    'foam.util.SafetyUtil',
+    'foam.nanos.auth.Region'
   ],
 
   messages: [
@@ -727,13 +729,17 @@ foam.CLASS({
   methods: [
     {
       name: 'toSummary',
+      args: 'X x',
       type: 'String',
       code: function() {
         var rtn = '';
         var sha = this.getShortAddress();
         if ( !! sha ) rtn = sha + ', ';
         if ( !! this.city ) rtn += this.city + ', ';
-        if ( !! this.regionId ) rtn += this.regionId + ', ';
+        if ( !! this.regionId ) {
+          let reg = this.regionId.split('-');
+          rtn += reg.length>1? reg[1] + ', ' : this.regionId + ', ';
+        }
         if ( !! this.countryId ) rtn += this.countryId + ', ';
         if ( !! this.postalCode ) rtn += this.postalCode + ', ';
         rtn = rtn.trim();
@@ -750,8 +756,9 @@ foam.CLASS({
           sb.append(this.getCity());
           sb.append(", ");
         }
-        if ( ! SafetyUtil.isEmpty(getRegionId()) ) {
-          sb.append(getRegionId());
+        Region r = findRegionId(x);
+        if ( r != null ) {
+          sb.append(r.getName());
           sb.append(", ");
         }
         if ( ! SafetyUtil.isEmpty(getCountryId()) ) {
@@ -762,8 +769,11 @@ foam.CLASS({
         if ( ! SafetyUtil.isEmpty(getPostalCode()) ) {
           sb.append(getPostalCode());
         }
+        String rtn = sb.toString().trim();
+        if (rtn.charAt(rtn.length() - 1) == ',') {
+          rtn = rtn.substring(0, rtn.length() - 1);
+        }
         
-        String rtn = sb.toString();
         return rtn;
       `
     },

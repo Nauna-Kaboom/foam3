@@ -53,6 +53,10 @@
        class: 'Enum',
        of: 'foam.nanos.notification.sms.SMSStatus',
        name: 'status'
-     }
+     },
+     {
+      class: 'String',
+      name: 'note'
+    }
    ]
  });

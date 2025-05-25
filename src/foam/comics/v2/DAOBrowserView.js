@@ -325,7 +325,7 @@ foam.CLASS({
           if ( summaryView.selectedObjects )
             self.config.selectedObjs$ = summaryView.selectedObjects$;
 
-          var buttonStyle = { buttonStyle: 'SECONDARY', size: 'SMALL', isIconAfter: true };
+          var buttonStyle = { buttonStyle: 'SECONDARY', size: 'MEDIUM', isIconAfter: true };
 
           return self.E()
             .start(self.Rows)

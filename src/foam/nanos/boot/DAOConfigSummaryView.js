@@ -90,7 +90,6 @@ foam.CLASS({
 
       css: `
         ^nav {
-          margin-top: 32px;
           margin-left: 32px;
           margin-bottom: 16px;
         }

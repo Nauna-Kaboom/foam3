@@ -59,8 +59,11 @@ foam.CLASS({
     }
 
     ^stack-view {
+      transition: 0.2s ease;
       width: 100%;
       background: /*%PRIMARY1%*/ white;
+      height: calc(100% - var(--topbar-height));
+      overflow: scroll;
     }
 
     ^sidebar^sideNav{
@@ -74,15 +77,10 @@ foam.CLASS({
       transition: 0.2s ease;
       width: 0px;
     }
-
-
-    @media only screen and (min-width: /*%DISPLAYWIDTH.LG%*/ 960px) {
-      ^sideNav{
-        height: auto;
-        position: relative;
-        top: 0;
-        z-index: 1;
-      }
+    ^shift-l {
+      transition: 0.2s ease;
+      width: calc( 100% - var(--sidebar-width));
+      margin-left: var(--sidebar-width);
     }
   `,
 
@@ -178,6 +176,7 @@ foam.CLASS({
         }))
         .start(this.mainView)
           .addClass(this.myClass('stack-view'))
+          .enableClass(this.myClass('shift-l'), this.isMenuOpen$)
         .end();
       // TODO: Maybe add footer support if needed
     }
