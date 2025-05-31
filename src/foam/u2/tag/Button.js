@@ -329,7 +329,7 @@ foam.CLASS({
     }
 
     ^medium {
-      padding: 8px 12px;
+      padding: 5px 12px;
     }
 
     ^large {
