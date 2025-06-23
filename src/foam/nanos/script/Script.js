@@ -25,6 +25,7 @@ foam.CLASS({
 
   imports: [
     'notificationDAO',
+    'setTimeout',
     'scriptDAO',
     'scriptEventDAO',
     'subject'
@@ -142,6 +143,7 @@ foam.CLASS({
       name: 'description',
       includeInDigest: false,
       documentation: 'Description of the script.',
+      width: 100,
       tableWidth: 300
     },
     {
@@ -225,14 +227,14 @@ foam.CLASS({
       value: 'UNSCHEDULED',
       tableWidth: 120,
       storageTransient: true,
-      storageOptional: true
+      storageOptional: true,
+      clusterTransient: true
     },
     {
       class: 'Code',
       name: 'code',
       includeInDigest: true,
-      writePermissionRequired: true,
-      view: { class: 'foam.u2.tag.TextArea', rows: 3, cols: 80 }
+      writePermissionRequired: true
     },
     {
       class: 'String',
@@ -272,14 +274,18 @@ foam.CLASS({
       of: 'foam.nanos.auth.User',
       name: 'lastModifiedBy',
       includeInDigest: true,
-      documentation: 'User who last modified script'
+      documentation: 'User who last modified script',
+      createVisibility: 'HIDDEN',
+      updateVisibility: 'RO'
     },
     {
       class: 'Reference',
       of: 'foam.nanos.auth.User',
       name: 'lastModifiedByAgent',
       includeInDigest: true,
-      documentation: 'Agent acting user who last modified script'
+      documentation: 'Agent acting user who last modified script',
+      createVisibility: 'HIDDEN',
+      updateVisibility: 'RO'
     },
     {
       class: 'DateTime',
@@ -294,7 +300,7 @@ foam.CLASS({
       value: 'scriptDAO',
       transient: true,
       visibility: 'HIDDEN',
-      documentation: 'Name of dao to store script itself. To set from inheritor just change property value'
+      documentation: 'Name of dao to store script itself. To set from inheritor just change property value. Used by client for polling.'
     },
     {
       class: 'String',
@@ -345,6 +351,7 @@ foam.CLASS({
             .put("scriptParameter", sp);
           jShell.eval("import foam.core.X;");
           jShell.eval("X x = foam.nanos.script.Script.X_HOLDER[0];");
+          jShell.eval("void print(Object o) { ((java.io.PrintStream) x.get(\\\"out\\\")).println(String.valueOf(o));  }");
           return jShell;
         } else if ( l == foam.nanos.script.Language.BEANSHELL ) {
           Interpreter shell = new Interpreter();
@@ -460,12 +467,15 @@ foam.CLASS({
     {
       name: 'poll',
       code: function() {
-        var self = this;
-        var interval = setInterval(function() {
-          self.__context__[self.daoKey].find(self.id).then(function(script) {
+        var delay = Math.min(4000, Math.max(40, this.lastDuration));
+        var self  = this;
+        function check() {
+          var dao = self.__context__[self.daoKey];
+          dao.cmd(foam.dao.DAO.PURGE_CMD); // In case DAO is decorated with a TTLCachingDAO (which it is)
+          dao.find(self.id).then(function(script) {
+            // console.log('***************** POLL', script.status, delay);
             if ( script.status === self.ScriptStatus.UNSCHEDULED || script.status === self.ScriptStatus.ERROR ) {
               self.copyFrom(script);
-              clearInterval(interval);
 
               if ( self.notify ) {
                 // create notification
@@ -495,11 +505,14 @@ foam.CLASS({
               notification.toastState = self.ToastState.REQUESTED;
               notification.transient = true;
               self.__subContext__.myNotificationDAO.put(notification);
+            } else {
+              delay = Math.min(4000, delay * 1.5);
+              self.setTimeout(check, delay);
             }
-          }).catch(function() {
-            clearInterval(interval);
           });
-        }, 2000);
+        }
+
+        self.setTimeout(check, delay);
       }
     }
   ],

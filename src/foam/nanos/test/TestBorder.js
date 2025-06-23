@@ -32,7 +32,6 @@ foam.CLASS({
     ^table{ 
       /* Add a fixed height and let flex extend to max possible */
       flex: 1;
-      height: 424px;
     }
   `,
 
