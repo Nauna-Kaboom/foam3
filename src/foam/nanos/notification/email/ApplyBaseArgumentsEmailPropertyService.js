@@ -69,7 +69,6 @@ foam.CLASS({
         // template name check
         String templateName = (String) templateArgs.get("template");
         if ( SafetyUtil.isEmpty(templateName) ) {
-          logger.debug("EmailTemplate not found");
           return emailMessage;
         }
 

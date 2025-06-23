@@ -17,7 +17,7 @@ foam.CLASS({
   requires: [ 'foam.u2.view.RadioView' ],
 
   css: `
-    ^ { margin: auto; width: 100%; }
+    ^ { margin: auto; width: 100%; height: 89%; }
   `,
 
   properties: [

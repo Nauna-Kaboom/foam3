@@ -15,7 +15,6 @@ foam.CLASS({
 
   css: `
   ^ {
-    border: 11px ridge /*%PRIMARY4%*/;
   }
     ^ .foam-u2-DetailView {
       border: 1px solid #ddd;

@@ -94,7 +94,7 @@
       box-sizing: border-box;
       color: $black;
       display: block;
-      font-size: 1.4rem;
+      font-size: 1rem;
       line-height: 1.5;
       overflow: hidden;
       padding-left: 16px;
