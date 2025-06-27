@@ -228,6 +228,9 @@ foam.CLASS({
   methods: [
     function setControllerMode(mode) {
       this.route = mode;
+      ctrl.controllerMode = mode == 'view' ? foam.u2.ControllerMode.VIEW :
+        mode == 'edit' ? foam.u2.ControllerMode.EDIT :
+        foam.u2.ControllerMode.CREATE;
     },
     async function render() {
       this.SUPER();
