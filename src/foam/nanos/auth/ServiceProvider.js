@@ -34,14 +34,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'id',
-      documentation: 'Service provider name',
-      validationPredicates: [
-        {
-          args: ['id'],
-          query: 'id~/^[a-z0-9]+$/',
-          errorString: 'Invalid character(s) in id.'
-        }
-      ]
+      documentation: 'Service provider name'
     },
     {
       class: 'String',
