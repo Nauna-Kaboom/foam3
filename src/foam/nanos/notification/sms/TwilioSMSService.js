@@ -31,9 +31,10 @@ foam.CLASS({
       name: 'send',
       javaCode: `
         TwilioConfig twilioConfig = (TwilioConfig) x.get("twilioConfig");
-        String phoneNumber = "";
-        SMSStatus status;
-        DAO smsDao = (DAO)x.get("smsMessageDAO");
+        String        phoneNumber = smsMessage.getPhoneNumber();
+        String            message = smsMessage.getMessage();
+        SMSMessage          clone = (SMSMessage) smsMessage.fclone();
+        DAO                smsDao = (DAO)x.get("smsMessageDAO");
         
         // check if twilio credentials are set
         if ( SafetyUtil.isEmpty(twilioConfig.getAccountSid()) || SafetyUtil.isEmpty(twilioConfig.getAuthToken()) ) {
@@ -43,34 +44,25 @@ foam.CLASS({
 
         Twilio.init(twilioConfig.getAccountSid(), twilioConfig.getAuthToken());
 
-        // check if phone number exists
-        if ( ! SafetyUtil.isEmpty(smsMessage.getPhoneNumber()) ) {
-          phoneNumber = smsMessage.getPhoneNumber();
-        } else {
-          status = SMSStatus.FAILED;
-          status.setErrorMessage("Phone number not found, failed to send SMS.");
-          smsMessage.setStatus(status);
-          return (SMSMessage) smsDao.put(smsMessage);
+        // check if phone number or message missing
+        if ( SafetyUtil.isEmpty(phoneNumber) ||
+          SafetyUtil.isEmpty(message) ) {
+          clone.setStatus(SMSStatus.FAILED);
+          return (SMSMessage) smsDao.put(clone);
         }
-
-        // check if message exists
-        if ( ! SafetyUtil.isEmpty(smsMessage.getMessage()) ) {
-          try {
-            Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber(twilioConfig.getPhoneNumber()),
-              smsMessage.getMessage()).create();
-            smsMessage.setStatus(SMSStatus.SENT);
-            return (SMSMessage) smsDao.put(smsMessage);
-          } catch (Exception e) {
-            status = SMSStatus.FAILED;
-            status.setErrorMessage(e.toString());
-            return (SMSMessage) smsDao.put(smsMessage);
-          }
-        } else {
-          status = SMSStatus.FAILED;
-          status.setErrorMessage("No message found, failed to send SMS.");
-          smsMessage.setStatus(status);
-          return (SMSMessage) smsDao.put(smsMessage);
+        
+        try {
+          Message.creator(
+            new PhoneNumber(phoneNumber),
+            new PhoneNumber(twilioConfig.getPhoneNumber()),
+            message
+          ).create();
+          clone.setStatus(SMSStatus.SENT);
+          return (SMSMessage) smsDao.put(clone);
+        } catch (Exception e) {
+          Loggers.logger(x, this).error(e.getMessage(), e);
         }
+        return smsMessage; // return original message if failed to send
       `
     }
   ]
